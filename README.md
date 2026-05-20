@@ -180,9 +180,9 @@ GitHub Actions workflow [`.github/workflows/build-deploy.yml`](.github/workflows
 
 | Trigger | What runs |
 |---------|-----------|
-| Push to `main` | Build all platforms; upload artifacts (14-day retention) |
+| Push to `main` | Build all platforms; upload per-platform artifacts |
 | Pull request | Same builds (no release) |
-| Tag `v*` (e.g. `v1.0.0`) | Builds + GitHub Release with platform archives |
+| Tag `v*` (e.g. `v1.0.0`) | Builds + GitHub Release with **macOS, Linux, and Windows** installers |
 | Manual | **Actions → Build and deploy → Run workflow** |
 
 **Artifacts per platform**
@@ -196,11 +196,13 @@ GitHub Actions workflow [`.github/workflows/build-deploy.yml`](.github/workflows
 **Cut a release**
 
 ```bash
-git tag v1.0.0
-git push origin v1.0.0
+git tag v1.0.1
+git push origin v1.0.1
 ```
 
-Download installers from the [Releases](https://github.com/Zeebroo-Team/zeebroo-pos-desktop/releases) page or from the workflow run’s **Artifacts** tab.
+When the workflow finishes, the [Releases](https://github.com/Zeebroo-Team/zeebroo-pos-desktop/releases) page lists three assets: `*-macos.zip`, `*-linux-x86_64.tar.gz`, and `*-windows-x64.zip`.
+
+To refresh an empty release (e.g. `v1.0.0` created before builds passed), delete the tag and release on GitHub, then push a new tag after `main` builds are green.
 
 ---
 

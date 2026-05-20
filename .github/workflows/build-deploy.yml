@@ -94,12 +94,12 @@ jobs:
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.platform }}-${{ runner.os }}
+          name: build-${{ matrix.platform }}
           path: |
             ${{ env.WORKING_DIR }}/dist/*.zip
             ${{ env.WORKING_DIR }}/dist/*.tar.gz
           if-no-files-found: error
-          retention-days: 14
+          retention-days: 90
 
   release:
     name: Publish release
@@ -110,19 +110,43 @@ jobs:
       contents: write
 
     steps:
-      - name: Download artifacts
+      - name: Download macOS, Linux, and Windows artifacts
         uses: actions/download-artifact@v4
         with:
+          pattern: build-*
           path: release-assets
           merge-multiple: true
+
+      - name: Prepare release files
+        run: |
+          set -euo pipefail
+          mkdir -p release-flat
+          find release-assets -type f \( -name '*.zip' -o -name '*.tar.gz' \) -exec cp -v {} release-flat/ \;
+          echo "Files for release:"
+          ls -la release-flat/
+          macos="$(find release-flat -name '*-macos.zip' | wc -l)"
+          linux="$(find release-flat -name '*-linux*.tar.gz' | wc -l)"
+          windows="$(find release-flat -name '*-windows*.zip' | wc -l)"
+          if [[ "$macos" -lt 1 || "$linux" -lt 1 || "$windows" -lt 1 ]]; then
+            echo "Expected macOS zip, Linux tar.gz, and Windows zip — got macos=$macos linux=$linux windows=$windows" >&2
+            exit 1
+          fi
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2
         with:
           generate_release_notes: true
           fail_on_unmatched_files: true
-          files: |
-            release-assets/*.zip
-            release-assets/*.tar.gz
+          body: |
+            ## Downloads
+
+            | Platform | Archive |
+            |----------|---------|
+            | **macOS** (Apple Silicon) | `ZeebrooPosDesktop-*-macos.zip` — unzip, open `.app` |
+            | **Linux** (x86_64, glibc 2.35+) | `ZeebrooPosDesktop-*-linux-x86_64.tar.gz` — extract and run `./ZeebrooPosDesktop` |
+            | **Windows** (x64) | `ZeebrooPosDesktop-*-windows-x64.zip` — unzip and run `ZeebrooPosDesktop.exe` |
+
+            Copy `config.example.json` to your [config path](https://github.com/Zeebroo-Team/zeebroo-pos-desktop#configuration) or set the API URL on the sign-in screen.
+          files: release-flat/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
