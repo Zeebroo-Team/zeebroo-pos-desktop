@@ -57,6 +57,7 @@ case "$PLATFORM" in
         "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
       chmod +x "$LINUXDEPLOYQT"
     fi
+    # linuxdeployqt must run on glibc <= 2.35 (e.g. Ubuntu 22.04) — see issue #340.
     export APPIMAGE_EXTRACT_AND_RUN=1
     mkdir -p "$DIST_DIR/package"
     cp "$BINARY" "$DIST_DIR/package/"

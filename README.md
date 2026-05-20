@@ -190,7 +190,7 @@ GitHub Actions workflow [`.github/workflows/build-deploy.yml`](.github/workflows
 | Platform | Archive |
 |----------|---------|
 | macOS | `ZeebrooPosDesktop-{version}-macos.zip` (`.app` + `config.example.json`) |
-| Linux | `ZeebrooPosDesktop-{version}-linux-x86_64.tar.gz` |
+| Linux (Ubuntu 22.04 runner) | `ZeebrooPosDesktop-{version}-linux-x86_64.tar.gz` |
 | Windows | `ZeebrooPosDesktop-{version}-windows-x64.zip` |
 
 **Cut a release**

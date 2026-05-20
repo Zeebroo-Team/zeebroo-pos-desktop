@@ -31,8 +31,9 @@ jobs:
             os: macos-14
             host: mac
             arch: clang_64
+          # Jammy (22.04): linuxdeployqt requires glibc <= 2.35 for portable bundles.
           - platform: linux
-            os: ubuntu-24.04
+            os: ubuntu-22.04
             host: linux
             arch: linux_gcc_64
           - platform: windows
