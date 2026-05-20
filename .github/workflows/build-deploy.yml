@@ -51,7 +51,8 @@ jobs:
           host: ${{ matrix.host }}
           target: desktop
           arch: ${{ matrix.arch }}
-          modules: qtmultimedia qtprintsupport
+          # PrintSupport is part of qtbase; only Multimedia is a separate installer module.
+          modules: qtmultimedia
           cache: true
 
       - name: Install Linux dependencies
