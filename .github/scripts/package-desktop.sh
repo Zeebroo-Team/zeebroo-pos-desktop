@@ -78,8 +78,8 @@ case "$PLATFORM" in
     windeployqt "$DIST_DIR/package/${APP_NAME}.exe" --release --compiler-runtime
     cp config.example.json "$DIST_DIR/package/"
     ARCHIVE="$DIST_DIR/${APP_NAME}-${VERSION}-windows-x64.zip"
-    powershell.exe -NoProfile -Command \
-      "Compress-Archive -Path '${DIST_DIR}/package/*' -DestinationPath '${ARCHIVE}' -Force"
+    # Use tar (not PowerShell): Git Bash paths like /d/a/... break Compress-Archive.
+    (cd "$DIST_DIR/package" && tar -a -c -f "$ARCHIVE" .)
     ;;
 
   *)
