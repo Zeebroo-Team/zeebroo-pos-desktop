@@ -10,6 +10,12 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/Zeebroo-Team/zeebroo-pos-desktop/actions/workflows/build-deploy.yml">
+    <img src="https://github.com/Zeebroo-Team/zeebroo-pos-desktop/actions/workflows/build-deploy.yml/badge.svg?branch=main" alt="Build" />
+  </a>
+</p>
+
+<p align="center">
   <a href="https://github.com/Zeebroo-Team/zeebroo-pos-desktop">Repository</a>
   ·
   <a href="#requirements">Requirements</a>
@@ -168,6 +174,36 @@ Set production values in config (see [Configuration](#configuration)):
 
 ---
 
+## CI/CD (build and deploy)
+
+GitHub Actions workflow [`.github/workflows/build-deploy.yml`](.github/workflows/build-deploy.yml) builds and packages the app on **macOS**, **Linux**, and **Windows**.
+
+| Trigger | What runs |
+|---------|-----------|
+| Push to `main` | Build all platforms; upload artifacts (14-day retention) |
+| Pull request | Same builds (no release) |
+| Tag `v*` (e.g. `v1.0.0`) | Builds + GitHub Release with platform archives |
+| Manual | **Actions → Build and deploy → Run workflow** |
+
+**Artifacts per platform**
+
+| Platform | Archive |
+|----------|---------|
+| macOS | `ZeebrooPosDesktop-{version}-macos.zip` (`.app` + `config.example.json`) |
+| Linux | `ZeebrooPosDesktop-{version}-linux-x86_64.tar.gz` |
+| Windows | `ZeebrooPosDesktop-{version}-windows-x64.zip` |
+
+**Cut a release**
+
+```bash
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+Download installers from the [Releases](https://github.com/Zeebroo-Team/zeebroo-pos-desktop/releases) page or from the workflow run’s **Artifacts** tab.
+
+---
+
 ## Optional: git submodule in Zeebroo portal
 
 You can embed this repo inside the main Zeebroo monorepo (e.g. as `pos-desktop/`):
@@ -205,6 +241,9 @@ Authenticated requests send `Authorization: Bearer {token}` and `X-Business-Id` 
 
 ```
 zeebroo-pos-desktop/
+  .github/
+    workflows/build-deploy.yml
+    scripts/package-desktop.sh
   LICENSE
   README.md
   pos-desktop/

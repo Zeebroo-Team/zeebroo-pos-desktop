@@ -1,0 +1,123 @@
+name: Build and deploy
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: build-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  QT_VERSION: "6.8.2"
+  WORKING_DIR: pos-desktop
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build (${{ matrix.platform }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: macos
+            os: macos-14
+            host: mac
+            arch: clang_64
+          - platform: linux
+            os: ubuntu-24.04
+            host: linux
+            arch: linux_gcc_64
+          - platform: windows
+            os: windows-latest
+            host: windows
+            arch: win64_msvc2022_64
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: ${{ env.QT_VERSION }}
+          host: ${{ matrix.host }}
+          target: desktop
+          arch: ${{ matrix.arch }}
+          modules: qtmultimedia qtprintsupport
+          cache: true
+
+      - name: Install Linux dependencies
+        if: matrix.platform == 'linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            ninja-build \
+            libgl1-mesa-dev \
+            libxkbcommon-x11-0 \
+            libxcb-xinerama0 \
+            libxcb-cursor0 \
+            libfuse2
+
+      - name: Setup MSVC
+        if: matrix.platform == 'windows'
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Install Ninja (macOS)
+        if: matrix.platform == 'macos'
+        run: brew install ninja
+
+      - name: Configure CMake
+        working-directory: ${{ env.WORKING_DIR }}
+        run: >
+          cmake -B build -G Ninja
+          -DCMAKE_BUILD_TYPE=Release
+          -DCMAKE_PREFIX_PATH="${{ env.QT_ROOT_DIR }}"
+
+      - name: Build
+        working-directory: ${{ env.WORKING_DIR }}
+        run: cmake --build build
+
+      - name: Package
+        shell: bash
+        run: bash .github/scripts/package-desktop.sh ${{ matrix.platform }}
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.platform }}-${{ runner.os }}
+          path: |
+            ${{ env.WORKING_DIR }}/dist/*.zip
+            ${{ env.WORKING_DIR }}/dist/*.tar.gz
+          if-no-files-found: error
+          retention-days: 14
+
+  release:
+    name: Publish release
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: release-assets
+          merge-multiple: true
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: release-assets/**/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

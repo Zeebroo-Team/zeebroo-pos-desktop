@@ -1,0 +1,86 @@
+#!/usr/bin/env bash
+# Package ZeebrooPosDesktop for distribution (macOS, Linux, Windows).
+set -euo pipefail
+
+PLATFORM="${1:?Usage: package-desktop.sh <macos|linux|windows>}"
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+POS_DIR="$REPO_ROOT/pos-desktop"
+BUILD_DIR="$POS_DIR/build"
+DIST_DIR="$POS_DIR/dist"
+APP_NAME="ZeebrooPosDesktop"
+
+VERSION="$(sed -n 's/project(ZeebrooPosDesktop VERSION \([0-9.]*\).*/\1/p' "$POS_DIR/CMakeLists.txt")"
+VERSION="${VERSION:-0.0.0}"
+
+if [[ -z "${QT_ROOT_DIR:-}" ]]; then
+  echo "QT_ROOT_DIR is not set. Install Qt before packaging." >&2
+  exit 1
+fi
+
+export PATH="${QT_ROOT_DIR}/bin:${PATH}"
+
+rm -rf "$DIST_DIR"
+mkdir -p "$DIST_DIR"
+
+cd "$POS_DIR"
+
+case "$PLATFORM" in
+  macos)
+    APP_BUNDLE="$BUILD_DIR/${APP_NAME}.app"
+    if [[ ! -d "$APP_BUNDLE" ]]; then
+      echo "Missing app bundle: $APP_BUNDLE" >&2
+      exit 1
+    fi
+    macdeployqt "$APP_BUNDLE" -always-overwrite
+    mkdir -p "$DIST_DIR/package"
+    cp -R "$APP_BUNDLE" "$DIST_DIR/package/"
+    cp config.example.json "$DIST_DIR/package/"
+    ARCHIVE="$DIST_DIR/${APP_NAME}-${VERSION}-macos.zip"
+    (cd "$DIST_DIR/package" && zip -r "$ARCHIVE" .)
+    ;;
+
+  linux)
+    BINARY="$BUILD_DIR/${APP_NAME}"
+    if [[ ! -f "$BINARY" ]]; then
+      echo "Missing binary: $BINARY" >&2
+      exit 1
+    fi
+    LINUXDEPLOYQT="$DIST_DIR/linuxdeployqt"
+    if [[ ! -x "$LINUXDEPLOYQT" ]]; then
+      curl -fsSL -o "$LINUXDEPLOYQT" \
+        "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
+      chmod +x "$LINUXDEPLOYQT"
+    fi
+    export APPIMAGE_EXTRACT_AND_RUN=1
+    mkdir -p "$DIST_DIR/package"
+    cp "$BINARY" "$DIST_DIR/package/"
+    cp config.example.json "$DIST_DIR/package/"
+    "$LINUXDEPLOYQT" "$DIST_DIR/package/${APP_NAME}" -bundle-non-qt-libs
+    ARCHIVE="$DIST_DIR/${APP_NAME}-${VERSION}-linux-x86_64.tar.gz"
+    tar -czf "$ARCHIVE" -C "$DIST_DIR/package" .
+    ;;
+
+  windows)
+    EXE="$BUILD_DIR/${APP_NAME}.exe"
+    if [[ ! -f "$EXE" ]]; then
+      echo "Missing executable: $EXE" >&2
+      exit 1
+    fi
+    mkdir -p "$DIST_DIR/package"
+    cp "$EXE" "$DIST_DIR/package/"
+    windeployqt "$DIST_DIR/package/${APP_NAME}.exe" --release --compiler-runtime
+    cp config.example.json "$DIST_DIR/package/"
+    ARCHIVE="$DIST_DIR/${APP_NAME}-${VERSION}-windows-x64.zip"
+    powershell.exe -NoProfile -Command \
+      "Compress-Archive -Path '${DIST_DIR}/package/*' -DestinationPath '${ARCHIVE}' -Force"
+    ;;
+
+  *)
+    echo "Unknown platform: $PLATFORM" >&2
+    exit 1
+    ;;
+esac
+
+echo "Packaged: $DIST_DIR"
