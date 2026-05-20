@@ -40,4 +40,16 @@ if(WIN32)
     set_target_properties(ZeebrooPosDesktop PROPERTIES WIN32_EXECUTABLE TRUE)
 endif()
 
-install(TARGETS ZeebrooPosDesktop RUNTIME DESTINATION bin)
+if(APPLE)
+    set_target_properties(ZeebrooPosDesktop PROPERTIES
+        MACOSX_BUNDLE TRUE
+        MACOSX_BUNDLE_BUNDLE_NAME "Zeebroo POS"
+        MACOSX_BUNDLE_GUI_IDENTIFIER "com.zeebroo.posdesktop"
+    )
+endif()
+
+if(APPLE)
+    install(TARGETS ZeebrooPosDesktop BUNDLE DESTINATION .)
+else()
+    install(TARGETS ZeebrooPosDesktop RUNTIME DESTINATION bin)
+endif()

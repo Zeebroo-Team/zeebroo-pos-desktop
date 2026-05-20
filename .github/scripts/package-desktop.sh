@@ -30,7 +30,11 @@ case "$PLATFORM" in
   macos)
     APP_BUNDLE="$BUILD_DIR/${APP_NAME}.app"
     if [[ ! -d "$APP_BUNDLE" ]]; then
-      echo "Missing app bundle: $APP_BUNDLE" >&2
+      APP_BUNDLE="$(find "$BUILD_DIR" -maxdepth 4 -type d -name "${APP_NAME}.app" 2>/dev/null | head -1 || true)"
+    fi
+    if [[ -z "$APP_BUNDLE" || ! -d "$APP_BUNDLE" ]]; then
+      echo "Missing app bundle under $BUILD_DIR (expected ${APP_NAME}.app)" >&2
+      find "$BUILD_DIR" -maxdepth 4 \( -name "${APP_NAME}" -o -name "${APP_NAME}.app" \) -print 2>/dev/null || true
       exit 1
     fi
     macdeployqt "$APP_BUNDLE" -always-overwrite
