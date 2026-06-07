@@ -2052,9 +2052,8 @@ QLineEdit:hover, QTextEdit:hover, QDoubleSpinBox:hover {
     color: #64748b;
 }
 
-/* ── All text inputs ──────────────────────────────────────────────── */
-#poSupplierCombo, #poDateEdit, #poExpectedEdit,
-#poProductCombo, #poAddQty, #poAddCost {
+/* ── Plain line-edit inputs ───────────────────────────────────────── */
+#poDateEdit, #poExpectedEdit, #poAddQty, #poAddCost {
     background: #ffffff;
     border: 1.5px solid #e2e8f0;
     border-radius: 8px;
@@ -2063,14 +2062,66 @@ QLineEdit:hover, QTextEdit:hover, QDoubleSpinBox:hover {
     font-size: 12px;
     selection-background-color: #c7d2fe;
 }
-#poSupplierCombo:hover, #poDateEdit:hover, #poExpectedEdit:hover,
-#poProductCombo:hover, #poAddQty:hover, #poAddCost:hover {
+#poDateEdit:hover, #poExpectedEdit:hover,
+#poAddQty:hover, #poAddCost:hover {
     border-color: #a5b4fc;
 }
-#poSupplierCombo:focus, #poDateEdit:focus, #poExpectedEdit:focus,
-#poProductCombo:focus, #poAddQty:focus, #poAddCost:focus {
+#poDateEdit:focus, #poExpectedEdit:focus,
+#poAddQty:focus, #poAddCost:focus {
     border-color: #6366f1;
     background: #fafbff;
+}
+
+/* ── Searchable combo boxes ───────────────────────────────────────── */
+QComboBox#poSupplierCombo,
+QComboBox#poProductCombo {
+    background: #ffffff;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0;
+    color: #1e293b;
+    font-size: 12px;
+}
+QComboBox#poSupplierCombo:hover,
+QComboBox#poProductCombo:hover {
+    border-color: #a5b4fc;
+}
+QComboBox#poSupplierCombo:on,
+QComboBox#poProductCombo:on {
+    border-color: #6366f1;
+    background: #fafbff;
+}
+
+/* Inner text field of editable combo */
+QComboBox#poSupplierCombo QLineEdit,
+QComboBox#poProductCombo QLineEdit {
+    border: none;
+    background: transparent;
+    padding: 0 4px 0 11px;
+    color: #1e293b;
+    font-size: 12px;
+    selection-background-color: #c7d2fe;
+}
+
+/* Dropdown arrow button */
+QComboBox#poSupplierCombo::drop-down,
+QComboBox#poProductCombo::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 28px;
+    border-left: 1px solid #e8ecf5;
+    border-top-right-radius: 7px;
+    border-bottom-right-radius: 7px;
+    background: transparent;
+}
+QComboBox#poSupplierCombo::drop-down:hover,
+QComboBox#poProductCombo::drop-down:hover {
+    background: #f5f3ff;
+}
+QComboBox#poSupplierCombo::down-arrow,
+QComboBox#poProductCombo::down-arrow {
+    width: 10px;
+    height: 10px;
 }
 
 /* Notes text area */

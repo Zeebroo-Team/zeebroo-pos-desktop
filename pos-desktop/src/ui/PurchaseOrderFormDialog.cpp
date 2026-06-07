@@ -2,6 +2,8 @@
 #include "ui/AddSupplierDialog.h"
 
 #include <QComboBox>
+#include <QCompleter>
+#include <QListView>
 #include <QDate>
 #include <QFrame>
 #include <QHBoxLayout>
@@ -16,6 +18,49 @@
 #include <QTableWidgetItem>
 #include <QTextEdit>
 #include <QVBoxLayout>
+
+namespace {
+
+// Shared dropdown list style applied to both combo views and completer popups
+const char kComboPopupStyle[] = R"(
+    QAbstractItemView {
+        border: 1.5px solid #c7d2fe;
+        border-radius: 8px;
+        background: #ffffff;
+        outline: none;
+        padding: 4px;
+        font-size: 12px;
+        color: #1e293b;
+    }
+    QAbstractItemView::item {
+        padding: 7px 14px;
+        min-height: 26px;
+        border-radius: 6px;
+        color: #1e293b;
+    }
+    QAbstractItemView::item:hover {
+        background: #f5f3ff;
+        color: #3730a3;
+    }
+    QAbstractItemView::item:selected {
+        background: #eef2ff;
+        color: #3730a3;
+        font-weight: 600;
+    }
+    QScrollBar:vertical {
+        width: 5px;
+        background: transparent;
+    }
+    QScrollBar::handle:vertical {
+        background: #c7d2fe;
+        border-radius: 2px;
+        min-height: 20px;
+    }
+    QScrollBar::add-line:vertical,
+    QScrollBar::sub-line:vertical { height: 0; }
+)";
+
+} // namespace
 
 namespace pos {
 
@@ -118,8 +163,13 @@ void PurchaseOrderFormDialog::buildUi()
     supplierInline->setSpacing(6);
     m_supplierCombo = new QComboBox(canvas);
     m_supplierCombo->setObjectName(QStringLiteral("poSupplierCombo"));
+    m_supplierCombo->setEditable(true);
+    m_supplierCombo->setInsertPolicy(QComboBox::NoInsert);
     m_supplierCombo->addItem(tr("— Select supplier —"), 0);
     m_supplierCombo->setFixedHeight(34);
+    m_supplierCombo->lineEdit()->setPlaceholderText(tr("Type to search supplier…"));
+    m_supplierCombo->lineEdit()->setClearButtonEnabled(true);
+    m_supplierCombo->view()->setStyleSheet(QString::fromLatin1(kComboPopupStyle));
     m_addSupplierBtn = new QPushButton(tr("+"), canvas);
     m_addSupplierBtn->setObjectName(QStringLiteral("poAddSupplierBtn"));
     m_addSupplierBtn->setFixedSize(34, 34);
@@ -160,14 +210,25 @@ void PurchaseOrderFormDialog::buildUi()
     m_productCombo->setObjectName(QStringLiteral("poProductCombo"));
     m_productCombo->setEditable(true);
     m_productCombo->setInsertPolicy(QComboBox::NoInsert);
-    m_productCombo->setPlaceholderText(tr("Search by product name or SKU…"));
     m_productCombo->setFixedHeight(34);
+    m_productCombo->lineEdit()->setPlaceholderText(tr("Search by name or SKU…"));
+    m_productCombo->lineEdit()->setClearButtonEnabled(true);
+
     for (const ProductCard &p : m_bootstrap.products)
         m_productCombo->addItem(QStringLiteral("[%1]  %2").arg(p.sku, p.name), p.id);
     if (m_productCombo->count() > 0) {
         m_productCombo->setCurrentIndex(-1);
         m_productCombo->clearEditText();
     }
+
+    // Contains-matching completer (searches anywhere in name/SKU)
+    auto *productCompleter = new QCompleter(m_productCombo->model(), m_productCombo);
+    productCompleter->setFilterMode(Qt::MatchContains);
+    productCompleter->setCaseSensitivity(Qt::CaseInsensitive);
+    productCompleter->setMaxVisibleItems(10);
+    m_productCombo->setCompleter(productCompleter);
+    m_productCombo->view()->setStyleSheet(QString::fromLatin1(kComboPopupStyle));
+    productCompleter->popup()->setStyleSheet(QString::fromLatin1(kComboPopupStyle));
 
     // Auto-fill unit cost when a product is selected
     connect(m_productCombo, QOverload<int>::of(&QComboBox::currentIndexChanged),
@@ -306,6 +367,13 @@ void PurchaseOrderFormDialog::loadSuppliers()
             for (const Supplier &s : m_suppliers) {
                 m_supplierCombo->addItem(s.name, s.id);
             }
+            // Contains-matching completer — set after items are populated
+            auto *comp = new QCompleter(m_supplierCombo->model(), m_supplierCombo);
+            comp->setFilterMode(Qt::MatchContains);
+            comp->setCaseSensitivity(Qt::CaseInsensitive);
+            comp->setMaxVisibleItems(10);
+            m_supplierCombo->setCompleter(comp);
+            comp->popup()->setStyleSheet(QString::fromLatin1(kComboPopupStyle));
         },
         [](const QString &, int) { /* non-fatal */ });
 }
