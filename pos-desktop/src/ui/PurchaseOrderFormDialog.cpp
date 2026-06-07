@@ -1,4 +1,5 @@
 #include "ui/PurchaseOrderFormDialog.h"
+#include "ui/AddSupplierDialog.h"
 
 #include <QComboBox>
 #include <QDate>
@@ -96,12 +97,34 @@ void PurchaseOrderFormDialog::buildUi()
     auto *row1 = new QHBoxLayout;
     row1->setSpacing(14);
 
+    // Supplier field: label above, then [combo] [+ button] inline
+    auto *supplierCol = new QVBoxLayout;
+    supplierCol->setSpacing(5);
+    auto *supplierLbl = new QLabel(tr("Supplier"), canvas);
+    supplierLbl->setObjectName(QStringLiteral("poFormLabel"));
+    supplierCol->addWidget(supplierLbl);
+
+    auto *supplierRow = new QHBoxLayout;
+    supplierRow->setSpacing(6);
+
     m_supplierCombo = new QComboBox(canvas);
     m_supplierCombo->setObjectName(QStringLiteral("poSupplierCombo"));
     m_supplierCombo->addItem(tr("— No supplier —"), 0);
-    m_supplierCombo->setMinimumWidth(220);
+    m_supplierCombo->setMinimumWidth(180);
     m_supplierCombo->setFixedHeight(40);
-    row1->addLayout(makeField(tr("Supplier"), m_supplierCombo, canvas), 2);
+
+    m_addSupplierBtn = new QPushButton(tr("+"), canvas);
+    m_addSupplierBtn->setObjectName(QStringLiteral("poAddSupplierBtn"));
+    m_addSupplierBtn->setFixedSize(40, 40);
+    m_addSupplierBtn->setCursor(Qt::PointingHandCursor);
+    m_addSupplierBtn->setToolTip(tr("Add new supplier"));
+    connect(m_addSupplierBtn, &QPushButton::clicked, this, &PurchaseOrderFormDialog::onAddSupplier);
+
+    supplierRow->addWidget(m_supplierCombo, 1);
+    supplierRow->addWidget(m_addSupplierBtn);
+    supplierCol->addLayout(supplierRow);
+
+    row1->addLayout(supplierCol, 2);
 
     m_dateEdit = new QLineEdit(canvas);
     m_dateEdit->setObjectName(QStringLiteral("poDateEdit"));
@@ -389,6 +412,17 @@ void PurchaseOrderFormDialog::submit(const QString &status, QPushButton *btn)
             m_saveDraftBtn->setEnabled(true);
             m_placeOrderBtn->setEnabled(true);
         });
+}
+
+void PurchaseOrderFormDialog::onAddSupplier()
+{
+    AddSupplierDialog dlg(m_api, this);
+    if (dlg.exec() != QDialog::Accepted) return;
+
+    const Supplier &s = dlg.createdSupplier();
+    m_suppliers.append(s);
+    m_supplierCombo->addItem(s.name, s.id);
+    m_supplierCombo->setCurrentIndex(m_supplierCombo->count() - 1);
 }
 
 void PurchaseOrderFormDialog::onSaveDraft()  { submit(QStringLiteral("draft"),   m_saveDraftBtn);  }

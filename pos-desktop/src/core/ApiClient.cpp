@@ -200,6 +200,12 @@ void ApiClient::fetchSuppliers(SuccessFn onOk, ErrorFn onErr)
     sendGet(req, onOk, onErr);
 }
 
+void ApiClient::createSupplier(const QJsonObject &body, SuccessFn onOk, ErrorFn onErr)
+{
+    QNetworkRequest req = buildRequest(QStringLiteral("/suppliers"));
+    sendJson(req, QJsonDocument(body).toJson(QJsonDocument::Compact), QStringLiteral("POST"), onOk, onErr);
+}
+
 void ApiClient::fetchPurchaseOrders(const QString &status, SuccessFn onOk, ErrorFn onErr)
 {
     QUrlQuery q;

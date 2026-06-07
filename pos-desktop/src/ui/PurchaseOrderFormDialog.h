@@ -28,6 +28,7 @@ private slots:
     void onRemoveLine(int row);
     void onSaveDraft();
     void onPlaceOrder();
+    void onAddSupplier();
 
 private:
     void buildUi();
@@ -43,6 +44,7 @@ private:
     QVector<Supplier> m_suppliers;
 
     QComboBox   *m_supplierCombo    = nullptr;
+    QPushButton *m_addSupplierBtn   = nullptr;
     QLineEdit   *m_dateEdit         = nullptr;
     QLineEdit   *m_expectedEdit     = nullptr;
     QTextEdit   *m_notesEdit        = nullptr;
