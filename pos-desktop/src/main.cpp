@@ -19,20 +19,34 @@ int main(int argc, char *argv[])
     }
 
     pos::Config::instance().load();
-
-    pos::ApiClient api;
-    pos::LoginDialog login(&api);
-    if (login.exec() != QDialog::Accepted) {
-        return 0;
-    }
-
-    api.setAccessToken(login.accessToken());
-    api.setBusinessId(login.businessId());
-
     pos::PosBeep::preload();
 
-    pos::MainWindow window(&api);
-    window.showMaximized();
+    pos::ApiClient api;
 
-    return app.exec();
+    // Sign-out loop: if the user signs out, show the login screen again.
+    for (;;) {
+        pos::LoginDialog login(&api);
+        if (login.exec() != QDialog::Accepted)
+            break;
+
+        api.setAccessToken(login.accessToken());
+        api.setBusinessId(login.businessId());
+
+        bool signedOut = false;
+        {
+            pos::MainWindow window(&api);
+            window.showMaximized();
+            app.exec();                     // runs until window closes
+            signedOut = window.wasSignedOut();
+        }
+
+        if (!signedOut)
+            break;
+
+        // Clear credentials and loop back to login
+        api.setAccessToken(QString());
+        api.setBusinessId(0);
+    }
+
+    return 0;
 }
