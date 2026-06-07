@@ -168,6 +168,20 @@ void PurchaseOrderFormDialog::buildUi()
         m_productCombo->setCurrentIndex(-1);
         m_productCombo->clearEditText();
     }
+
+    // Auto-fill unit cost when a product is selected
+    connect(m_productCombo, QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this, [this](int idx) {
+        if (idx < 0) return;
+        const int productId = m_productCombo->itemData(idx).toInt();
+        for (const ProductCard &p : m_bootstrap.products) {
+            if (p.id == productId) {
+                m_addCostEdit->setText(QString::number(p.unitSellPrice, 'f', 2));
+                break;
+            }
+        }
+    });
+
     addCard->addLayout(makeField(tr("Product"), m_productCombo, canvas));
 
     // Row B – qty + cost + add button
