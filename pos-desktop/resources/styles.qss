@@ -2014,155 +2014,151 @@ QLineEdit:hover, QTextEdit:hover, QDoubleSpinBox:hover {
 
 /* ── Form dialog ─────────────────────────────────────────────────── */
 #poFormScroll, #poFormCanvas {
-    background: #f0f2f7;
+    background: #f4f6fb;
 }
 
+/* Standard form card */
+#poFormCard {
+    background: #ffffff;
+    border: 1px solid #eaecf5;
+    border-radius: 10px;
+}
+
+/* Add product card — subtle indigo tint */
+#poAddProductCard {
+    background: #fafbff;
+    border: 1px solid #e0e4f7;
+    border-radius: 10px;
+}
+
+/* Section accent bar */
+#poFormSectionAccent {
+    background: #6366f1;
+    border-radius: 2px;
+}
+
+/* Section heading */
+#poFormSectionLabel {
+    font-size: 12px;
+    font-weight: 700;
+    color: #1e293b;
+    letter-spacing: 0.1px;
+}
+
+/* Field labels */
 #poFormLabel {
-    font-size: 9px;
-    font-weight: 800;
+    font-size: 11px;
+    font-weight: 600;
     color: #64748b;
-    letter-spacing: 0.6px;
 }
 
-/* Supplier / date / expected fields */
-#poSupplierCombo, #poDateEdit, #poExpectedEdit {
+/* ── All text inputs ──────────────────────────────────────────────── */
+#poSupplierCombo, #poDateEdit, #poExpectedEdit,
+#poProductCombo, #poAddQty, #poAddCost {
     background: #ffffff;
     border: 1.5px solid #e2e8f0;
-    border-radius: 7px;
-    padding: 0 10px;
+    border-radius: 8px;
+    padding: 0 11px;
     color: #1e293b;
     font-size: 12px;
     selection-background-color: #c7d2fe;
 }
-#poSupplierCombo:focus, #poDateEdit:focus, #poExpectedEdit:focus {
+#poSupplierCombo:hover, #poDateEdit:hover, #poExpectedEdit:hover,
+#poProductCombo:hover, #poAddQty:hover, #poAddCost:hover {
+    border-color: #a5b4fc;
+}
+#poSupplierCombo:focus, #poDateEdit:focus, #poExpectedEdit:focus,
+#poProductCombo:focus, #poAddQty:focus, #poAddCost:focus {
     border-color: #6366f1;
     background: #fafbff;
-}
-#poSupplierCombo:hover, #poDateEdit:hover, #poExpectedEdit:hover {
-    border-color: #c7d2fe;
 }
 
 /* Notes text area */
 #poNotesEdit {
     background: #ffffff;
     border: 1.5px solid #e2e8f0;
-    border-radius: 7px;
-    padding: 6px 10px;
+    border-radius: 8px;
+    padding: 7px 11px;
     color: #1e293b;
     font-size: 12px;
 }
-#poNotesEdit:focus {
-    border-color: #6366f1;
-    background: #fafbff;
-}
+#poNotesEdit:hover { border-color: #a5b4fc; }
+#poNotesEdit:focus { border-color: #6366f1; background: #fafbff; }
 
-/* Product search combo */
-#poProductCombo {
-    background: #ffffff;
-    border: 1.5px solid #e2e8f0;
-    border-radius: 7px;
-    padding: 0 10px;
-    color: #1e293b;
-    font-size: 12px;
-}
-#poProductCombo:focus { border-color: #6366f1; background: #fafbff; }
-#poProductCombo:hover { border-color: #c7d2fe; }
-
-/* Qty / cost small fields */
-#poAddQty, #poAddCost {
-    background: #ffffff;
-    border: 1.5px solid #e2e8f0;
-    border-radius: 7px;
-    padding: 0 8px;
-    color: #1e293b;
-    font-size: 12px;
-    font-weight: 600;
-}
-#poAddQty:focus, #poAddCost:focus {
-    border-color: #6366f1;
-    background: #fafbff;
-}
-
-/* Add Supplier inline button */
+/* Add Supplier + button */
 #poAddSupplierBtn {
     background: #f1f5f9;
     border: 1.5px solid #e2e8f0;
-    border-radius: 7px;
+    border-radius: 8px;
     color: #6366f1;
-    font-size: 16px;
+    font-size: 17px;
     font-weight: 900;
 }
 #poAddSupplierBtn:hover {
-    background: #ede9fe;
-    border-color: #6366f1;
+    background: #eef2ff;
+    border-color: #818cf8;
     color: #4338ca;
 }
-#poAddSupplierBtn:pressed {
-    background: #ddd6fe;
-}
-
-/* Add Supplier dialog form fields */
-#supplierFormField {
-    background: #ffffff;
-    border: 1.5px solid #e2e8f0;
-    border-radius: 7px;
-    padding: 0 10px;
-    color: #1e293b;
-    font-size: 12px;
-}
-#supplierFormField:focus {
-    border-color: #6366f1;
-    background: #fafbff;
-}
-#supplierFormField:hover {
-    border-color: #c7d2fe;
-}
+#poAddSupplierBtn:pressed { background: #e0e7ff; }
 
 /* Add Line button */
 #poAddLineBtn {
     background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
                                 stop:0 #6366f1, stop:1 #4338ca);
     border: none;
-    border-radius: 7px;
-    padding: 0 14px;
+    border-radius: 8px;
+    padding: 0 16px;
     color: #ffffff;
-    font-weight: 800;
+    font-weight: 700;
     font-size: 12px;
 }
 #poAddLineBtn:hover {
     background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
                                 stop:0 #818cf8, stop:1 #6366f1);
 }
-#poAddLineBtn:pressed { background: #4338ca; }
+#poAddLineBtn:pressed { background: #3730a3; }
 
-/* Save as Draft */
+/* Save Draft button — outlined secondary */
 #poSaveDraftBtn {
     background: #ffffff;
-    border: 1.5px solid #e2e8f0;
+    border: 1.5px solid #c7d2fe;
     border-radius: 8px;
     padding: 0 16px;
-    color: #475569;
+    color: #4338ca;
     font-weight: 700;
     font-size: 12px;
 }
 #poSaveDraftBtn:hover {
-    background: #f8fafc;
-    border-color: #94a3b8;
-    color: #1e293b;
+    background: #eef2ff;
+    border-color: #818cf8;
+    color: #3730a3;
 }
-#poSaveDraftBtn:pressed  { background: #f1f5f9; }
-#poSaveDraftBtn:disabled { color: #94a3b8; border-color: #e2e8f0; }
+#poSaveDraftBtn:pressed  { background: #e0e7ff; }
+#poSaveDraftBtn:disabled { color: #a5b4fc; border-color: #e0e4f7; }
+
+/* Add Supplier dialog form fields */
+#supplierFormField {
+    background: #ffffff;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0 11px;
+    color: #1e293b;
+    font-size: 12px;
+}
+#supplierFormField:hover { border-color: #a5b4fc; }
+#supplierFormField:focus { border-color: #6366f1; background: #fafbff; }
 
 /* Delete line × button */
 #poDelLineBtn {
     background: transparent;
     border: none;
-    color: #cbd5e1;
-    font-size: 13px;
+    color: #c7d2fe;
+    font-size: 14px;
     font-weight: 900;
-    border-radius: 4px;
+    border-radius: 5px;
 }
 #poDelLineBtn:hover {
     background: #fef2f2;
     color: #ef4444;
 }
+#poDelLineBtn:pressed { background: #fee2e2; }
