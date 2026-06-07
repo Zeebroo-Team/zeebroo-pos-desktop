@@ -1633,85 +1633,87 @@ QLineEdit:hover, QTextEdit:hover, QDoubleSpinBox:hover {
     background: #f0f2f7;
 }
 
-/* ── Gradient header ─────────────────────────────────────────────── */
+/* ── Header ──────────────────────────────────────────────────────── */
 #poGradientHeader {
-    background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                                stop:0 #1e1b4b, stop:0.5 #312e81, stop:1 #3730a3);
-    border-bottom: none;
+    background: #ffffff;
+    border-bottom: 1px solid #e8ecf5;
     min-height: 90px;
 }
 
 #poHeaderTitle {
     font-size: 20px;
     font-weight: 800;
-    color: #ffffff;
+    color: #0f172a;
     letter-spacing: -0.3px;
 }
 
 #poHeaderSubtitle {
     font-size: 12px;
     font-weight: 400;
-    color: rgba(199, 210, 254, 0.85);
+    color: #64748b;
 }
 
-/* Refresh button (ghost on dark header) */
+/* Refresh button */
 #poHeaderRefreshBtn {
-    background: rgba(255, 255, 255, 0.10);
-    border: 1px solid rgba(255, 255, 255, 0.22);
+    background: #f8fafc;
+    border: 1.5px solid #e2e8f0;
     border-radius: 8px;
     padding: 0 14px;
-    color: #e0e7ff;
+    color: #475569;
     font-weight: 600;
     font-size: 13px;
 }
 #poHeaderRefreshBtn:hover {
-    background: rgba(255, 255, 255, 0.18);
-    border-color: rgba(255, 255, 255, 0.40);
+    background: #f1f5f9;
+    border-color: #94a3b8;
+    color: #1e293b;
 }
 #poHeaderRefreshBtn:pressed {
-    background: rgba(255, 255, 255, 0.08);
+    background: #e2e8f0;
 }
 #poHeaderRefreshBtn:disabled {
-    color: rgba(199, 210, 254, 0.40);
-    border-color: rgba(255, 255, 255, 0.10);
+    color: #cbd5e1;
+    border-color: #e8ecf5;
 }
 
-/* New PO button (white accent on dark header) */
+/* New PO button — indigo accent */
 #poHeaderNewBtn {
-    background: #ffffff;
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #6366f1, stop:1 #4338ca);
     border: none;
     border-radius: 8px;
     padding: 0 18px;
-    color: #312e81;
+    color: #ffffff;
     font-weight: 800;
     font-size: 13px;
 }
 #poHeaderNewBtn:hover {
-    background: #e0e7ff;
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #818cf8, stop:1 #6366f1);
 }
 #poHeaderNewBtn:pressed {
-    background: #c7d2fe;
+    background: #4338ca;
 }
 
 /* ── Filter pills ────────────────────────────────────────────────── */
 #poFilterPill {
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: #f1f5f9;
+    border: 1.5px solid #e2e8f0;
     border-radius: 15px;
     padding: 0 14px;
-    color: rgba(224, 231, 255, 0.80);
+    color: #64748b;
     font-size: 12px;
     font-weight: 600;
 }
 #poFilterPill:hover {
-    background: rgba(255, 255, 255, 0.16);
-    color: #ffffff;
-    border-color: rgba(255, 255, 255, 0.35);
+    background: #e2e8f0;
+    color: #1e293b;
+    border-color: #94a3b8;
 }
 #poFilterPill:checked {
-    background: #ffffff;
-    border-color: #ffffff;
-    color: #312e81;
+    background: #6366f1;
+    border-color: #6366f1;
+    color: #ffffff;
     font-weight: 800;
 }
 
