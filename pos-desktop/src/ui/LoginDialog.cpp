@@ -4,7 +4,7 @@
 #include "core/Config.h"
 
 #include <QComboBox>
-#include <QFormLayout>
+#include <QGraphicsDropShadowEffect>
 #include <QHBoxLayout>
 #include <QJsonArray>
 #include <QLabel>
@@ -21,39 +21,142 @@ LoginDialog::LoginDialog(ApiClient *api, QWidget *parent)
 {
     setWindowTitle(tr("Zeebroo POS — Sign in"));
     setModal(true);
-    resize(440, 320);
+    setFixedSize(460, 600);
+    setObjectName(QStringLiteral("loginDialog"));
 
     Config::instance().load();
 
-    auto *layout = new QVBoxLayout(this);
-    auto *heading = new QLabel(tr("<h2>Zeebroo POS Desktop</h2><p>Connect to your Laravel POS API.</p>"), this);
-    heading->setWordWrap(true);
-    layout->addWidget(heading);
+    auto *root = new QVBoxLayout(this);
+    root->setContentsMargins(0, 0, 0, 0);
+    root->setSpacing(0);
 
-    auto *form = new QFormLayout();
-    m_apiUrl = new QLineEdit(Config::instance().apiBaseUrl(), this);
-    m_email = new QLineEdit(this);
+    // ── Brand header ──────────────────────────────────────────────
+    auto *brandArea = new QWidget(this);
+    brandArea->setObjectName(QStringLiteral("loginBrand"));
+    brandArea->setFixedHeight(148);
+
+    auto *brandLayout = new QVBoxLayout(brandArea);
+    brandLayout->setContentsMargins(32, 28, 32, 20);
+    brandLayout->setSpacing(10);
+    brandLayout->setAlignment(Qt::AlignCenter);
+
+    auto *logoLabel = new QLabel(brandArea);
+    logoLabel->setObjectName(QStringLiteral("loginLogo"));
+    QPixmap logo(QStringLiteral(":/logo.png"));
+    if (!logo.isNull()) {
+        logoLabel->setPixmap(logo.scaled(200, 68, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    } else {
+        logoLabel->setText(QStringLiteral("ZEEBROO POS"));
+        logoLabel->setObjectName(QStringLiteral("loginLogoFallback"));
+    }
+    logoLabel->setAlignment(Qt::AlignCenter);
+    brandLayout->addWidget(logoLabel);
+
+    auto *tagline = new QLabel(tr("Point of Sale Desktop"), brandArea);
+    tagline->setObjectName(QStringLiteral("loginTagline"));
+    tagline->setAlignment(Qt::AlignCenter);
+    brandLayout->addWidget(tagline);
+
+    root->addWidget(brandArea);
+
+    // ── Divider ───────────────────────────────────────────────────
+    auto *divider = new QWidget(this);
+    divider->setObjectName(QStringLiteral("loginDivider"));
+    divider->setFixedHeight(1);
+    root->addWidget(divider);
+
+    // ── Form card ─────────────────────────────────────────────────
+    auto *formCard = new QWidget(this);
+    formCard->setObjectName(QStringLiteral("loginCard"));
+    formCard->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+    auto *formLayout = new QVBoxLayout(formCard);
+    formLayout->setContentsMargins(36, 28, 36, 32);
+    formLayout->setSpacing(0);
+
+    // Title + sub
+    auto *titleLabel = new QLabel(tr("Sign in to your account"), formCard);
+    titleLabel->setObjectName(QStringLiteral("loginTitle"));
+    titleLabel->setAlignment(Qt::AlignLeft);
+    formLayout->addWidget(titleLabel);
+
+    formLayout->addSpacing(4);
+
+    auto *subLabel = new QLabel(tr("Enter your credentials to connect to the POS server"), formCard);
+    subLabel->setObjectName(QStringLiteral("loginSub"));
+    subLabel->setWordWrap(true);
+    formLayout->addWidget(subLabel);
+
+    formLayout->addSpacing(24);
+
+    // API URL
+    auto *apiLabel = new QLabel(tr("API base URL"), formCard);
+    apiLabel->setObjectName(QStringLiteral("loginFieldLabel"));
+    formLayout->addWidget(apiLabel);
+    formLayout->addSpacing(5);
+
+    m_apiUrl = new QLineEdit(Config::instance().apiBaseUrl(), formCard);
+    m_apiUrl->setObjectName(QStringLiteral("loginField"));
+    m_apiUrl->setPlaceholderText(QStringLiteral("http://localhost:8000/api/v1/pos"));
+    m_apiUrl->setFixedHeight(40);
+    formLayout->addWidget(m_apiUrl);
+    formLayout->addSpacing(14);
+
+    // Email
+    auto *emailLabel = new QLabel(tr("Email address"), formCard);
+    emailLabel->setObjectName(QStringLiteral("loginFieldLabel"));
+    formLayout->addWidget(emailLabel);
+    formLayout->addSpacing(5);
+
+    m_email = new QLineEdit(formCard);
+    m_email->setObjectName(QStringLiteral("loginField"));
     m_email->setPlaceholderText(tr("you@example.com"));
-    m_password = new QLineEdit(this);
+    m_email->setFixedHeight(40);
+    formLayout->addWidget(m_email);
+    formLayout->addSpacing(14);
+
+    // Password
+    auto *passLabel = new QLabel(tr("Password"), formCard);
+    passLabel->setObjectName(QStringLiteral("loginFieldLabel"));
+    formLayout->addWidget(passLabel);
+    formLayout->addSpacing(5);
+
+    m_password = new QLineEdit(formCard);
+    m_password->setObjectName(QStringLiteral("loginField"));
     m_password->setEchoMode(QLineEdit::Password);
-    m_business = new QComboBox(this);
+    m_password->setPlaceholderText(QStringLiteral("••••••••"));
+    m_password->setFixedHeight(40);
+    formLayout->addWidget(m_password);
+    formLayout->addSpacing(14);
+
+    // Business
+    auto *bizLabel = new QLabel(tr("Business"), formCard);
+    bizLabel->setObjectName(QStringLiteral("loginFieldLabel"));
+    formLayout->addWidget(bizLabel);
+    formLayout->addSpacing(5);
+
+    m_business = new QComboBox(formCard);
+    m_business->setObjectName(QStringLiteral("loginCombo"));
     m_business->setEnabled(false);
+    m_business->setFixedHeight(40);
+    m_business->addItem(tr("— sign in to load businesses —"));
+    formLayout->addWidget(m_business);
 
-    form->addRow(tr("API base URL"), m_apiUrl);
-    form->addRow(tr("Email"), m_email);
-    form->addRow(tr("Password"), m_password);
-    form->addRow(tr("Business"), m_business);
-    layout->addLayout(form);
+    formLayout->addStretch();
+    formLayout->addSpacing(8);
 
-    auto *row = new QHBoxLayout();
-    auto *loginBtn = new QPushButton(tr("Sign in"), this);
+    // Sign-in button
+    auto *loginBtn = new QPushButton(tr("Sign in"), formCard);
+    loginBtn->setObjectName(QStringLiteral("loginBtn"));
     loginBtn->setDefault(true);
-    loginBtn->setObjectName(QStringLiteral("primaryButton"));
-    row->addStretch();
-    row->addWidget(loginBtn);
-    layout->addLayout(row);
+    loginBtn->setFixedHeight(44);
+    loginBtn->setCursor(Qt::PointingHandCursor);
+    formLayout->addWidget(loginBtn);
+
+    root->addWidget(formCard);
 
     connect(loginBtn, &QPushButton::clicked, this, &LoginDialog::onLoginClicked);
+    connect(m_password, &QLineEdit::returnPressed, loginBtn, &QPushButton::click);
 }
 
 void LoginDialog::loadBusinesses()
@@ -73,8 +176,8 @@ void LoginDialog::loadBusinesses()
                 m_businessId = m_business->currentData().toInt();
                 accept();
             } else if (m_business->count() > 1) {
-                QMessageBox::information(this, tr("Sign in"),
-                                       tr("Select your business and click Sign in again."));
+                QMessageBox::information(this, tr("Select business"),
+                                         tr("You have multiple businesses — select one and click Sign in again."));
             }
         },
         [this](const QString &msg, int) {
@@ -87,7 +190,7 @@ void LoginDialog::onLoginClicked()
     if (!m_token.isEmpty()) {
         m_businessId = m_business->currentData().toInt();
         if (m_businessId <= 0) {
-            QMessageBox::warning(this, tr("Sign in"), tr("Select a business."));
+            QMessageBox::warning(this, tr("Sign in"), tr("Please select a business."));
             return;
         }
         accept();
@@ -97,10 +200,10 @@ void LoginDialog::onLoginClicked()
     Config::instance().setApiBaseUrl(m_apiUrl->text());
     Config::instance().save();
 
-    const QString email = m_email->text().trimmed();
+    const QString email    = m_email->text().trimmed();
     const QString password = m_password->text();
     if (email.isEmpty() || password.isEmpty()) {
-        QMessageBox::warning(this, tr("Sign in"), tr("Enter email and password."));
+        QMessageBox::warning(this, tr("Sign in"), tr("Please enter your email and password."));
         return;
     }
 

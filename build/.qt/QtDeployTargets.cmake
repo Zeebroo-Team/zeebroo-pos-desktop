@@ -1,0 +1,2 @@
+set(__QT_DEPLOY_TARGET_ZeebrooPosDesktop_FILE /Users/mac/Documents/Projects/socibiz/pos-desktop/build/ZeebrooPosDesktop.app/Contents/MacOS/ZeebrooPosDesktop)
+set(__QT_DEPLOY_TARGET_ZeebrooPosDesktop_TYPE EXECUTABLE)

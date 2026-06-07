@@ -123,6 +123,58 @@ BootstrapData BootstrapData::fromJson(const QJsonObject &data)
     return b;
 }
 
+SaleListItem SaleListItem::fromJson(const QJsonObject &o)
+{
+    SaleListItem s;
+    s.id            = o.value(QStringLiteral("id")).toInt();
+    s.saleNumber    = o.value(QStringLiteral("sale_number")).toString();
+    s.status        = o.value(QStringLiteral("status")).toString();
+    s.paymentMethod = o.value(QStringLiteral("payment_method")).toString();
+    s.total         = o.value(QStringLiteral("total")).toDouble();
+    s.soldAt        = o.value(QStringLiteral("sold_at")).toString();
+    return s;
+}
+
+double SaleLineItem::returnableQty() const
+{
+    return std::max(0.0, quantity - returnedQuantity);
+}
+
+SaleLineItem SaleLineItem::fromJson(const QJsonObject &o)
+{
+    SaleLineItem i;
+    i.id               = o.value(QStringLiteral("id")).toInt();
+    i.productName      = o.value(QStringLiteral("product_name")).toString();
+    i.sku              = o.value(QStringLiteral("sku")).toString();
+    i.quantity         = o.value(QStringLiteral("quantity")).toDouble();
+    i.unitSellPrice    = o.value(QStringLiteral("unit_sell_price")).toDouble();
+    i.lineTotal        = o.value(QStringLiteral("line_total")).toDouble();
+    i.returnedQuantity = o.value(QStringLiteral("returned_quantity")).toDouble();
+    return i;
+}
+
+bool SaleDetail::isVoid() const
+{
+    return status == QLatin1String("void");
+}
+
+SaleDetail SaleDetail::fromJson(const QJsonObject &o)
+{
+    SaleDetail d;
+    d.id            = o.value(QStringLiteral("id")).toInt();
+    d.saleNumber    = o.value(QStringLiteral("sale_number")).toString();
+    d.status        = o.value(QStringLiteral("status")).toString();
+    d.subtotal      = o.value(QStringLiteral("subtotal")).toDouble();
+    d.total         = o.value(QStringLiteral("total")).toDouble();
+    d.paymentMethod = o.value(QStringLiteral("payment_method")).toString();
+    d.soldAt        = o.value(QStringLiteral("sold_at")).toString();
+    const QJsonArray items = o.value(QStringLiteral("items")).toArray();
+    for (const QJsonValue &v : items) {
+        d.items.append(SaleLineItem::fromJson(v.toObject()));
+    }
+    return d;
+}
+
 QString CartLine::cartKey() const
 {
     if (layerId > 0) {

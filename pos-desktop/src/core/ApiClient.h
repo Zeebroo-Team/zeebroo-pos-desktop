@@ -27,6 +27,10 @@ public:
     void bootstrap(const QString &search, int categoryId, SuccessFn onOk, ErrorFn onErr);
     void productBySku(const QString &sku, SuccessFn onOk, ErrorFn onErr);
     void checkout(const QJsonObject &body, SuccessFn onOk, ErrorFn onErr);
+    void createProduct(const QJsonObject &body, SuccessFn onOk, ErrorFn onErr);
+    void fetchSales(const QString &query, SuccessFn onOk, ErrorFn onErr);
+    void fetchSale(int saleId, SuccessFn onOk, ErrorFn onErr);
+    void processReturn(int saleId, const QJsonObject &body, SuccessFn onOk, ErrorFn onErr);
 
 signals:
     void unauthorized();

@@ -161,4 +161,34 @@ void ApiClient::checkout(const QJsonObject &body, SuccessFn onOk, ErrorFn onErr)
     sendJson(req, QJsonDocument(body).toJson(), QStringLiteral("POST"), onOk, onErr);
 }
 
+void ApiClient::createProduct(const QJsonObject &body, SuccessFn onOk, ErrorFn onErr)
+{
+    QNetworkRequest req = buildRequest(QStringLiteral("/online/products"));
+    sendJson(req, QJsonDocument(body).toJson(), QStringLiteral("POST"), onOk, onErr);
+}
+
+void ApiClient::fetchSales(const QString &query, SuccessFn onOk, ErrorFn onErr)
+{
+    QUrlQuery q;
+    if (!query.trimmed().isEmpty()) {
+        q.addQueryItem(QStringLiteral("q"), query.trimmed());
+    }
+    q.addQueryItem(QStringLiteral("channel"), QStringLiteral("online"));
+    QNetworkRequest req = buildRequest(QStringLiteral("/sales"), &q);
+    sendGet(req, onOk, onErr);
+}
+
+void ApiClient::fetchSale(int saleId, SuccessFn onOk, ErrorFn onErr)
+{
+    QNetworkRequest req = buildRequest(QStringLiteral("/sales/") + QString::number(saleId));
+    sendGet(req, onOk, onErr);
+}
+
+void ApiClient::processReturn(int saleId, const QJsonObject &body, SuccessFn onOk, ErrorFn onErr)
+{
+    const QString path = QStringLiteral("/sales/") + QString::number(saleId) + QStringLiteral("/return");
+    QNetworkRequest req = buildRequest(path);
+    sendJson(req, QJsonDocument(body).toJson(), QStringLiteral("POST"), onOk, onErr);
+}
+
 } // namespace pos

@@ -17,7 +17,6 @@ class QButtonGroup;
 class QDoubleSpinBox;
 class QGridLayout;
 class QHBoxLayout;
-class QTextEdit;
 class QVBoxLayout;
 
 namespace pos {
@@ -37,12 +36,10 @@ private slots:
     void onSearchTriggered();
     void onSkuAdd();
     void onClearCart();
-    void onCompleteSale();
+    void onCheckout();
+    void onReturn();
+    void onAddProduct();
     void onCartChanged();
-    void onPaymentMethodChanged(int id);
-    void onNumpadKey();
-    void onExactDue();
-    void onClearTendered();
 
 private:
     void buildUi();
@@ -51,12 +48,10 @@ private:
     void rebuildCart();
     void updateSalePanelChrome();
     void updateTotals();
-    void updatePaymentUi();
     void addProductToCart(const ProductCard &product);
     QPushButton *makeCategoryPill(const QString &text, int id, bool checked);
     void rebuildCategoryBar();
     QString money(double value) const;
-    int defaultAccountId() const;
 
     ApiClient *m_api = nullptr;
     QNetworkAccessManager m_imageNam;
@@ -67,7 +62,6 @@ private:
 
     int m_activeCategoryId = 0;
     int m_lastProductGridCols = 0;
-    QString m_paymentMethod = QStringLiteral("cash");
     double m_discountPercent = 0.0;
 
     QLabel *m_brandLabel = nullptr;
@@ -92,19 +86,13 @@ private:
     QVBoxLayout *m_cartLayout = nullptr;
     QWidget *m_cartEmpty = nullptr;
     QPushButton *m_clearCartBtn = nullptr;
+    QPushButton *m_returnBtn = nullptr;
+    QPushButton *m_checkoutBtn = nullptr;
     QLabel *m_subtotalVal = nullptr;
     QLabel *m_discountVal = nullptr;
     QLabel *m_totalVal = nullptr;
     QDoubleSpinBox *m_discountSpin = nullptr;
     QWidget *m_discountRow = nullptr;
-    QButtonGroup *m_payGroup = nullptr;
-    QWidget *m_cashPanel = nullptr;
-    QLineEdit *m_tenderedEdit = nullptr;
-    QLabel *m_dueLabel = nullptr;
-    QLabel *m_changeLabel = nullptr;
-    QLabel *m_cashHint = nullptr;
-    QTextEdit *m_notesEdit = nullptr;
-    QPushButton *m_completeBtn = nullptr;
     QButtonGroup *m_categoryGroup = nullptr;
 };
 

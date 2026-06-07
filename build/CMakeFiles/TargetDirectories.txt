@@ -1,0 +1,9 @@
+/Users/mac/Documents/Projects/socibiz/pos-desktop/build/CMakeFiles/ZeebrooPosDesktop.dir
+/Users/mac/Documents/Projects/socibiz/pos-desktop/build/CMakeFiles/edit_cache.dir
+/Users/mac/Documents/Projects/socibiz/pos-desktop/build/CMakeFiles/rebuild_cache.dir
+/Users/mac/Documents/Projects/socibiz/pos-desktop/build/CMakeFiles/list_install_components.dir
+/Users/mac/Documents/Projects/socibiz/pos-desktop/build/CMakeFiles/install.dir
+/Users/mac/Documents/Projects/socibiz/pos-desktop/build/CMakeFiles/install/local.dir
+/Users/mac/Documents/Projects/socibiz/pos-desktop/build/CMakeFiles/install/strip.dir
+/Users/mac/Documents/Projects/socibiz/pos-desktop/build/CMakeFiles/ZeebrooPosDesktop_autogen_timestamp_deps.dir
+/Users/mac/Documents/Projects/socibiz/pos-desktop/build/CMakeFiles/ZeebrooPosDesktop_autogen.dir

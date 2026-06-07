@@ -1,27 +1,73 @@
-/* Clean white POS theme */
-QMainWindow, QWidget {
-    background: #ffffff;
-    color: #1f2937;
-    font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+/* ═══════════════════════════════════════════════════════════════
+   Zeebroo POS  ·  Professional Theme
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Base reset ─────────────────────────────────────────────── */
+QMainWindow, QDialog {
+    background: #f0f2f7;
+    color: #0f172a;
+    font-family: "Inter", "SF Pro Display", "Segoe UI", system-ui, sans-serif;
     font-size: 13px;
 }
 
-QScrollArea {
+QWidget {
     background: #ffffff;
+    color: #0f172a;
+    font-family: "Inter", "SF Pro Display", "Segoe UI", system-ui, sans-serif;
+    font-size: 13px;
+}
+
+/* App background — makes panels look like floating cards */
+#centralWidget {
+    background: #eceef4;
+}
+
+QScrollArea {
+    background: transparent;
     border: none;
 }
 
 QScrollArea > QWidget > QWidget {
-    background: #ffffff;
+    background: transparent;
 }
 
-/* —— Top bar —— */
+/* ── Global scrollbars ──────────────────────────────────────── */
+QScrollBar:vertical {
+    background: transparent;
+    width: 5px;
+    margin: 0;
+    border: none;
+}
+
+QScrollBar::handle:vertical {
+    background: #cbd5e1;
+    border-radius: 3px;
+    min-height: 28px;
+}
+
+QScrollBar::handle:vertical:hover {
+    background: #94a3b8;
+}
+
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical {
+    height: 0;
+}
+
+QScrollBar::add-page:vertical,
+QScrollBar::sub-page:vertical {
+    background: transparent;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Top bar
+   ═══════════════════════════════════════════════════════════════ */
 #topBar {
     background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    min-height: 56px;
-    max-height: 56px;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    min-height: 58px;
+    max-height: 58px;
 }
 
 #brandBlock {
@@ -33,25 +79,28 @@ QScrollArea > QWidget > QWidget {
 
 #brandIcon {
     font-size: 15px;
-    font-weight: 800;
+    font-weight: 900;
     color: #6366f1;
-    min-width: 36px;
-    max-width: 36px;
-    min-height: 36px;
-    max-height: 36px;
+    min-width: 38px;
+    max-width: 38px;
+    min-height: 38px;
+    max-height: 38px;
     qproperty-alignment: AlignCenter;
-    background: rgba(99, 102, 241, 0.1);
-    border: 1px solid rgba(99, 102, 241, 0.22);
-    border-radius: 10px;
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+        stop:0 rgba(99, 102, 241, 0.18),
+        stop:1 rgba(139, 92, 246, 0.18));
+    border: 1px solid rgba(99, 102, 241, 0.28);
+    border-radius: 11px;
 }
 
 #brandTitle {
     font-size: 14px;
     font-weight: 800;
-    letter-spacing: -0.3px;
-    color: #111827;
+    letter-spacing: -0.5px;
+    color: #0f172a;
     padding: 0;
     margin: 0;
+    background: transparent;
 }
 
 #statsBlock {
@@ -60,18 +109,21 @@ QScrollArea > QWidget > QWidget {
 }
 
 #statPill {
-    padding: 6px 11px;
-    border: 1px solid #e5e7eb;
-    border-radius: 9px;
-    background: #ffffff;
-    min-height: 20px;
+    padding: 5px 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    background: #f8fafc;
+    min-height: 28px;
+    font-size: 11px;
+    color: #64748b;
+    font-weight: 600;
 }
 
 #topBarSep {
-    color: #e5e7eb;
-    background: #e5e7eb;
+    color: #e2e8f0;
+    background: #e2e8f0;
     max-width: 1px;
-    margin: 10px 0;
+    margin: 12px 0;
 }
 
 #topFieldsBlock {
@@ -80,9 +132,9 @@ QScrollArea > QWidget > QWidget {
 }
 
 #inputGroup {
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 10px;
+    background: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 11px;
     min-height: 40px;
 }
 
@@ -97,8 +149,8 @@ QScrollArea > QWidget > QWidget {
     border-radius: 10px 0 0 10px;
     padding: 8px 12px;
     font-size: 13px;
-    color: #111827;
-    selection-background-color: #6366f1;
+    color: #0f172a;
+    selection-background-color: rgba(99, 102, 241, 0.3);
 }
 
 #topBarInput:focus {
@@ -107,12 +159,12 @@ QScrollArea > QWidget > QWidget {
 }
 
 #inputGroupBtn {
-    background: #f9fafb;
+    background: transparent;
     border: none;
-    border-left: 1px solid #e5e7eb;
+    border-left: 1.5px solid #e2e8f0;
     border-radius: 0 9px 9px 0;
-    color: #6b7280;
-    font-size: 17px;
+    color: #94a3b8;
+    font-size: 16px;
     font-weight: 700;
     padding: 0;
     min-width: 38px;
@@ -120,12 +172,12 @@ QScrollArea > QWidget > QWidget {
 }
 
 #inputGroupBtn:hover {
-    background: #f3f4f6;
-    color: #111827;
+    background: rgba(99, 102, 241, 0.07);
+    color: #6366f1;
 }
 
 #inputGroupBtn:pressed {
-    background: #e5e7eb;
+    background: rgba(99, 102, 241, 0.13);
 }
 
 #topActionsBlock {
@@ -134,59 +186,72 @@ QScrollArea > QWidget > QWidget {
 }
 
 #topActionBtn {
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 9px;
-    color: #6b7280;
+    background: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 11px;
+    color: #64748b;
     font-size: 16px;
     font-weight: 700;
     padding: 0;
 }
 
 #topActionBtn:hover {
-    border-color: #d1d5db;
-    background: #f9fafb;
-    color: #111827;
+    border-color: #818cf8;
+    background: rgba(99, 102, 241, 0.07);
+    color: #6366f1;
 }
 
 #topActionBtn:pressed {
-    background: #f3f4f6;
+    background: rgba(99, 102, 241, 0.13);
+    border-color: #6366f1;
 }
 
-/* —— Panels —— */
+/* ═══════════════════════════════════════════════════════════════
+   Panels — shared card style
+   ═══════════════════════════════════════════════════════════════ */
 #panel {
     background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 18px;
 }
 
 QLineEdit, QTextEdit, QDoubleSpinBox {
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    padding: 8px 10px;
-    color: #111827;
-    selection-background-color: #6366f1;
+    background: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 8px 11px;
+    color: #0f172a;
+    selection-background-color: rgba(99, 102, 241, 0.28);
 }
 
 QLineEdit:focus, QTextEdit:focus, QDoubleSpinBox:focus {
     border-color: #6366f1;
+    background: #ffffff;
+}
+
+QLineEdit:hover, QTextEdit:hover, QDoubleSpinBox:hover {
+    border-color: #c7d2fe;
+    background: #ffffff;
 }
 
 #panelHeader {
-    padding: 10px 12px;
-    font-weight: 700;
+    padding: 12px 16px;
+    font-weight: 800;
     font-size: 13px;
-    border-bottom: 1px solid #e5e7eb;
+    letter-spacing: -0.3px;
+    border-bottom: 1px solid #e2e8f0;
     background: #ffffff;
-    color: #111827;
+    color: #0f172a;
+    border-radius: 17px 17px 0 0;
 }
 
-/* —— Category bar —— */
+/* ═══════════════════════════════════════════════════════════════
+   Category bar
+   ═══════════════════════════════════════════════════════════════ */
 #categoryBar {
     background: #ffffff;
     border: none;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid #f1f5f9;
 }
 
 #categoryScroll {
@@ -195,19 +260,19 @@ QLineEdit:focus, QTextEdit:focus, QDoubleSpinBox:focus {
 }
 
 #categoryScroll QScrollBar:horizontal {
-    height: 6px;
-    margin: 0 12px 4px 12px;
+    height: 3px;
+    margin: 0 16px 2px 16px;
     background: transparent;
 }
 
 #categoryScroll QScrollBar::handle:horizontal {
-    background: #d1d5db;
-    border-radius: 3px;
+    background: #cbd5e1;
+    border-radius: 2px;
     min-width: 32px;
 }
 
 #categoryScroll QScrollBar::handle:horizontal:hover {
-    background: #9ca3af;
+    background: #94a3b8;
 }
 
 #categoryScroll QScrollBar::add-line:horizontal,
@@ -223,138 +288,163 @@ QLineEdit:focus, QTextEdit:focus, QDoubleSpinBox:focus {
 #categoryPill, #categoryPillAll {
     padding: 0 16px;
     border-radius: 999px;
-    border: 1px solid #e5e7eb;
+    border: 1.5px solid #e2e8f0;
     background: #ffffff;
-    color: #4b5563;
+    color: #64748b;
     font-weight: 600;
     font-size: 11px;
+    letter-spacing: 0.1px;
 }
 
 #categoryPillAll {
-    border-color: #d1d5db;
-    background: #f9fafb;
-    color: #374151;
+    border-color: #e2e8f0;
+    background: #f8fafc;
+    color: #475569;
     font-weight: 700;
 }
 
 #categoryPill:hover, #categoryPillAll:hover {
     border-color: #a5b4fc;
-    background: #f5f7ff;
-    color: #111827;
+    background: rgba(99, 102, 241, 0.06);
+    color: #4338ca;
 }
 
 #categoryPill:checked, #categoryPillAll:checked {
-    border-color: #6366f1;
-    background: #6366f1;
+    border-color: transparent;
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0 #6366f1, stop:1 #818cf8);
     color: #ffffff;
+    font-weight: 700;
 }
 
 #categoryPill:checked:hover, #categoryPillAll:checked:hover {
-    border-color: #4f46e5;
-    background: #4f46e5;
-    color: #ffffff;
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0 #4f46e5, stop:1 #6366f1);
 }
 
 #categoryPill:pressed, #categoryPillAll:pressed {
-    background: #4f46e5;
-    border-color: #4f46e5;
+    background: #4338ca;
+    border-color: transparent;
     color: #ffffff;
 }
 
+/* ═══════════════════════════════════════════════════════════════
+   Product cards
+   ═══════════════════════════════════════════════════════════════ */
 #productCard {
     background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 11px;
+    border: 1.5px solid #e8ecf3;
+    border-radius: 16px;
 }
 
 #productCard:hover {
-    border-color: #6366f1;
-    background: #fafafa;
+    border-color: #a5b4fc;
+    background: #fbfbff;
 }
 
 #productCard:disabled {
-    opacity: 0.55;
-    background: #f9fafb;
+    opacity: 0.48;
+    background: #f8fafc;
+    border-color: #e2e8f0;
 }
 
 #productImage {
-    background: #f3f4f6;
-    border-radius: 8px;
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+        stop:0 #eef2ff, stop:1 #f5f3ff);
+    border-radius: 11px;
     border: none;
 }
 
 #productPlaceholder {
     font-size: 28px;
-    background: #f3f4f6;
-    border-radius: 8px;
-    color: #9ca3af;
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+        stop:0 #eef2ff, stop:1 #f5f3ff);
+    border-radius: 11px;
+    color: #a5b4fc;
     border: none;
 }
 
 #catalogEmpty {
-    color: #6b7280;
+    color: #94a3b8;
     font-size: 14px;
-    padding: 40px 24px;
+    padding: 60px 24px;
+    background: transparent;
 }
 
 #productName {
     font-weight: 700;
-    font-size: 13px;
-    color: #111827;
+    font-size: 12px;
+    color: #0f172a;
+    background: transparent;
+    line-height: 1.35;
+    letter-spacing: -0.1px;
 }
 
 #productMeta {
-    color: #6b7280;
+    color: #94a3b8;
     font-size: 10px;
+    background: transparent;
+    font-weight: 500;
+    letter-spacing: 0.1px;
 }
 
 #productPrice {
     font-weight: 800;
     font-size: 14px;
-    color: #111827;
+    color: #0f172a;
+    background: transparent;
+    letter-spacing: -0.4px;
 }
 
-/* —— Current sale panel —— */
+/* ═══════════════════════════════════════════════════════════════
+   Current sale panel (left)
+   ═══════════════════════════════════════════════════════════════ */
 #salePanel {
     background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 18px;
 }
 
 #salePanelHeader {
     background: #ffffff;
     border: none;
-    border-bottom: 1px solid #e5e7eb;
-    border-radius: 12px 12px 0 0;
+    border-bottom: 1px solid #f1f5f9;
+    border-radius: 17px 17px 0 0;
+    min-height: 64px;
 }
 
 #salePanelTitle {
     font-size: 15px;
     font-weight: 800;
-    color: #111827;
-    letter-spacing: -0.3px;
+    color: #0f172a;
+    letter-spacing: -0.5px;
+    background: transparent;
 }
 
 #saleItemBadge {
     font-size: 11px;
     font-weight: 600;
-    color: #6b7280;
+    color: #94a3b8;
+    background: transparent;
+    letter-spacing: 0.1px;
 }
 
 #saleHeaderSubtotal {
-    font-size: 18px;
+    font-size: 22px;
     font-weight: 800;
-    color: #111827;
-    min-width: 96px;
+    color: #0f172a;
+    min-width: 100px;
+    background: transparent;
+    letter-spacing: -0.6px;
 }
 
 #cartScroll {
-    background: #f9fafb;
+    background: #f8fafc;
     border: none;
 }
 
 #cartContainer {
-    background: #f9fafb;
+    background: #f8fafc;
 }
 
 #cartEmpty {
@@ -363,310 +453,1041 @@ QLineEdit:focus, QTextEdit:focus, QDoubleSpinBox:focus {
 }
 
 #cartEmptyIcon {
-    font-size: 36px;
-    padding-bottom: 4px;
+    font-size: 44px;
+    padding-bottom: 6px;
+    background: transparent;
 }
 
 #cartEmptyTitle {
     font-size: 15px;
     font-weight: 700;
-    color: #374151;
+    color: #334155;
+    background: transparent;
+    letter-spacing: -0.3px;
 }
 
 #cartEmptyHint {
     font-size: 12px;
-    color: #9ca3af;
-    line-height: 1.45;
+    color: #94a3b8;
+    line-height: 1.5;
     max-width: 220px;
+    background: transparent;
 }
 
 #cartLine {
     background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
+    border: 1px solid #eef2f7;
+    border-radius: 14px;
 }
 
 #cartLine:hover {
-    border-color: #d1d5db;
+    border-color: #dde3ef;
 }
 
 #cartLineName {
-    color: #111827;
+    color: #0f172a;
+    font-weight: 600;
+    background: transparent;
+    font-size: 13px;
+    letter-spacing: -0.2px;
 }
 
 #cartSub {
-    color: #6b7280;
+    color: #94a3b8;
     font-size: 11px;
+    background: transparent;
+    font-weight: 500;
 }
 
 #cartLayerChip {
-    background: #f3f4f6;
-    border: 1px solid #e5e7eb;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
     border-radius: 6px;
-    padding: 5px 8px;
-    color: #4b5563;
+    padding: 4px 8px;
+    color: #64748b;
     font-size: 10px;
-    font-weight: 600;
+    font-weight: 700;
+    letter-spacing: 0.1px;
 }
 
 #cartQtyBtn {
     background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    color: #374151;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 9px;
+    color: #475569;
     font-size: 16px;
     font-weight: 700;
     padding: 0;
 }
 
 #cartQtyBtn:hover {
-    border-color: #6366f1;
-    background: #f5f7ff;
-    color: #111827;
+    border-color: #818cf8;
+    background: rgba(99, 102, 241, 0.07);
+    color: #4338ca;
 }
 
 #cartQtyBtn:pressed {
-    background: #eef2ff;
+    background: rgba(99, 102, 241, 0.13);
+    border-color: #6366f1;
 }
 
 #cartQty {
     min-height: 32px;
     max-height: 32px;
-    padding: 4px 6px;
+    padding: 4px 8px;
     font-size: 13px;
-    font-weight: 700;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    background: #ffffff;
-    color: #111827;
+    font-weight: 800;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 9px;
+    background: #f8fafc;
+    color: #0f172a;
+    letter-spacing: -0.2px;
 }
 
 #cartQty:focus {
     border-color: #6366f1;
+    background: #ffffff;
 }
 
 #cartLineTotal {
-    color: #111827;
+    color: #0f172a;
+    font-weight: 800;
     min-width: 80px;
+    background: transparent;
+    font-size: 13px;
+    letter-spacing: -0.3px;
 }
 
 #cartRemoveBtn {
-    padding: 6px 12px;
+    padding: 4px 11px;
     font-size: 11px;
     font-weight: 700;
     border-radius: 8px;
-    border: 1px solid rgba(220, 38, 38, 0.3);
-    background: #ffffff;
-    color: #dc2626;
+    border: 1.5px solid rgba(239, 68, 68, 0.22);
+    background: transparent;
+    color: #f87171;
+    letter-spacing: 0.1px;
 }
 
 #cartRemoveBtn:hover {
-    background: rgba(220, 38, 38, 0.06);
-    border-color: rgba(220, 38, 38, 0.5);
+    background: rgba(239, 68, 68, 0.07);
+    border-color: rgba(239, 68, 68, 0.4);
+    color: #ef4444;
 }
 
 #salePanelFooter {
     background: #ffffff;
     border: none;
-    border-top: 1px solid #e5e7eb;
-    border-radius: 0 0 12px 12px;
+    border-top: 1px solid #f1f5f9;
+    border-radius: 0 0 17px 17px;
 }
 
 #saleFooterItems {
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 600;
-    color: #6b7280;
+    color: #94a3b8;
+    background: transparent;
+    letter-spacing: 0.2px;
 }
 
 #saleFooterSubtotal {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 800;
-    color: #111827;
+    color: #0f172a;
+    background: transparent;
+    letter-spacing: -0.5px;
 }
 
 #saleClearBtn {
     width: 100%;
-    padding: 11px 14px;
-    font-size: 13px;
+    padding: 10px 14px;
+    font-size: 12px;
     font-weight: 700;
-    border-radius: 10px;
-    border: 1px solid rgba(220, 38, 38, 0.35);
-    background: #ffffff;
-    color: #dc2626;
+    border-radius: 11px;
+    border: 1.5px solid rgba(239, 68, 68, 0.22);
+    background: transparent;
+    color: #f87171;
+    letter-spacing: 0.1px;
 }
 
 #saleClearBtn:hover:enabled {
-    background: rgba(220, 38, 38, 0.06);
-    border-color: rgba(220, 38, 38, 0.55);
+    background: rgba(239, 68, 68, 0.07);
+    border-color: rgba(239, 68, 68, 0.38);
+    color: #ef4444;
 }
 
 #saleClearBtn:disabled {
-    opacity: 0.45;
-    color: #9ca3af;
-    border-color: #e5e7eb;
+    opacity: 0.38;
+    color: #94a3b8;
+    border-color: #e2e8f0;
 }
 
+/* ── Totals bar ─────────────────────────────────────────────── */
 #totalsBar {
-    border-top: 1px solid #e5e7eb;
-    padding: 10px 12px;
+    border-top: 1px solid #e2e8f0;
+    padding: 10px 14px;
     background: #ffffff;
 }
 
 #grandTotal {
-    font-size: 18px;
+    font-size: 22px;
     font-weight: 800;
-    color: #111827;
+    color: #0f172a;
+    letter-spacing: -0.6px;
+    background: transparent;
 }
 
+/* ═══════════════════════════════════════════════════════════════
+   Payment method buttons
+   ═══════════════════════════════════════════════════════════════ */
 #payMethod {
     padding: 9px 8px;
-    border-radius: 9px;
-    border: 1px solid #e5e7eb;
-    background: #ffffff;
-    color: #6b7280;
+    border-radius: 10px;
+    border: 1.5px solid #e2e8f0;
+    background: #f8fafc;
+    color: #64748b;
     font-weight: 700;
     font-size: 11px;
+    letter-spacing: 0.1px;
 }
 
 #payMethod:hover {
-    border-color: #d1d5db;
-    background: #f9fafb;
+    border-color: #a5b4fc;
+    background: rgba(99, 102, 241, 0.06);
+    color: #4338ca;
 }
 
 #payMethod:checked {
     border-color: #6366f1;
-    background: rgba(99, 102, 241, 0.08);
-    color: #111827;
+    background: rgba(99, 102, 241, 0.1);
+    color: #4338ca;
+    font-weight: 800;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Numpad & cash inputs
+   ═══════════════════════════════════════════════════════════════ */
+#discountInput {
+    font-size: 18px;
+    font-weight: 800;
+    background: #f8fafc;
+    color: #0f172a;
+    letter-spacing: -0.3px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 6px 10px;
+}
+
+#discountInput:focus {
+    border-color: #6366f1;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+}
+
+#discountPctLabel {
+    font-size: 15px;
+    font-weight: 700;
+    color: #64748b;
+    background: transparent;
+}
+
+#discountSaving {
+    font-size: 11px;
+    font-weight: 700;
+    color: #10b981;
+    background: transparent;
+    letter-spacing: 0.1px;
+}
+
+#discountRowValue {
+    font-size: 12px;
+    font-weight: 700;
+    color: #10b981;
+    background: transparent;
+}
+
+#checkoutMiniValue {
+    font-size: 12px;
+    font-weight: 600;
+    color: #475569;
+    background: transparent;
+}
+
+#checkoutMiniLabel {
+    font-size: 11px;
+    font-weight: 600;
+    color: #94a3b8;
+    background: transparent;
 }
 
 #tenderedInput {
-    font-size: 18px;
+    font-size: 22px;
     font-weight: 800;
+    background: #f8fafc;
+    color: #0f172a;
+    letter-spacing: -0.5px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 11px;
+    padding: 10px 14px;
+}
+
+#tenderedInput:focus {
+    border-color: #6366f1;
     background: #ffffff;
 }
 
 #changeAmount {
     font-size: 16px;
     font-weight: 800;
-    color: #059669;
+    color: #10b981;
+    background: transparent;
+    letter-spacing: -0.4px;
 }
 
 #errorHint {
-    color: #dc2626;
+    color: #f87171;
     font-size: 11px;
+    background: transparent;
+    font-weight: 600;
 }
 
 #numpadKey {
-    min-height: 40px;
+    min-height: 44px;
     font-size: 16px;
     font-weight: 700;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 11px;
     background: #ffffff;
-    color: #111827;
+    color: #0f172a;
 }
 
 #numpadKey:hover {
-    background: #f9fafb;
-    border-color: #d1d5db;
+    background: rgba(99, 102, 241, 0.06);
+    border-color: #a5b4fc;
+    color: #4338ca;
 }
 
 #numpadKey:pressed {
-    background: #f3f4f6;
+    background: rgba(99, 102, 241, 0.12);
+    border-color: #6366f1;
+    color: #4338ca;
 }
 
+/* ═══════════════════════════════════════════════════════════════
+   Complete sale & primary action buttons
+   ═══════════════════════════════════════════════════════════════ */
 #completeSale {
-    margin: 10px 12px 12px;
-    padding: 12px;
-    font-size: 15px;
+    padding: 0 28px;
+    font-size: 14px;
     font-weight: 800;
-    border-radius: 10px;
-    border: 1px solid #6366f1;
-    background: rgba(99, 102, 241, 0.12);
-    color: #111827;
+    border-radius: 12px;
+    border: none;
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #6366f1, stop:1 #4f46e5);
+    color: #ffffff;
+    letter-spacing: 0.1px;
 }
 
 #completeSale:disabled {
-    opacity: 0.5;
+    background: #e2e8f0;
+    color: #94a3b8;
 }
 
 #completeSale:hover:enabled {
-    background: rgba(99, 102, 241, 0.2);
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #5457e8, stop:1 #4338ca);
+}
+
+#completeSale:pressed:enabled {
+    background: #4338ca;
 }
 
 #dangerButton {
     margin: 8px 12px 12px;
     padding: 10px;
-    border-radius: 10px;
-    border: 1px solid rgba(220, 38, 38, 0.35);
-    background: #ffffff;
-    color: #dc2626;
+    border-radius: 11px;
+    border: 1.5px solid rgba(239, 68, 68, 0.25);
+    background: transparent;
+    color: #f87171;
     font-weight: 700;
 }
 
 #dangerButton:hover {
-    background: rgba(220, 38, 38, 0.06);
+    background: rgba(239, 68, 68, 0.07);
+    border-color: rgba(239, 68, 68, 0.45);
+    color: #ef4444;
 }
 
 #primaryButton {
-    padding: 8px 12px;
-    border-radius: 8px;
-    border: 1px solid #6366f1;
-    background: rgba(99, 102, 241, 0.12);
+    padding: 8px 14px;
+    border-radius: 10px;
+    border: 1.5px solid rgba(99, 102, 241, 0.35);
+    background: rgba(99, 102, 241, 0.08);
     font-weight: 700;
-    color: #111827;
+    color: #4338ca;
 }
 
 #primaryButton:hover {
-    background: rgba(99, 102, 241, 0.2);
+    background: rgba(99, 102, 241, 0.14);
+    border-color: #6366f1;
 }
 
-/* —— Receipt dialog —— */
+/* ═══════════════════════════════════════════════════════════════
+   Receipt dialog
+   ═══════════════════════════════════════════════════════════════ */
 #receiptDialogTitle {
     font-size: 18px;
     font-weight: 800;
-    color: #111827;
+    color: #0f172a;
+    letter-spacing: -0.5px;
+    background: transparent;
 }
 
 #receiptDialogSub, #receiptDialogHint {
     font-size: 12px;
-    color: #6b7280;
+    color: #64748b;
+    background: transparent;
 }
 
 #receiptPreview {
-    background: #f9fafb;
-    border: 1px solid #e5e7eb;
-    border-radius: 10px;
-    padding: 12px;
-    color: #111827;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 14px;
+    color: #0f172a;
 }
 
 #receiptPrintBtn {
-    padding: 10px 18px;
+    padding: 10px 22px;
     font-size: 13px;
     font-weight: 700;
-    border-radius: 10px;
-    border: 1px solid #6366f1;
-    background: #6366f1;
+    border-radius: 11px;
+    border: none;
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #6366f1, stop:1 #4f46e5);
     color: #ffffff;
 }
 
 #receiptPrintBtn:hover {
-    background: #4f46e5;
-    border-color: #4f46e5;
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #5457e8, stop:1 #4338ca);
 }
 
 #receiptCloseBtn {
-    padding: 10px 18px;
+    padding: 10px 22px;
     font-size: 13px;
     font-weight: 700;
-    border-radius: 10px;
-    border: 1px solid #e5e7eb;
-    background: #ffffff;
-    color: #374151;
+    border-radius: 11px;
+    border: 1.5px solid #e2e8f0;
+    background: #f8fafc;
+    color: #475569;
 }
 
 #receiptCloseBtn:hover {
-    background: #f9fafb;
-    border-color: #d1d5db;
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+    color: #334155;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Login dialog
+   ═══════════════════════════════════════════════════════════════ */
+#loginDialog {
+    background: #ffffff;
+}
+
+#loginBrand {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+        stop:0  #4f46e5,
+        stop:0.5 #6366f1,
+        stop:1  #7c3aed);
+}
+
+#loginLogo {
+    background: transparent;
+}
+
+#loginLogoFallback {
+    font-size: 22px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: -0.5px;
+    background: transparent;
+}
+
+#loginTagline {
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.72);
+    letter-spacing: 0.5px;
+    background: transparent;
+}
+
+#loginDivider {
+    background: #e2e8f0;
+}
+
+#loginCard {
+    background: #ffffff;
+}
+
+#loginTitle {
+    font-size: 18px;
+    font-weight: 800;
+    color: #0f172a;
+    letter-spacing: -0.5px;
+    background: transparent;
+}
+
+#loginSub {
+    font-size: 12px;
+    color: #64748b;
+    line-height: 1.5;
+    background: transparent;
+}
+
+#loginFieldLabel {
+    font-size: 11px;
+    font-weight: 700;
+    color: #475569;
+    background: transparent;
+    letter-spacing: 0.3px;
+}
+
+#loginField {
+    padding: 0 13px;
+    font-size: 13px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    background: #f8fafc;
+    color: #0f172a;
+    selection-background-color: rgba(99, 102, 241, 0.28);
+}
+
+#loginField:focus {
+    border-color: #6366f1;
+    background: #ffffff;
+}
+
+#loginField:hover {
+    border-color: #c7d2fe;
+    background: #ffffff;
+}
+
+#loginCombo {
+    padding: 0 11px;
+    font-size: 13px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    background: #f8fafc;
+    color: #0f172a;
+}
+
+#loginCombo:focus {
+    border-color: #6366f1;
+    background: #ffffff;
+}
+
+#loginCombo:disabled {
+    background: #f1f5f9;
+    color: #94a3b8;
+    border-color: #e2e8f0;
+}
+
+#loginBtn {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #6366f1,
+        stop:1 #4f46e5);
+    border: none;
+    border-radius: 11px;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+}
+
+#loginBtn:hover {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #5457e8,
+        stop:1 #4338ca);
+}
+
+#loginBtn:pressed {
+    background: #4338ca;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Checkout button  (sale panel footer CTA)
+   ═══════════════════════════════════════════════════════════════ */
+#checkoutBtn {
+    padding: 13px;
+    font-size: 14px;
+    font-weight: 800;
+    border-radius: 13px;
+    border: none;
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #6366f1,
+        stop:1 #4f46e5);
+    color: #ffffff;
+    letter-spacing: 0.2px;
+}
+
+#checkoutBtn:hover:enabled {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #5457e8,
+        stop:1 #4338ca);
+}
+
+#checkoutBtn:pressed:enabled {
+    background: #4338ca;
+}
+
+#checkoutBtn:disabled {
+    background: #e8ecf4;
+    color: #94a3b8;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Checkout dialog
+   ═══════════════════════════════════════════════════════════════ */
+#checkoutDlg {
+    background: #ffffff;
+}
+
+#checkoutSummary {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0 #4338ca,
+        stop:1 #6366f1);
+}
+
+#checkoutSummaryLabel {
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.7);
+    letter-spacing: 0.4px;
+    background: transparent;
+}
+
+#checkoutSummaryTotal {
+    font-size: 26px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: -0.7px;
+    background: transparent;
+}
+
+#checkoutDivider {
+    background: #e2e8f0;
+}
+
+#checkoutSection {
+    font-size: 10px;
+    font-weight: 700;
+    color: #94a3b8;
+    letter-spacing: 0.9px;
+    background: transparent;
+}
+
+#checkoutFooter {
+    background: #ffffff;
+}
+
+#checkoutCancelBtn {
+    padding: 0 22px;
+    border-radius: 11px;
+    border: 1.5px solid #e2e8f0;
+    background: #f8fafc;
+    color: #64748b;
+    font-weight: 700;
+    font-size: 13px;
+}
+
+#checkoutCancelBtn:hover {
+    background: #f1f5f9;
+    border-color: #c7d2fe;
+    color: #4338ca;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Keyboard shortcut hint bar  (bottom of main window)
+   ═══════════════════════════════════════════════════════════════ */
+#shortcutBar {
+    background: transparent;
+    color: #94a3b8;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.25px;
+    padding: 3px 8px 1px;
+    border-top: 1px solid #edf0f5;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Add Product  —  top-bar trigger button
+   ═══════════════════════════════════════════════════════════════ */
+#addProductActionBtn {
+    background: rgba(99, 102, 241, 0.1);
+    border: 1.5px solid rgba(99, 102, 241, 0.32);
+    border-radius: 11px;
+    color: #6366f1;
+    font-size: 20px;
+    font-weight: 700;
+    padding: 0;
+}
+
+#addProductActionBtn:hover {
+    background: rgba(99, 102, 241, 0.18);
+    border-color: #6366f1;
+    color: #4f46e5;
+}
+
+#addProductActionBtn:pressed {
+    background: rgba(99, 102, 241, 0.26);
+    border-color: #4338ca;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Add Product dialog
+   ═══════════════════════════════════════════════════════════════ */
+#addProductDlg {
+    background: #ffffff;
+}
+
+#addProductHeader {
+    background: #ffffff;
+}
+
+#addProductTitle {
+    font-size: 18px;
+    font-weight: 800;
+    color: #0f172a;
+    letter-spacing: -0.5px;
+    background: transparent;
+}
+
+#addProductSub {
+    font-size: 12px;
+    color: #64748b;
+    background: transparent;
+}
+
+#addProductError {
+    color: #dc2626;
+    font-size: 12px;
+    font-weight: 600;
+    background: rgba(220, 38, 38, 0.06);
+    border: 1px solid rgba(220, 38, 38, 0.2);
+    border-radius: 9px;
+    padding: 9px 13px;
+}
+
+#addProductBtn {
+    padding: 0 22px;
+    border-radius: 11px;
+    border: none;
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #6366f1,
+        stop:1 #4f46e5);
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.1px;
+}
+
+#addProductBtn:hover {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #5457e8,
+        stop:1 #4338ca);
+}
+
+#addProductBtn:pressed {
+    background: #4338ca;
+}
+
+#addProductBtn:disabled {
+    background: #e2e8f0;
+    color: #94a3b8;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Return Dialog
+   ═══════════════════════════════════════════════════════════════ */
+
+#returnDialog {
+    background: #f0f2f7;
+}
+
+#returnSearchRow {
+    background: #ffffff;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+}
+
+#returnSearchInput {
+    background: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+#returnSearchInput:focus {
+    border-color: #6366f1;
+    background: #ffffff;
+}
+
+#returnFindBtn {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #6366f1, stop:1 #4f46e5);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 0 18px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+#returnFindBtn:hover {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #5457e8, stop:1 #4338ca);
+}
+
+#returnFindBtn:pressed {
+    background: #4338ca;
+}
+
+#returnFindBtn:disabled {
+    background: #e2e8f0;
+    color: #94a3b8;
+}
+
+#returnErrorLbl {
+    background: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+#returnSaleInfo {
+    background: transparent;
+    color: #475569;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 0 2px;
+}
+
+#returnPanel {
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+}
+
+#returnPanelHeader {
+    background: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+#returnPanelTitle {
+    background: transparent;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: #64748b;
+    text-transform: uppercase;
+}
+
+#returnItemsScroll {
+    background: transparent;
+    border: none;
+}
+
+#returnItemsContainer {
+    background: transparent;
+}
+
+#returnItemRow {
+    background: transparent;
+    border-radius: 6px;
+}
+
+#returnItemRow:hover {
+    background: #f8fafc;
+}
+
+#returnItemName {
+    background: transparent;
+    font-size: 13px;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+#returnItemSub {
+    background: transparent;
+    font-size: 11px;
+    color: #94a3b8;
+}
+
+#returnItemQtyLbl {
+    background: transparent;
+    font-size: 12px;
+    font-weight: 700;
+    color: #64748b;
+}
+
+#returnItemTotal {
+    background: transparent;
+    font-size: 13px;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+#returnPlaceholder {
+    background: transparent;
+    color: #94a3b8;
+    font-size: 13px;
+    padding: 24px 16px;
+}
+
+#returnFieldLabel {
+    background: transparent;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: #64748b;
+    text-transform: uppercase;
+}
+
+#returnMethodBtn {
+    background: #f1f5f9;
+    color: #475569;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 0 8px;
+}
+
+#returnMethodBtn:hover {
+    background: #e8edff;
+    border-color: #a5b4fc;
+    color: #4f46e5;
+}
+
+#returnMethodBtn:checked {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #6366f1, stop:1 #4f46e5);
+    color: #ffffff;
+    border-color: #4f46e5;
+}
+
+#returnTextInput {
+    background: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-size: 13px;
+    color: #0f172a;
+}
+
+#returnTextInput:focus {
+    border-color: #6366f1;
+    background: #ffffff;
+}
+
+#returnTotalFrame {
+    background: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+}
+
+#returnTotalCaption {
+    background: transparent;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    color: #94a3b8;
+    text-transform: uppercase;
+}
+
+#returnTotalValue {
+    background: transparent;
+    font-size: 22px;
+    font-weight: 800;
+    color: #0f172a;
+}
+
+#returnFooterSep {
+    color: #e2e8f0;
+    background: #e2e8f0;
+    max-height: 1px;
+    border: none;
+}
+
+#returnCancelBtn {
+    background: #f1f5f9;
+    color: #475569;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 0 20px;
+    min-width: 80px;
+}
+
+#returnCancelBtn:hover {
+    background: #e2e8f0;
+    color: #0f172a;
+}
+
+#returnProcessBtn {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #6366f1, stop:1 #4f46e5);
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 0 28px;
+    min-width: 180px;
+}
+
+#returnProcessBtn:hover {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #5457e8, stop:1 #4338ca);
+}
+
+#returnProcessBtn:pressed {
+    background: #4338ca;
+}
+
+#returnProcessBtn:disabled {
+    background: #e2e8f0;
+    color: #94a3b8;
+}
+
+/* Return button in sale panel footer */
+#saleReturnBtn {
+    background: rgba(245, 158, 11, 0.10);
+    color: #92400e;
+    border: 1.5px solid rgba(245, 158, 11, 0.30);
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 6px 12px;
+    min-height: 30px;
+}
+
+#saleReturnBtn:hover {
+    background: rgba(245, 158, 11, 0.18);
+    border-color: rgba(245, 158, 11, 0.50);
+}
+
+#saleReturnBtn:pressed {
+    background: rgba(245, 158, 11, 0.25);
 }

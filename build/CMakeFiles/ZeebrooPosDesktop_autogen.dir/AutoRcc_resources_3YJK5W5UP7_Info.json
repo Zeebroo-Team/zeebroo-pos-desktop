@@ -1,0 +1,27 @@
+{
+	"BUILD_DIR" : "/Users/mac/Documents/Projects/socibiz/pos-desktop/build/ZeebrooPosDesktop_autogen",
+	"CMAKE_BINARY_DIR" : "/Users/mac/Documents/Projects/socibiz/pos-desktop/build",
+	"CMAKE_CURRENT_BINARY_DIR" : "/Users/mac/Documents/Projects/socibiz/pos-desktop/build",
+	"CMAKE_CURRENT_SOURCE_DIR" : "/Users/mac/Documents/Projects/socibiz/pos-desktop/pos-desktop",
+	"CMAKE_SOURCE_DIR" : "/Users/mac/Documents/Projects/socibiz/pos-desktop/pos-desktop",
+	"CROSS_CONFIG" : false,
+	"GENERATOR" : "Ninja",
+	"INCLUDE_DIR" : "/Users/mac/Documents/Projects/socibiz/pos-desktop/build/ZeebrooPosDesktop_autogen/include",
+	"INPUTS" : 
+	[
+		"/Users/mac/Documents/Projects/socibiz/pos-desktop/pos-desktop/resources/styles.qss",
+		"/Users/mac/Documents/Projects/socibiz/pos-desktop/pos-desktop/resources/logo.png",
+		"/Users/mac/Documents/Projects/socibiz/pos-desktop/pos-desktop/resources/sounds/beep.wav"
+	],
+	"LOCK_FILE" : "/Users/mac/Documents/Projects/socibiz/pos-desktop/build/CMakeFiles/ZeebrooPosDesktop_autogen.dir/AutoRcc_resources_3YJK5W5UP7_Lock.lock",
+	"MULTI_CONFIG" : false,
+	"OPTIONS" : [ "-name", "resources" ],
+	"OUTPUT_CHECKSUM" : "3YJK5W5UP7",
+	"OUTPUT_NAME" : "qrc_resources.cpp",
+	"RCC_EXECUTABLE" : "/opt/homebrew/opt/qt6/share/qt/libexec/rcc",
+	"RCC_LIST_OPTIONS" : [ "--list" ],
+	"SETTINGS_FILE" : "/Users/mac/Documents/Projects/socibiz/pos-desktop/build/CMakeFiles/ZeebrooPosDesktop_autogen.dir/AutoRcc_resources_3YJK5W5UP7_Used.txt",
+	"SOURCE" : "/Users/mac/Documents/Projects/socibiz/pos-desktop/pos-desktop/resources/resources.qrc",
+	"USE_BETTER_GRAPH" : true,
+	"VERBOSITY" : 0
+}

@@ -78,6 +78,46 @@ struct BootstrapData {
     static BootstrapData fromJson(const QJsonObject &data);
 };
 
+// ── Sale / Return models ─────────────────────────────────────────────────────
+
+struct SaleListItem {
+    int id = 0;
+    QString saleNumber;
+    QString status;
+    QString paymentMethod;
+    double total = 0.0;
+    QString soldAt;
+
+    static SaleListItem fromJson(const QJsonObject &o);
+};
+
+struct SaleLineItem {
+    int id = 0;
+    QString productName;
+    QString sku;
+    double quantity = 0.0;
+    double unitSellPrice = 0.0;
+    double lineTotal = 0.0;
+    double returnedQuantity = 0.0;
+
+    double returnableQty() const;
+    static SaleLineItem fromJson(const QJsonObject &o);
+};
+
+struct SaleDetail {
+    int id = 0;
+    QString saleNumber;
+    QString status;
+    double subtotal = 0.0;
+    double total = 0.0;
+    QString paymentMethod;
+    QString soldAt;
+    QVector<SaleLineItem> items;
+
+    bool isVoid() const;
+    static SaleDetail fromJson(const QJsonObject &o);
+};
+
 struct CartLine {
     int productId = 0;
     int layerId = 0;

@@ -1,6 +1,9 @@
 #include "ui/MainWindow.h"
 
 #include "core/PosBeep.h"
+#include "ui/AddProductDialog.h"
+#include "ui/CheckoutDialog.h"
+#include "ui/ReturnDialog.h"
 #include "ui/LayerPickerDialog.h"
 #include "ui/ReceiptDialog.h"
 #include "core/SaleReceipt.h"
@@ -9,7 +12,6 @@
 
 #include <QButtonGroup>
 #include <QDoubleSpinBox>
-#include <QFormLayout>
 #include <QFrame>
 #include <QGridLayout>
 #include <QHBoxLayout>
@@ -17,8 +19,8 @@
 #include <QJsonObject>
 #include <QMessageBox>
 #include <QScrollArea>
+#include <QShortcut>
 #include <QSizePolicy>
-#include <QTextEdit>
 #include <QResizeEvent>
 #include <QTimer>
 #include <QVBoxLayout>
@@ -83,8 +85,9 @@ MainWindow::MainWindow(ApiClient *api, QWidget *parent)
 void MainWindow::buildUi()
 {
     auto *central = new QWidget(this);
+    central->setObjectName(QStringLiteral("centralWidget"));
     auto *root = new QVBoxLayout(central);
-    root->setContentsMargins(10, 10, 10, 10);
+    root->setContentsMargins(12, 12, 12, 12);
     root->setSpacing(10);
 
     // Top bar
@@ -136,13 +139,13 @@ void MainWindow::buildUi()
     fieldsLay->setSpacing(10);
 
     auto *searchGroup = makeInputGroup(fieldsBlock, tr("Search name…"), &m_searchEdit,
-                                      QStringLiteral("⌕"), tr("Search products"), this,
+                                      QStringLiteral("⌕"), tr("Search products  [F2]"), this,
                                       SLOT(onSearchTriggered()));
     searchGroup->setMinimumWidth(220);
     fieldsLay->addWidget(searchGroup, 2);
 
     auto *skuGroup = makeInputGroup(fieldsBlock, tr("SKU / scan…"), &m_skuEdit,
-                                    QStringLiteral("▥"), tr("Add product by SKU"), this,
+                                    QStringLiteral("▥"), tr("Add product by SKU  [F3]"), this,
                                     SLOT(onSkuAdd()));
     skuGroup->setMinimumWidth(180);
     fieldsLay->addWidget(skuGroup, 1);
@@ -157,16 +160,23 @@ void MainWindow::buildUi()
     actionsLay->setContentsMargins(0, 0, 0, 0);
     actionsLay->setSpacing(6);
 
+    auto *addProductBtn = new QPushButton(QStringLiteral("+"), top);
+    addProductBtn->setObjectName(QStringLiteral("addProductActionBtn"));
+    addProductBtn->setToolTip(tr("Add new product  [F4]"));
+    addProductBtn->setCursor(Qt::PointingHandCursor);
+    addProductBtn->setFixedSize(36, 36);
+    connect(addProductBtn, &QPushButton::clicked, this, &MainWindow::onAddProduct);
+
     auto *refreshBtn = new QPushButton(QStringLiteral("↻"), top);
     refreshBtn->setObjectName(QStringLiteral("topActionBtn"));
-    refreshBtn->setToolTip(tr("Refresh catalog"));
+    refreshBtn->setToolTip(tr("Refresh catalog  [F5]"));
     refreshBtn->setCursor(Qt::PointingHandCursor);
     refreshBtn->setFixedSize(36, 36);
     connect(refreshBtn, &QPushButton::clicked, this, &MainWindow::reloadBootstrap);
 
     auto *clearSearchBtn = new QPushButton(QStringLiteral("✕"), top);
     clearSearchBtn->setObjectName(QStringLiteral("topActionBtn"));
-    clearSearchBtn->setToolTip(tr("Clear search & filters"));
+    clearSearchBtn->setToolTip(tr("Clear search & filters  [F6]"));
     clearSearchBtn->setCursor(Qt::PointingHandCursor);
     clearSearchBtn->setFixedSize(36, 36);
     connect(clearSearchBtn, &QPushButton::clicked, this, [this]() {
@@ -176,6 +186,7 @@ void MainWindow::buildUi()
         reloadBootstrap();
     });
 
+    actionsLay->addWidget(addProductBtn);
     actionsLay->addWidget(refreshBtn);
     actionsLay->addWidget(clearSearchBtn);
     topLay->addWidget(actionsBlock);
@@ -185,7 +196,7 @@ void MainWindow::buildUi()
     connect(m_searchEdit, &QLineEdit::returnPressed, this, &MainWindow::onSearchTriggered);
     connect(m_skuEdit, &QLineEdit::returnPressed, this, &MainWindow::onSkuAdd);
 
-    // Three panels
+    // Two panels
     auto *panels = new QHBoxLayout();
     panels->setSpacing(10);
 
@@ -271,14 +282,36 @@ void MainWindow::buildUi()
     summaryRow->addWidget(m_saleFooterSubtotal);
     footLay->addLayout(summaryRow);
 
+    auto *secondaryRow = new QHBoxLayout();
+    secondaryRow->setSpacing(6);
+
     m_clearCartBtn = new QPushButton(tr("Clear sale"), saleFoot);
     m_clearCartBtn->setObjectName(QStringLiteral("saleClearBtn"));
     m_clearCartBtn->setEnabled(false);
     m_clearCartBtn->setCursor(Qt::PointingHandCursor);
+    m_clearCartBtn->setToolTip(tr("Clear all items from cart  [F8]"));
     connect(m_clearCartBtn, &QPushButton::clicked, this, &MainWindow::onClearCart);
-    footLay->addWidget(m_clearCartBtn);
-    leftLay->addWidget(saleFoot);
+    secondaryRow->addWidget(m_clearCartBtn, 1);
 
+    m_returnBtn = new QPushButton(tr("Return  ↩"), saleFoot);
+    m_returnBtn->setObjectName(QStringLiteral("saleReturnBtn"));
+    m_returnBtn->setCursor(Qt::PointingHandCursor);
+    m_returnBtn->setToolTip(tr("Process a return / refund  [F9]"));
+    connect(m_returnBtn, &QPushButton::clicked, this, &MainWindow::onReturn);
+    secondaryRow->addWidget(m_returnBtn, 1);
+
+    footLay->addLayout(secondaryRow);
+
+    m_checkoutBtn = new QPushButton(tr("Checkout  ▶"), saleFoot);
+    m_checkoutBtn->setObjectName(QStringLiteral("checkoutBtn"));
+    m_checkoutBtn->setEnabled(false);
+    m_checkoutBtn->setFixedHeight(44);
+    m_checkoutBtn->setCursor(Qt::PointingHandCursor);
+    m_checkoutBtn->setToolTip(tr("Proceed to checkout  [F12]"));
+    connect(m_checkoutBtn, &QPushButton::clicked, this, &MainWindow::onCheckout);
+    footLay->addWidget(m_checkoutBtn);
+
+    leftLay->addWidget(saleFoot);
     panels->addWidget(m_salePanel, 0);
 
     // Center — catalog
@@ -363,119 +396,76 @@ void MainWindow::buildUi()
     centerLay->addWidget(totals);
     panels->addWidget(center, 1);
 
-    // Right — checkout
-    auto *right = new QFrame(central);
-    right->setObjectName(QStringLiteral("panel"));
-    right->setMinimumWidth(300);
-    right->setMaximumWidth(360);
-    auto *rightLay = new QVBoxLayout(right);
-    rightLay->setContentsMargins(0, 0, 0, 0);
-    auto *checkoutHead = new QLabel(tr("Checkout"), right);
-    checkoutHead->setObjectName(QStringLiteral("panelHeader"));
-    rightLay->addWidget(checkoutHead);
-
-    auto *checkoutBody = new QWidget(right);
-    auto *checkoutLay = new QVBoxLayout(checkoutBody);
-
-    checkoutLay->addWidget(new QLabel(tr("PAYMENT"), checkoutBody));
-    m_payGroup = new QButtonGroup(this);
-    auto *payRow = new QHBoxLayout();
-    auto *cashBtn = new QPushButton(tr("Cash"), checkoutBody);
-    auto *cardBtn = new QPushButton(tr("Card payment"), checkoutBody);
-    auto *creditBtn = new QPushButton(tr("Credit payment"), checkoutBody);
-    cashBtn->setCheckable(true);
-    cardBtn->setCheckable(true);
-    creditBtn->setCheckable(true);
-    cashBtn->setChecked(true);
-    cashBtn->setObjectName(QStringLiteral("payMethod"));
-    cardBtn->setObjectName(QStringLiteral("payMethod"));
-    creditBtn->setObjectName(QStringLiteral("payMethod"));
-    m_payGroup->addButton(cashBtn, 0);
-    m_payGroup->addButton(cardBtn, 1);
-    m_payGroup->addButton(creditBtn, 2);
-    payRow->addWidget(cashBtn);
-    payRow->addWidget(cardBtn);
-    payRow->addWidget(creditBtn);
-    checkoutLay->addLayout(payRow);
-    connect(m_payGroup, &QButtonGroup::idClicked, this, &MainWindow::onPaymentMethodChanged);
-
-    m_cashPanel = new QWidget(checkoutBody);
-    auto *cashLay = new QVBoxLayout(m_cashPanel);
-    cashLay->addWidget(new QLabel(tr("AMOUNT CUSTOMER GAVE"), m_cashPanel));
-    m_tenderedEdit = new QLineEdit(m_cashPanel);
-    m_tenderedEdit->setReadOnly(true);
-    m_tenderedEdit->setAlignment(Qt::AlignRight);
-    m_tenderedEdit->setObjectName(QStringLiteral("tenderedInput"));
-    cashLay->addWidget(m_tenderedEdit);
-
-    auto *dueRow = new QHBoxLayout();
-    dueRow->addWidget(new QLabel(tr("Amount due"), m_cashPanel));
-    m_dueLabel = new QLabel(money(0), m_cashPanel);
-    m_dueLabel->setAlignment(Qt::AlignRight);
-    dueRow->addWidget(m_dueLabel);
-    cashLay->addLayout(dueRow);
-
-    auto *changeRow = new QHBoxLayout();
-    changeRow->addWidget(new QLabel(tr("Change / balance"), m_cashPanel));
-    m_changeLabel = new QLabel(money(0), m_cashPanel);
-    m_changeLabel->setObjectName(QStringLiteral("changeAmount"));
-    m_changeLabel->setAlignment(Qt::AlignRight);
-    changeRow->addWidget(m_changeLabel);
-    cashLay->addLayout(changeRow);
-
-    m_cashHint = new QLabel(m_cashPanel);
-    m_cashHint->setObjectName(QStringLiteral("errorHint"));
-    m_cashHint->setWordWrap(true);
-    m_cashHint->hide();
-    cashLay->addWidget(m_cashHint);
-    checkoutLay->addWidget(m_cashPanel);
-
-    checkoutLay->addWidget(new QLabel(tr("Notes"), checkoutBody));
-    m_notesEdit = new QTextEdit(checkoutBody);
-    m_notesEdit->setMaximumHeight(64);
-    m_notesEdit->setPlaceholderText(tr("Optional"));
-    checkoutLay->addWidget(m_notesEdit);
-
-    // Numpad
-    auto *pad = new QGridLayout();
-    const QStringList keys = {
-        QStringLiteral("1"), QStringLiteral("2"), QStringLiteral("3"),
-        QStringLiteral("4"), QStringLiteral("5"), QStringLiteral("6"),
-        QStringLiteral("7"), QStringLiteral("8"), QStringLiteral("9"),
-        QStringLiteral("."), QStringLiteral("0"), QStringLiteral("⌫"),
-    };
-    int i = 0;
-    for (const QString &k : keys) {
-        auto *btn = new QPushButton(k, checkoutBody);
-        btn->setObjectName(QStringLiteral("numpadKey"));
-        btn->setProperty("numpadKey", k);
-        connect(btn, &QPushButton::clicked, this, &MainWindow::onNumpadKey);
-        pad->addWidget(btn, i / 3, i % 3);
-        ++i;
-    }
-    checkoutLay->addLayout(pad);
-
-    auto *padActions = new QHBoxLayout();
-    auto *exactBtn = new QPushButton(tr("Exact due"), checkoutBody);
-    auto *clearTenderBtn = new QPushButton(tr("Clear"), checkoutBody);
-    connect(exactBtn, &QPushButton::clicked, this, &MainWindow::onExactDue);
-    connect(clearTenderBtn, &QPushButton::clicked, this, &MainWindow::onClearTendered);
-    padActions->addWidget(exactBtn);
-    padActions->addWidget(clearTenderBtn);
-    checkoutLay->addLayout(padActions);
-
-    checkoutLay->addStretch();
-    rightLay->addWidget(checkoutBody, 1);
-
-    m_completeBtn = new QPushButton(tr("Complete sale"), right);
-    m_completeBtn->setObjectName(QStringLiteral("completeSale"));
-    m_completeBtn->setEnabled(false);
-    connect(m_completeBtn, &QPushButton::clicked, this, &MainWindow::onCompleteSale);
-    rightLay->addWidget(m_completeBtn);
-    panels->addWidget(right, 0);
-
     root->addLayout(panels, 1);
+
+    // ── Keyboard shortcut hint bar ────────────────────────────────────────────
+    auto *hintBar = new QLabel(
+        tr("F2  Search   ·   F3  SKU / Scan   ·   F4  New Product   ·   F5  Refresh   ·"
+           "   F6  Clear Filters   ·   F8  Clear Cart   ·   F9  Return   ·   F12  Checkout   ·   Ctrl+◄►  Category"),
+        central);
+    hintBar->setObjectName(QStringLiteral("shortcutBar"));
+    hintBar->setAlignment(Qt::AlignCenter);
+    root->addWidget(hintBar);
+
     setCentralWidget(central);
+
+    // ── Global keyboard shortcuts ────────────────────────────────────────────
+    auto *scSearch = new QShortcut(QKeySequence(Qt::Key_F2), this);
+    connect(scSearch, &QShortcut::activated, this, [this]() {
+        m_searchEdit->setFocus();
+        m_searchEdit->selectAll();
+    });
+
+    auto *scSku = new QShortcut(QKeySequence(Qt::Key_F3), this);
+    connect(scSku, &QShortcut::activated, this, [this]() {
+        m_skuEdit->setFocus();
+        m_skuEdit->selectAll();
+    });
+
+    auto *scNewProduct = new QShortcut(QKeySequence(Qt::Key_F4), this);
+    connect(scNewProduct, &QShortcut::activated, this, &MainWindow::onAddProduct);
+
+    auto *scRefresh = new QShortcut(QKeySequence(Qt::Key_F5), this);
+    connect(scRefresh, &QShortcut::activated, this, &MainWindow::reloadBootstrap);
+
+    auto *scClearFilters = new QShortcut(QKeySequence(Qt::Key_F6), this);
+    connect(scClearFilters, &QShortcut::activated, this, [this]() {
+        m_searchEdit->clear();
+        m_skuEdit->clear();
+        m_activeCategoryId = 0;
+        reloadBootstrap();
+    });
+
+    auto *scClearCart = new QShortcut(QKeySequence(Qt::Key_F8), this);
+    connect(scClearCart, &QShortcut::activated, this, &MainWindow::onClearCart);
+
+    auto *scReturn = new QShortcut(QKeySequence(Qt::Key_F9), this);
+    connect(scReturn, &QShortcut::activated, this, &MainWindow::onReturn);
+
+    auto *scCheckout = new QShortcut(QKeySequence(Qt::Key_F12), this);
+    connect(scCheckout, &QShortcut::activated, this, &MainWindow::onCheckout);
+
+    auto *scPrevCat = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_Left), this);
+    connect(scPrevCat, &QShortcut::activated, this, [this]() {
+        const auto btns = m_categoryGroup->buttons();
+        if (btns.size() < 2) return;
+        int cur = 0;
+        for (int i = 0; i < btns.size(); ++i) {
+            if (btns[i]->isChecked()) { cur = i; break; }
+        }
+        btns[(cur - 1 + btns.size()) % btns.size()]->click();
+    });
+
+    auto *scNextCat = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_Right), this);
+    connect(scNextCat, &QShortcut::activated, this, [this]() {
+        const auto btns = m_categoryGroup->buttons();
+        if (btns.size() < 2) return;
+        int cur = 0;
+        for (int i = 0; i < btns.size(); ++i) {
+            if (btns[i]->isChecked()) { cur = i; break; }
+        }
+        btns[(cur + 1) % btns.size()]->click();
+    });
 }
 
 void MainWindow::resizeEvent(QResizeEvent *event)
@@ -494,17 +484,6 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 QString MainWindow::money(double value) const
 {
     return QString::number(value, 'f', 2) + (m_bootstrap.currency.isEmpty() ? QString() : QStringLiteral(" ") + m_bootstrap.currency);
-}
-
-int MainWindow::defaultAccountId() const
-{
-    if (m_bootstrap.settings.defaultDepositAccountId > 0) {
-        return m_bootstrap.settings.defaultDepositAccountId;
-    }
-    if (!m_bootstrap.accounts.isEmpty()) {
-        return m_bootstrap.accounts.first().id;
-    }
-    return 0;
 }
 
 void MainWindow::reloadBootstrap()
@@ -549,7 +528,6 @@ void MainWindow::applyBootstrap(const BootstrapData &data)
     }
 
     rebuildCategoryBar();
-
     rebuildProductGrid();
     updateTotals();
 }
@@ -724,6 +702,9 @@ void MainWindow::updateSalePanelChrome()
     if (m_clearCartBtn) {
         m_clearCartBtn->setEnabled(!m_cart.isEmpty());
     }
+    if (m_checkoutBtn) {
+        m_checkoutBtn->setEnabled(!m_cart.isEmpty());
+    }
 }
 
 void MainWindow::rebuildCart()
@@ -769,38 +750,6 @@ void MainWindow::updateTotals()
     m_subtotalVal->setText(money(sub));
     m_discountVal->setText(money(disc));
     m_totalVal->setText(money(total));
-    updatePaymentUi();
-}
-
-void MainWindow::updatePaymentUi()
-{
-    const double total = m_cart.total(m_discountPercent);
-    m_dueLabel->setText(money(total));
-
-    const double tendered = m_tenderedEdit->text().toDouble();
-    const double change = tendered - total;
-    m_changeLabel->setText(money(change));
-
-    bool canComplete = !m_cart.isEmpty();
-    if (m_paymentMethod == QStringLiteral("cash")) {
-        m_cashPanel->show();
-        if (tendered + 0.0001 < total) {
-            m_cashHint->setText(tr("Amount received is less than the total due."));
-            m_cashHint->show();
-            canComplete = false;
-        } else {
-            m_cashHint->hide();
-        }
-    } else {
-        m_cashPanel->setVisible(m_paymentMethod == QStringLiteral("cash"));
-        m_cashHint->hide();
-    }
-
-    if (m_paymentMethod != QStringLiteral("cash") && defaultAccountId() <= 0) {
-        canComplete = false;
-    }
-
-    m_completeBtn->setEnabled(canComplete);
 }
 
 void MainWindow::onCartChanged()
@@ -855,118 +804,44 @@ void MainWindow::onClearCart()
     }
     if (QMessageBox::question(this, tr("Clear sale"), tr("Remove all items from the cart?")) == QMessageBox::Yes) {
         m_cart.clear();
-        m_tenderedEdit->clear();
     }
 }
 
-void MainWindow::onPaymentMethodChanged(int id)
+void MainWindow::onCheckout()
 {
-    switch (id) {
-    case 1:
-        m_paymentMethod = QStringLiteral("card");
-        break;
-    case 2:
-        m_paymentMethod = QStringLiteral("credit");
-        break;
-    default:
-        m_paymentMethod = QStringLiteral("cash");
-        break;
-    }
-    m_cashPanel->setVisible(m_paymentMethod == QStringLiteral("cash"));
-    updatePaymentUi();
-}
-
-void MainWindow::onNumpadKey()
-{
-    const auto *btn = qobject_cast<QPushButton *>(sender());
-    if (!btn) {
+    if (m_cart.isEmpty()) {
         return;
     }
-    const QString key = btn->property("numpadKey").toString();
-    QString val = m_tenderedEdit->text();
-    if (key == QStringLiteral("⌫")) {
-        if (!val.isEmpty()) {
-            val.chop(1);
-        }
-    } else {
-        val += key;
+    CheckoutDialog dlg(m_api, &m_cart, m_bootstrap, m_discountPercent, this);
+    if (dlg.exec() == QDialog::Accepted) {
+        reloadBootstrap();
     }
-    m_tenderedEdit->setText(val);
-    updatePaymentUi();
 }
 
-void MainWindow::onExactDue()
+void MainWindow::onReturn()
 {
-    m_tenderedEdit->setText(QString::number(m_cart.total(m_discountPercent), 'f', 2));
-    updatePaymentUi();
+    ReturnDialog dlg(m_api, m_bootstrap.currency, this);
+    if (dlg.exec() == QDialog::Accepted) {
+        reloadBootstrap();
+    }
 }
 
-void MainWindow::onClearTendered()
+void MainWindow::onAddProduct()
 {
-    m_tenderedEdit->clear();
-    updatePaymentUi();
-}
-
-void MainWindow::onCompleteSale()
-{
-    QJsonArray items;
-    for (const CartLine &line : m_cart.lines()) {
-        QJsonObject item;
-        item.insert(QStringLiteral("product_id"), line.productId);
-        item.insert(QStringLiteral("quantity"), line.quantity);
-        if (line.layerId > 0) {
-            item.insert(QStringLiteral("product_stock_layer_id"), line.layerId);
+    AddProductDialog dlg(m_api, m_bootstrap.currency, this);
+    if (dlg.exec() == QDialog::Accepted) {
+        const ProductCard p = dlg.createdProduct();
+        // Cache it immediately so SKU-scan works without waiting for reload
+        m_productsById.insert(p.id, p);
+        if (!p.sku.isEmpty()) {
+            m_productsBySku.insert(p.sku, p);
         }
-        items.append(item);
-    }
-
-    QJsonObject body;
-    body.insert(QStringLiteral("items"), items);
-    body.insert(QStringLiteral("payment_method"), m_paymentMethod);
-    body.insert(QStringLiteral("channel"), QStringLiteral("online"));
-    if (m_discountPercent > 0.0) {
-        body.insert(QStringLiteral("discount_percent"), m_discountPercent);
-    }
-    const QString notes = m_notesEdit->toPlainText().trimmed();
-    if (!notes.isEmpty()) {
-        body.insert(QStringLiteral("notes"), notes);
-    }
-
-    if (m_paymentMethod == QStringLiteral("cash")) {
-        body.insert(QStringLiteral("amount_tendered"), m_tenderedEdit->text().toDouble());
-        const int accountId = defaultAccountId();
-        if (accountId > 0) {
-            body.insert(QStringLiteral("credit_account_id"), accountId);
+        // Auto-add to cart if it has opening stock
+        if (p.inStock()) {
+            addProductToCart(p);
         }
-    } else if (m_paymentMethod == QStringLiteral("card")) {
-        const int accountId = defaultAccountId();
-        if (accountId > 0) {
-            body.insert(QStringLiteral("credit_account_id"), accountId);
-        }
+        reloadBootstrap();
     }
-
-    m_completeBtn->setEnabled(false);
-    m_api->checkout(
-        body,
-        [this](const QJsonObject &root) {
-            const QJsonObject sale = root.value(QStringLiteral("data")).toObject();
-            const SaleReceipt receipt = SaleReceipt::fromApiSale(
-                sale,
-                m_bootstrap.business.name,
-                m_bootstrap.currency);
-
-            m_cart.clear();
-            m_tenderedEdit->clear();
-            m_notesEdit->clear();
-            reloadBootstrap();
-
-            ReceiptDialog receiptDlg(receipt, this);
-            receiptDlg.exec();
-        },
-        [this](const QString &msg, int) {
-            QMessageBox::warning(this, tr("Checkout"), msg);
-            updatePaymentUi();
-        });
 }
 
 } // namespace pos
