@@ -363,31 +363,52 @@ void PosSessionWidget::buildUi()
     // ── Pagination bar ────────────────────────────────────────────────────────
     m_paginationBar = new QWidget(center);
     m_paginationBar->setObjectName(QStringLiteral("paginationBar"));
+    m_paginationBar->setFixedHeight(52);
     auto *pagLay = new QHBoxLayout(m_paginationBar);
-    pagLay->setContentsMargins(12, 6, 12, 6);
-    pagLay->setSpacing(8);
+    pagLay->setContentsMargins(16, 0, 16, 0);
+    pagLay->setSpacing(0);
 
-    m_prevPageBtn = new QPushButton(QStringLiteral("← Prev"), m_paginationBar);
-    m_prevPageBtn->setObjectName(QStringLiteral("pageBtn"));
+    // Left — total products chip
+    m_pageLabel = new QLabel(m_paginationBar);
+    m_pageLabel->setObjectName(QStringLiteral("pageTotalChip"));
+    m_pageLabel->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
+
+    // Center — nav controls
+    auto *navBlock = new QWidget(m_paginationBar);
+    navBlock->setObjectName(QStringLiteral("pageNavBlock"));
+    auto *navLay = new QHBoxLayout(navBlock);
+    navLay->setContentsMargins(0, 0, 0, 0);
+    navLay->setSpacing(12);
+
+    m_prevPageBtn = new QPushButton(QStringLiteral("‹"), m_paginationBar);
+    m_prevPageBtn->setObjectName(QStringLiteral("pageNavBtn"));
     m_prevPageBtn->setCursor(Qt::PointingHandCursor);
-    m_prevPageBtn->setFixedHeight(32);
+    m_prevPageBtn->setFixedSize(36, 36);
+    m_prevPageBtn->setToolTip(tr("Previous page"));
     connect(m_prevPageBtn, &QPushButton::clicked, this, &PosSessionWidget::onPrevPage);
 
-    m_pageLabel = new QLabel(m_paginationBar);
-    m_pageLabel->setObjectName(QStringLiteral("pageLabel"));
-    m_pageLabel->setAlignment(Qt::AlignCenter);
+    auto *pageInfoLabel = new QLabel(m_paginationBar);
+    pageInfoLabel->setObjectName(QStringLiteral("pageInfoLabel"));
+    pageInfoLabel->setAlignment(Qt::AlignCenter);
+    pageInfoLabel->setMinimumWidth(110);
+    // We'll store it so updatePaginationBar can update it
+    // Reuse m_pageLabel slot — rename meaning: m_pageLabel = total chip, pageInfoLabel = center
+    // Actually store pageInfoLabel via the navBlock's first label child (found by objectName)
+    navLay->addWidget(m_prevPageBtn);
+    navLay->addWidget(pageInfoLabel);
 
-    m_nextPageBtn = new QPushButton(QStringLiteral("Next →"), m_paginationBar);
-    m_nextPageBtn->setObjectName(QStringLiteral("pageBtn"));
+    m_nextPageBtn = new QPushButton(QStringLiteral("›"), m_paginationBar);
+    m_nextPageBtn->setObjectName(QStringLiteral("pageNavBtn"));
     m_nextPageBtn->setCursor(Qt::PointingHandCursor);
-    m_nextPageBtn->setFixedHeight(32);
+    m_nextPageBtn->setFixedSize(36, 36);
+    m_nextPageBtn->setToolTip(tr("Next page"));
     connect(m_nextPageBtn, &QPushButton::clicked, this, &PosSessionWidget::onNextPage);
 
-    pagLay->addStretch();
-    pagLay->addWidget(m_prevPageBtn);
-    pagLay->addWidget(m_pageLabel);
-    pagLay->addWidget(m_nextPageBtn);
-    pagLay->addStretch();
+    navLay->addWidget(m_nextPageBtn);
+
+    pagLay->addWidget(m_pageLabel, 1);
+    pagLay->addWidget(navBlock, 0, Qt::AlignCenter);
+    pagLay->addStretch(1);
 
     m_paginationBar->setVisible(false);
     centerLay->addWidget(m_paginationBar);
@@ -836,10 +857,17 @@ void PosSessionWidget::updatePaginationBar()
 
     m_prevPageBtn->setEnabled(meta.currentPage > 1);
     m_nextPageBtn->setEnabled(meta.currentPage < meta.lastPage);
-    m_pageLabel->setText(tr("Page %1 of %2  ·  %3 products")
-        .arg(meta.currentPage)
-        .arg(meta.lastPage)
-        .arg(meta.total));
+
+    // Left chip — total count
+    m_pageLabel->setText(tr("%1 products").arg(meta.total));
+
+    // Center label — page X of Y
+    auto *infoLabel = m_paginationBar->findChild<QLabel *>(QStringLiteral("pageInfoLabel"));
+    if (infoLabel) {
+        infoLabel->setText(tr("Page  %1  /  %2")
+            .arg(meta.currentPage)
+            .arg(meta.lastPage));
+    }
 }
 
 } // namespace pos

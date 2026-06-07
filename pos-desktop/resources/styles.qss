@@ -1546,6 +1546,64 @@ QLineEdit:hover, QTextEdit:hover, QDoubleSpinBox:hover {
     color: #94a3b8;
 }
 
+/* ═══════════════════════════════════════════════════════════════
+   Pagination bar
+   ═══════════════════════════════════════════════════════════════ */
+#paginationBar {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #ffffff,
+        stop:1 #f8fafc);
+    border-top: 1px solid #e8ecf5;
+    border-radius: 0 0 17px 17px;
+}
+
+#pageNavBlock {
+    background: transparent;
+}
+
+#pageNavBtn {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #6366f1,
+        stop:1 #4f46e5);
+    border: none;
+    border-radius: 18px;
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: 900;
+    padding: 0;
+}
+
+#pageNavBtn:hover:enabled {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #5457e8,
+        stop:1 #4338ca);
+}
+
+#pageNavBtn:pressed:enabled {
+    background: #3730a3;
+}
+
+#pageNavBtn:disabled {
+    background: #e8ecf5;
+    color: #c7d2fe;
+}
+
+#pageInfoLabel {
+    font-size: 13px;
+    font-weight: 800;
+    color: #0f172a;
+    letter-spacing: -0.3px;
+    background: transparent;
+}
+
+#pageTotalChip {
+    font-size: 11px;
+    font-weight: 700;
+    color: #94a3b8;
+    background: transparent;
+    letter-spacing: 0.1px;
+}
+
 /* Return button in sale panel footer */
 #saleReturnBtn {
     background: rgba(245, 158, 11, 0.10);
