@@ -1626,384 +1626,489 @@ QLineEdit:hover, QTextEdit:hover, QDoubleSpinBox:hover {
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   Purchase Order Dialogs
+   Purchase Order Dialogs  —  Professional Redesign
    ══════════════════════════════════════════════════════════════════ */
 
 #purchaseOrderDialog, #poFormDialog {
     background: #f0f2f7;
 }
 
-/* Header bar */
-#poDialogHeader {
+/* ── Gradient header ─────────────────────────────────────────────── */
+#poGradientHeader {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                stop:0 #1e1b4b, stop:0.5 #312e81, stop:1 #3730a3);
+    border-bottom: none;
+    min-height: 90px;
+}
+
+#poHeaderTitle {
+    font-size: 20px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: -0.3px;
+}
+
+#poHeaderSubtitle {
+    font-size: 12px;
+    font-weight: 400;
+    color: rgba(199, 210, 254, 0.85);
+}
+
+/* Refresh button (ghost on dark header) */
+#poHeaderRefreshBtn {
+    background: rgba(255, 255, 255, 0.10);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 8px;
+    padding: 0 14px;
+    color: #e0e7ff;
+    font-weight: 600;
+    font-size: 13px;
+}
+#poHeaderRefreshBtn:hover {
+    background: rgba(255, 255, 255, 0.18);
+    border-color: rgba(255, 255, 255, 0.40);
+}
+#poHeaderRefreshBtn:pressed {
+    background: rgba(255, 255, 255, 0.08);
+}
+#poHeaderRefreshBtn:disabled {
+    color: rgba(199, 210, 254, 0.40);
+    border-color: rgba(255, 255, 255, 0.10);
+}
+
+/* New PO button (white accent on dark header) */
+#poHeaderNewBtn {
     background: #ffffff;
-    border-bottom: 1px solid #e2e8f0;
+    border: none;
+    border-radius: 8px;
+    padding: 0 18px;
+    color: #312e81;
+    font-weight: 800;
+    font-size: 13px;
+}
+#poHeaderNewBtn:hover {
+    background: #e0e7ff;
+}
+#poHeaderNewBtn:pressed {
+    background: #c7d2fe;
 }
 
-#poDialogTitle {
-    font-size: 16px;
-    font-weight: 700;
-    color: #0f172a;
-}
-
-/* Filter combo */
-#poFilterCombo {
-    min-width: 160px;
-    height: 32px;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
-    padding: 0 8px;
-    color: #334155;
-}
-
-#poFilterCombo:focus {
-    border-color: #6366f1;
-}
-
-/* Refresh button */
-#poRefreshBtn {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
-    padding: 0 12px;
-    height: 32px;
-    color: #475569;
+/* ── Filter pills ────────────────────────────────────────────────── */
+#poFilterPill {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 15px;
+    padding: 0 14px;
+    color: rgba(224, 231, 255, 0.80);
+    font-size: 12px;
     font-weight: 600;
 }
-
-#poRefreshBtn:hover {
-    background: #f1f5f9;
-    border-color: #cbd5e1;
-}
-
-/* New PO button */
-#poNewBtn {
-    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                stop:0 #6366f1, stop:1 #4f46e5);
+#poFilterPill:hover {
+    background: rgba(255, 255, 255, 0.16);
     color: #ffffff;
-    border: none;
-    border-radius: 6px;
-    padding: 0 16px;
-    height: 32px;
-    font-weight: 700;
+    border-color: rgba(255, 255, 255, 0.35);
 }
-
-#poNewBtn:hover {
-    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                stop:0 #818cf8, stop:1 #6366f1);
-}
-
-#poNewBtn:pressed {
-    background: #4338ca;
-}
-
-/* List panel */
-#poListPanel {
+#poFilterPill:checked {
     background: #ffffff;
+    border-color: #ffffff;
+    color: #312e81;
+    font-weight: 800;
+}
+
+/* ── Left list panel ─────────────────────────────────────────────── */
+#poListPanel {
+    background: #f8fafc;
     border-right: 1px solid #e2e8f0;
+    min-width: 300px;
 }
 
 #poList {
-    background: #ffffff;
+    background: #f8fafc;
     border: none;
     outline: none;
-    font-size: 12px;
 }
 
 #poList::item {
-    border-bottom: 1px solid #f1f5f9;
-    padding: 8px 12px;
-    color: #1e293b;
+    border: none;
+    padding: 0;
+    background: transparent;
 }
 
 #poList::item:selected {
+    background: transparent;
+}
+
+/* Custom list item widget */
+#poListItem {
+    background: #ffffff;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+#poListItem[selected="true"] {
     background: #eff6ff;
-    color: #1d4ed8;
     border-left: 3px solid #6366f1;
 }
 
-#poList::item:hover:!selected {
+#poListItem:hover {
     background: #f8fafc;
 }
 
-/* Detail stack */
-#poDetailStack {
-    background: #f8fafc;
-}
-
-#poDetailScroll {
-    background: #f8fafc;
-}
-
-/* Placeholder */
-#poPlaceholderLabel {
-    font-size: 14px;
-    color: #94a3b8;
-    font-style: italic;
-}
-
-/* Detail meta keys */
-#detMetaKey {
-    font-size: 11px;
-    font-weight: 600;
-    color: #94a3b8;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-#detMetaVal {
+#poListPoNum {
     font-size: 13px;
-    color: #1e293b;
-    font-weight: 500;
-}
-
-/* Section label */
-#detSectionLabel {
-    font-size: 12px;
-    font-weight: 700;
-    color: #475569;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-/* PO number in detail */
-#detPoNumber {
-    font-size: 18px;
     font-weight: 800;
     color: #0f172a;
 }
 
-/* Status badge in detail */
-#detStatus {
-    font-size: 11px;
-    font-weight: 700;
-    color: #6366f1;
-    background: #ede9fe;
-    border-radius: 10px;
-    padding: 3px 10px;
+#poListItem[selected="true"] #poListPoNum {
+    color: #1d4ed8;
 }
 
-/* Total label */
-#detTotalLabel {
-    font-size: 14px;
+#poListSupplier {
+    font-size: 12px;
+    font-weight: 500;
+    color: #475569;
+}
+
+#poListDate {
+    font-size: 11px;
+    color: #94a3b8;
+}
+
+#poListAmount {
+    font-size: 12px;
     font-weight: 700;
+    color: #1e293b;
+}
+
+/* Empty state */
+#poListEmpty {
+    background: #f8fafc;
+}
+#poEmptyLabel {
+    font-size: 13px;
+    color: #94a3b8;
+    font-style: italic;
+}
+
+/* ── Detail panel ────────────────────────────────────────────────── */
+#poDetailStack, #poDetailScroll, #poDetailPage {
+    background: #f0f2f7;
+}
+
+/* Placeholder page */
+#poPlaceholderPage {
+    background: #f0f2f7;
+}
+#poPlaceholderIcon {
+    font-size: 48px;
+    color: #cbd5e1;
+}
+#poPlaceholderLabel {
+    font-size: 14px;
+    font-weight: 500;
+    color: #94a3b8;
+    margin-top: 8px;
+}
+
+/* White detail cards */
+#poDetailCard {
+    background: #ffffff;
+    border: 1px solid #e8ecf5;
+    border-radius: 12px;
+}
+
+/* PO number */
+#detPoNumber {
+    font-size: 20px;
+    font-weight: 900;
     color: #0f172a;
+    letter-spacing: -0.5px;
+}
+
+/* Status badge — inline style applied from C++ per status */
+#detStatusBadge {
+    font-size: 11px;
+    font-weight: 800;
+    border-radius: 10px;
+    padding: 3px 12px;
+}
+
+/* Meta keys / values */
+#detMetaKey {
+    font-size: 10px;
+    font-weight: 700;
+    color: #94a3b8;
+    letter-spacing: 0.8px;
+}
+
+#detMetaVal {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+/* Section labels */
+#detSectionLabel {
+    font-size: 10px;
+    font-weight: 800;
+    color: #94a3b8;
+    letter-spacing: 1px;
 }
 
 /* Items table */
 #detItemsTable {
     background: #ffffff;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #eef0f6;
     border-radius: 8px;
-    gridline-color: #f1f5f9;
+    gridline-color: #f8fafc;
     selection-background-color: #eff6ff;
+    alternate-background-color: #fafbff;
+}
+
+#detItemsTable QHeaderView {
+    background: transparent;
 }
 
 #detItemsTable QHeaderView::section {
     background: #f8fafc;
-    color: #64748b;
-    font-size: 11px;
-    font-weight: 700;
+    color: #94a3b8;
+    font-size: 10px;
+    font-weight: 800;
     border: none;
-    border-bottom: 1px solid #e2e8f0;
-    padding: 6px 8px;
-    text-transform: uppercase;
+    border-bottom: 2px solid #eef0f6;
+    padding: 8px 10px;
+    letter-spacing: 0.6px;
 }
 
-/* Dividers */
-#poDivider {
-    color: #e2e8f0;
-    background: #e2e8f0;
-    max-height: 1px;
+#detItemsTable QHeaderView::section:first {
+    border-top-left-radius: 8px;
 }
 
-/* Bottom bar */
-#poBottomBar {
+#detItemsTable QHeaderView::section:last {
+    border-top-right-radius: 8px;
+}
+
+/* Total label */
+#detTotalLabel {
+    font-size: 15px;
+    font-weight: 900;
+    color: #0f172a;
+    letter-spacing: -0.2px;
+}
+
+/* ── Action bar ──────────────────────────────────────────────────── */
+#poActionBar {
     background: #ffffff;
-    border-top: 1px solid #e2e8f0;
+    border: 1px solid #e8ecf5;
+    border-radius: 12px;
 }
 
-/* Close / Cancel button */
-#poCloseBtn {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
-    padding: 0 20px;
-    height: 36px;
-    color: #475569;
-    font-weight: 600;
-}
-
-#poCloseBtn:hover {
-    background: #f1f5f9;
-    border-color: #cbd5e1;
-}
-
-/* Place Order button */
+/* Place Order — indigo gradient */
 #poPlaceBtn {
     background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                stop:0 #6366f1, stop:1 #4f46e5);
+                                stop:0 #6366f1, stop:1 #4338ca);
     color: #ffffff;
     border: none;
-    border-radius: 6px;
-    padding: 0 20px;
-    height: 36px;
-    font-weight: 700;
+    border-radius: 8px;
+    padding: 0 22px;
+    font-weight: 800;
+    font-size: 13px;
+    letter-spacing: 0.1px;
 }
-
 #poPlaceBtn:hover {
     background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
                                 stop:0 #818cf8, stop:1 #6366f1);
 }
+#poPlaceBtn:pressed  { background: #4338ca; }
+#poPlaceBtn:disabled { background: #e2e8f0; color: #94a3b8; }
 
-#poPlaceBtn:disabled {
-    background: #e2e8f0;
-    color: #94a3b8;
-}
-
-/* Receive button */
+/* Mark Received — emerald gradient */
 #poReceiveBtn {
     background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                stop:0 #10b981, stop:1 #059669);
+                                stop:0 #10b981, stop:1 #047857);
     color: #ffffff;
     border: none;
-    border-radius: 6px;
-    padding: 0 20px;
-    height: 36px;
-    font-weight: 700;
+    border-radius: 8px;
+    padding: 0 22px;
+    font-weight: 800;
+    font-size: 13px;
 }
-
 #poReceiveBtn:hover {
     background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
                                 stop:0 #34d399, stop:1 #10b981);
 }
+#poReceiveBtn:pressed  { background: #065f46; }
+#poReceiveBtn:disabled { background: #e2e8f0; color: #94a3b8; }
 
-#poReceiveBtn:disabled {
-    background: #e2e8f0;
-    color: #94a3b8;
-}
-
-/* Cancel PO button */
+/* Cancel PO — ghost danger */
 #poCancelPoBtn {
     background: transparent;
-    border: 1px solid #fca5a5;
+    border: 1.5px solid #fca5a5;
     color: #ef4444;
-    border-radius: 6px;
-    padding: 0 20px;
-    height: 36px;
-    font-weight: 600;
+    border-radius: 8px;
+    padding: 0 22px;
+    font-weight: 700;
+    font-size: 13px;
 }
-
 #poCancelPoBtn:hover {
     background: #fef2f2;
     border-color: #ef4444;
-}
-
-#poCancelPoBtn:disabled {
-    color: #94a3b8;
-    border-color: #e2e8f0;
-}
-
-/* Form dialog */
-#poFormLabel {
-    font-size: 11px;
-    font-weight: 600;
-    color: #64748b;
-    text-transform: uppercase;
-    letter-spacing: 0.4px;
-}
-
-#poSupplierCombo, #poDateEdit, #poExpectedEdit {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
-    padding: 0 10px;
-    height: 36px;
-    color: #1e293b;
-}
-
-#poSupplierCombo:focus, #poDateEdit:focus, #poExpectedEdit:focus {
-    border-color: #6366f1;
-    outline: none;
-}
-
-#poNotesEdit {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
-    padding: 6px 10px;
-    color: #1e293b;
-}
-
-#poNotesEdit:focus {
-    border-color: #6366f1;
-}
-
-#poProductCombo, #poAddQty, #poAddCost {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
-    padding: 0 10px;
-    height: 34px;
-    color: #1e293b;
-}
-
-#poProductCombo:focus, #poAddQty:focus, #poAddCost:focus {
-    border-color: #6366f1;
-}
-
-#poAddLineBtn {
-    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                stop:0 #f1f5f9, stop:1 #e2e8f0);
-    border: 1px solid #cbd5e1;
-    border-radius: 6px;
-    padding: 0 16px;
-    height: 34px;
-    color: #334155;
-    font-weight: 700;
-}
-
-#poAddLineBtn:hover {
-    background: #e2e8f0;
-    border-color: #94a3b8;
-}
-
-#poSaveDraftBtn {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
-    padding: 0 20px;
-    height: 36px;
-    color: #475569;
-    font-weight: 600;
-}
-
-#poSaveDraftBtn:hover {
-    background: #f1f5f9;
-    border-color: #cbd5e1;
-}
-
-#poSaveDraftBtn:disabled {
-    color: #94a3b8;
-}
-
-/* Delete line button */
-#poDelLineBtn {
-    background: transparent;
-    border: none;
-    color: #ef4444;
-    font-size: 16px;
-    font-weight: 700;
-    border-radius: 4px;
-}
-
-#poDelLineBtn:hover {
-    background: #fef2f2;
     color: #dc2626;
 }
+#poCancelPoBtn:pressed  { background: #fee2e2; }
+#poCancelPoBtn:disabled { color: #94a3b8; border-color: #e2e8f0; }
 
-/* Splitter handle */
+/* ── Bottom bar ──────────────────────────────────────────────────── */
+#poBottomBar {
+    background: #ffffff;
+    border-top: 1px solid #e8ecf5;
+}
+
+#poCloseBtn {
+    background: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0 22px;
+    color: #475569;
+    font-weight: 700;
+    font-size: 13px;
+}
+#poCloseBtn:hover {
+    background: #f1f5f9;
+    border-color: #94a3b8;
+    color: #1e293b;
+}
+#poCloseBtn:pressed { background: #e2e8f0; }
+
+/* ── Splitter ────────────────────────────────────────────────────── */
 #poSplitter::handle {
     background: #e2e8f0;
     width: 1px;
+}
+
+/* ── Shared divider ──────────────────────────────────────────────── */
+#poDivider {
+    background: #e8ecf5;
+    color: #e8ecf5;
+    max-height: 1px;
+}
+
+/* ── Form dialog ─────────────────────────────────────────────────── */
+#poFormScroll, #poFormCanvas {
+    background: #f0f2f7;
+}
+
+#poFormLabel {
+    font-size: 10px;
+    font-weight: 800;
+    color: #64748b;
+    letter-spacing: 0.8px;
+}
+
+/* Supplier / date / expected fields */
+#poSupplierCombo, #poDateEdit, #poExpectedEdit {
+    background: #ffffff;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0 12px;
+    color: #1e293b;
+    font-size: 13px;
+    selection-background-color: #c7d2fe;
+}
+#poSupplierCombo:focus, #poDateEdit:focus, #poExpectedEdit:focus {
+    border-color: #6366f1;
+    background: #fafbff;
+}
+#poSupplierCombo:hover, #poDateEdit:hover, #poExpectedEdit:hover {
+    border-color: #c7d2fe;
+}
+
+/* Notes text area */
+#poNotesEdit {
+    background: #ffffff;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 8px 12px;
+    color: #1e293b;
+    font-size: 13px;
+}
+#poNotesEdit:focus {
+    border-color: #6366f1;
+    background: #fafbff;
+}
+
+/* Product search combo */
+#poProductCombo {
+    background: #ffffff;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0 12px;
+    color: #1e293b;
+    font-size: 13px;
+}
+#poProductCombo:focus { border-color: #6366f1; background: #fafbff; }
+#poProductCombo:hover { border-color: #c7d2fe; }
+
+/* Qty / cost small fields */
+#poAddQty, #poAddCost {
+    background: #ffffff;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0 10px;
+    color: #1e293b;
+    font-size: 13px;
+    font-weight: 600;
+}
+#poAddQty:focus, #poAddCost:focus {
+    border-color: #6366f1;
+    background: #fafbff;
+}
+
+/* Add Line button */
+#poAddLineBtn {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #6366f1, stop:1 #4338ca);
+    border: none;
+    border-radius: 8px;
+    padding: 0 18px;
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 13px;
+}
+#poAddLineBtn:hover {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #818cf8, stop:1 #6366f1);
+}
+#poAddLineBtn:pressed { background: #4338ca; }
+
+/* Save as Draft */
+#poSaveDraftBtn {
+    background: #ffffff;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0 22px;
+    color: #475569;
+    font-weight: 700;
+    font-size: 13px;
+}
+#poSaveDraftBtn:hover {
+    background: #f8fafc;
+    border-color: #94a3b8;
+    color: #1e293b;
+}
+#poSaveDraftBtn:pressed  { background: #f1f5f9; }
+#poSaveDraftBtn:disabled { color: #94a3b8; border-color: #e2e8f0; }
+
+/* Delete line × button */
+#poDelLineBtn {
+    background: transparent;
+    border: none;
+    color: #cbd5e1;
+    font-size: 16px;
+    font-weight: 900;
+    border-radius: 5px;
+}
+#poDelLineBtn:hover {
+    background: #fef2f2;
+    color: #ef4444;
 }

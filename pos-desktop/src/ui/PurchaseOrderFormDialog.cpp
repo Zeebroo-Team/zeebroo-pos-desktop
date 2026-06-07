@@ -25,8 +25,8 @@ PurchaseOrderFormDialog::PurchaseOrderFormDialog(ApiClient *api, const Bootstrap
     , m_bootstrap(bootstrap)
 {
     setWindowTitle(tr("New Purchase Order"));
-    setMinimumSize(720, 580);
-    resize(800, 640);
+    setMinimumSize(780, 620);
+    resize(860, 700);
     setObjectName(QStringLiteral("poFormDialog"));
     buildUi();
     loadSuppliers();
@@ -38,156 +38,172 @@ void PurchaseOrderFormDialog::buildUi()
     root->setContentsMargins(0, 0, 0, 0);
     root->setSpacing(0);
 
-    // ── Header ───────────────────────────────────────────────────────────────
+    // ── Gradient header ───────────────────────────────────────────────────────
     auto *header = new QWidget(this);
-    header->setObjectName(QStringLiteral("poDialogHeader"));
-    auto *headerLayout = new QHBoxLayout(header);
-    headerLayout->setContentsMargins(20, 14, 20, 14);
+    header->setObjectName(QStringLiteral("poGradientHeader"));
+    auto *headerLayout = new QVBoxLayout(header);
+    headerLayout->setContentsMargins(20, 16, 20, 16);
+    headerLayout->setSpacing(3);
     auto *titleLbl = new QLabel(tr("New Purchase Order"), header);
-    titleLbl->setObjectName(QStringLiteral("poDialogTitle"));
+    titleLbl->setObjectName(QStringLiteral("poHeaderTitle"));
+    auto *subtitleLbl = new QLabel(tr("Fill in the details and add product lines below"), header);
+    subtitleLbl->setObjectName(QStringLiteral("poHeaderSubtitle"));
     headerLayout->addWidget(titleLbl);
+    headerLayout->addWidget(subtitleLbl);
     root->addWidget(header);
 
-    auto *divTop = new QFrame(this);
-    divTop->setFrameShape(QFrame::HLine);
-    divTop->setObjectName(QStringLiteral("poDivider"));
-    root->addWidget(divTop);
-
-    // ── Scroll area for form ─────────────────────────────────────────────────
+    // ── Scroll area ───────────────────────────────────────────────────────────
     auto *scroll = new QScrollArea(this);
     scroll->setWidgetResizable(true);
     scroll->setFrameShape(QFrame::NoFrame);
+    scroll->setObjectName(QStringLiteral("poFormScroll"));
 
-    auto *form = new QWidget;
-    auto *formLayout = new QVBoxLayout(form);
-    formLayout->setContentsMargins(20, 16, 20, 16);
-    formLayout->setSpacing(12);
+    auto *canvas = new QWidget;
+    canvas->setObjectName(QStringLiteral("poFormCanvas"));
+    auto *canvasLayout = new QVBoxLayout(canvas);
+    canvasLayout->setContentsMargins(20, 20, 20, 20);
+    canvasLayout->setSpacing(16);
 
-    // ── Row 1: supplier + date + expected ────────────────────────────────────
-    auto *row1 = new QHBoxLayout;
-    row1->setSpacing(16);
+    // ── Card helper lambda ────────────────────────────────────────────────────
+    auto makeCard = [&](const QString &heading) -> QVBoxLayout * {
+        auto *card = new QFrame(canvas);
+        card->setObjectName(QStringLiteral("poDetailCard"));
+        auto *cardLayout = new QVBoxLayout(card);
+        cardLayout->setContentsMargins(16, 14, 16, 16);
+        cardLayout->setSpacing(12);
+        if (!heading.isEmpty()) {
+            auto *lbl = new QLabel(heading, card);
+            lbl->setObjectName(QStringLiteral("detSectionLabel"));
+            cardLayout->addWidget(lbl);
+        }
+        canvasLayout->addWidget(card);
+        return cardLayout;
+    };
 
-    auto makeField = [&](const QString &labelText, QWidget *widget) -> QVBoxLayout * {
+    auto makeField = [](const QString &labelText, QWidget *fieldWidget, QWidget *parent) -> QVBoxLayout * {
         auto *col = new QVBoxLayout;
-        col->setSpacing(4);
-        auto *lbl = new QLabel(labelText, form);
+        col->setSpacing(5);
+        auto *lbl = new QLabel(labelText, parent);
         lbl->setObjectName(QStringLiteral("poFormLabel"));
         col->addWidget(lbl);
-        col->addWidget(widget);
+        col->addWidget(fieldWidget);
         return col;
     };
 
-    m_supplierCombo = new QComboBox(form);
+    // ── Card 1: Order Info ────────────────────────────────────────────────────
+    auto *infoCard = makeCard(tr("ORDER INFORMATION"));
+
+    auto *row1 = new QHBoxLayout;
+    row1->setSpacing(14);
+
+    m_supplierCombo = new QComboBox(canvas);
     m_supplierCombo->setObjectName(QStringLiteral("poSupplierCombo"));
     m_supplierCombo->addItem(tr("— No supplier —"), 0);
-    m_supplierCombo->setMinimumWidth(200);
-    row1->addLayout(makeField(tr("Supplier"), m_supplierCombo), 2);
+    m_supplierCombo->setMinimumWidth(220);
+    m_supplierCombo->setFixedHeight(40);
+    row1->addLayout(makeField(tr("Supplier"), m_supplierCombo, canvas), 2);
 
-    m_dateEdit = new QLineEdit(form);
+    m_dateEdit = new QLineEdit(canvas);
     m_dateEdit->setObjectName(QStringLiteral("poDateEdit"));
     m_dateEdit->setPlaceholderText(QStringLiteral("YYYY-MM-DD"));
     m_dateEdit->setText(QDate::currentDate().toString(QStringLiteral("yyyy-MM-dd")));
-    row1->addLayout(makeField(tr("Purchase Date *"), m_dateEdit), 1);
+    m_dateEdit->setFixedHeight(40);
+    row1->addLayout(makeField(tr("Purchase Date *"), m_dateEdit, canvas), 1);
 
-    m_expectedEdit = new QLineEdit(form);
+    m_expectedEdit = new QLineEdit(canvas);
     m_expectedEdit->setObjectName(QStringLiteral("poExpectedEdit"));
     m_expectedEdit->setPlaceholderText(tr("YYYY-MM-DD (optional)"));
-    row1->addLayout(makeField(tr("Expected Delivery"), m_expectedEdit), 1);
+    m_expectedEdit->setFixedHeight(40);
+    row1->addLayout(makeField(tr("Expected Delivery"), m_expectedEdit, canvas), 1);
 
-    formLayout->addLayout(row1);
+    infoCard->addLayout(row1);
 
-    // ── Notes ────────────────────────────────────────────────────────────────
-    m_notesEdit = new QTextEdit(form);
+    m_notesEdit = new QTextEdit(canvas);
     m_notesEdit->setObjectName(QStringLiteral("poNotesEdit"));
-    m_notesEdit->setPlaceholderText(tr("Notes (optional)"));
-    m_notesEdit->setFixedHeight(60);
-    formLayout->addLayout(makeField(tr("Notes"), m_notesEdit));
+    m_notesEdit->setPlaceholderText(tr("Order notes (optional)"));
+    m_notesEdit->setFixedHeight(72);
+    infoCard->addLayout(makeField(tr("Notes"), m_notesEdit, canvas));
 
-    // ── Section: line items ──────────────────────────────────────────────────
-    auto *itemsHeaderDiv = new QFrame(form);
-    itemsHeaderDiv->setFrameShape(QFrame::HLine);
-    itemsHeaderDiv->setObjectName(QStringLiteral("poDivider"));
-    formLayout->addWidget(itemsHeaderDiv);
+    // ── Card 2: Add Product ───────────────────────────────────────────────────
+    auto *addCard = makeCard(tr("ADD PRODUCT LINE"));
 
-    auto *itemsLbl = new QLabel(tr("Line Items"), form);
-    itemsLbl->setObjectName(QStringLiteral("detSectionLabel"));
-    formLayout->addWidget(itemsLbl);
-
-    // Add-product row
     auto *addRow = new QHBoxLayout;
-    addRow->setSpacing(8);
+    addRow->setSpacing(10);
 
-    m_productCombo = new QComboBox(form);
+    m_productCombo = new QComboBox(canvas);
     m_productCombo->setObjectName(QStringLiteral("poProductCombo"));
     m_productCombo->setEditable(true);
     m_productCombo->setInsertPolicy(QComboBox::NoInsert);
-    m_productCombo->setPlaceholderText(tr("Search product…"));
-    m_productCombo->setMinimumWidth(240);
+    m_productCombo->setPlaceholderText(tr("Search and select a product…"));
+    m_productCombo->setFixedHeight(40);
 
-    // Populate from bootstrap data
     for (const ProductCard &p : m_bootstrap.products) {
         m_productCombo->addItem(
-            QStringLiteral("[%1]  %2").arg(p.sku, p.name),
-            p.id);
+            QStringLiteral("[%1]  %2").arg(p.sku, p.name), p.id);
     }
     if (m_productCombo->count() > 0) {
         m_productCombo->setCurrentIndex(-1);
         m_productCombo->clearEditText();
     }
 
-    m_addQtyEdit = new QLineEdit(form);
+    m_addQtyEdit = new QLineEdit(canvas);
     m_addQtyEdit->setObjectName(QStringLiteral("poAddQty"));
     m_addQtyEdit->setPlaceholderText(tr("Qty"));
     m_addQtyEdit->setText(QStringLiteral("1"));
-    m_addQtyEdit->setFixedWidth(72);
+    m_addQtyEdit->setFixedSize(80, 40);
 
-    m_addCostEdit = new QLineEdit(form);
+    m_addCostEdit = new QLineEdit(canvas);
     m_addCostEdit->setObjectName(QStringLiteral("poAddCost"));
     m_addCostEdit->setPlaceholderText(tr("Unit cost"));
     m_addCostEdit->setText(QStringLiteral("0.00"));
-    m_addCostEdit->setFixedWidth(96);
+    m_addCostEdit->setFixedSize(110, 40);
 
-    m_addLineBtn = new QPushButton(tr("＋ Add"), form);
+    m_addLineBtn = new QPushButton(tr("＋  Add Line"), canvas);
     m_addLineBtn->setObjectName(QStringLiteral("poAddLineBtn"));
     m_addLineBtn->setCursor(Qt::PointingHandCursor);
+    m_addLineBtn->setFixedHeight(40);
+    m_addLineBtn->setMinimumWidth(110);
     connect(m_addLineBtn, &QPushButton::clicked, this, &PurchaseOrderFormDialog::onAddLine);
 
     addRow->addWidget(m_productCombo, 1);
     addRow->addWidget(m_addQtyEdit);
     addRow->addWidget(m_addCostEdit);
     addRow->addWidget(m_addLineBtn);
-    formLayout->addLayout(addRow);
+    addCard->addLayout(addRow);
 
-    // Items table
-    m_itemsTable = new QTableWidget(0, 6, form);
+    // ── Card 3: Line items table ──────────────────────────────────────────────
+    auto *tableCard = makeCard(QString());   // no heading label — table fills the card
+
+    m_itemsTable = new QTableWidget(0, 6, canvas);
     m_itemsTable->setObjectName(QStringLiteral("detItemsTable"));
-    m_itemsTable->setHorizontalHeaderLabels({tr("Product"), tr("SKU"), tr("Qty"), tr("Unit Cost"), tr("Total"), tr("")});
+    m_itemsTable->setHorizontalHeaderLabels({tr("Product"), tr("SKU"), tr("Qty"), tr("Unit Cost"), tr("Line Total"), tr("")});
     m_itemsTable->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
     m_itemsTable->horizontalHeader()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
     m_itemsTable->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
     m_itemsTable->horizontalHeader()->setSectionResizeMode(3, QHeaderView::ResizeToContents);
     m_itemsTable->horizontalHeader()->setSectionResizeMode(4, QHeaderView::ResizeToContents);
     m_itemsTable->horizontalHeader()->setSectionResizeMode(5, QHeaderView::Fixed);
-    m_itemsTable->setColumnWidth(5, 36);
+    m_itemsTable->setColumnWidth(5, 38);
     m_itemsTable->verticalHeader()->hide();
     m_itemsTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     m_itemsTable->setSelectionMode(QAbstractItemView::NoSelection);
     m_itemsTable->setAlternatingRowColors(true);
-    m_itemsTable->setMinimumHeight(140);
-    formLayout->addWidget(m_itemsTable);
+    m_itemsTable->setShowGrid(false);
+    m_itemsTable->setMinimumHeight(160);
+    tableCard->addWidget(m_itemsTable);
 
     // Total row
     auto *totalRow = new QHBoxLayout;
     totalRow->addStretch();
-    m_totalLabel = new QLabel(tr("Total:  0.00"), form);
+    m_totalLabel = new QLabel(tr("Order Total:  0.00"), canvas);
     m_totalLabel->setObjectName(QStringLiteral("detTotalLabel"));
     totalRow->addWidget(m_totalLabel);
-    formLayout->addLayout(totalRow);
+    tableCard->addLayout(totalRow);
 
-    scroll->setWidget(form);
+    scroll->setWidget(canvas);
     root->addWidget(scroll, 1);
 
-    // ── Bottom bar ───────────────────────────────────────────────────────────
+    // ── Bottom bar ────────────────────────────────────────────────────────────
     auto *divBottom = new QFrame(this);
     divBottom->setFrameShape(QFrame::HLine);
     divBottom->setObjectName(QStringLiteral("poDivider"));
@@ -196,20 +212,27 @@ void PurchaseOrderFormDialog::buildUi()
     auto *bottomBar = new QWidget(this);
     bottomBar->setObjectName(QStringLiteral("poBottomBar"));
     auto *bottomLayout = new QHBoxLayout(bottomBar);
-    bottomLayout->setContentsMargins(20, 10, 20, 10);
+    bottomLayout->setContentsMargins(20, 12, 20, 12);
+    bottomLayout->setSpacing(10);
 
     auto *cancelBtn = new QPushButton(tr("Cancel"), bottomBar);
     cancelBtn->setObjectName(QStringLiteral("poCloseBtn"));
+    cancelBtn->setFixedHeight(40);
+    cancelBtn->setMinimumWidth(90);
     connect(cancelBtn, &QPushButton::clicked, this, &QDialog::reject);
 
     m_saveDraftBtn = new QPushButton(tr("Save as Draft"), bottomBar);
     m_saveDraftBtn->setObjectName(QStringLiteral("poSaveDraftBtn"));
     m_saveDraftBtn->setCursor(Qt::PointingHandCursor);
+    m_saveDraftBtn->setFixedHeight(40);
+    m_saveDraftBtn->setMinimumWidth(130);
     connect(m_saveDraftBtn, &QPushButton::clicked, this, &PurchaseOrderFormDialog::onSaveDraft);
 
-    m_placeOrderBtn = new QPushButton(tr("Save & Place Order"), bottomBar);
+    m_placeOrderBtn = new QPushButton(tr("↑  Save & Place Order"), bottomBar);
     m_placeOrderBtn->setObjectName(QStringLiteral("poPlaceBtn"));
     m_placeOrderBtn->setCursor(Qt::PointingHandCursor);
+    m_placeOrderBtn->setFixedHeight(40);
+    m_placeOrderBtn->setMinimumWidth(160);
     m_placeOrderBtn->setDefault(true);
     connect(m_placeOrderBtn, &QPushButton::clicked, this, &PurchaseOrderFormDialog::onPlaceOrder);
 
@@ -232,9 +255,7 @@ void PurchaseOrderFormDialog::loadSuppliers()
                 m_supplierCombo->addItem(s.name, s.id);
             }
         },
-        [](const QString &, int) {
-            // Non-fatal: supplier list just stays empty
-        });
+        [](const QString &, int) { /* non-fatal */ });
 }
 
 void PurchaseOrderFormDialog::onAddLine()
@@ -244,7 +265,6 @@ void PurchaseOrderFormDialog::onAddLine()
         QMessageBox::information(this, tr("Select Product"), tr("Please select a product first."));
         return;
     }
-
     const int productId = m_productCombo->currentData().toInt();
     const ProductCard *found = nullptr;
     for (const ProductCard &p : m_bootstrap.products) {
@@ -254,7 +274,6 @@ void PurchaseOrderFormDialog::onAddLine()
 
     const double qty  = m_addQtyEdit->text().toDouble();
     const double cost = m_addCostEdit->text().toDouble();
-
     if (qty <= 0.0) {
         QMessageBox::information(this, tr("Invalid Quantity"), tr("Quantity must be greater than zero."));
         return;
@@ -262,7 +281,6 @@ void PurchaseOrderFormDialog::onAddLine()
 
     addProductRow(*found, qty, cost);
     recalcTotal();
-
     m_productCombo->setCurrentIndex(-1);
     m_productCombo->clearEditText();
     m_addQtyEdit->setText(QStringLiteral("1"));
@@ -273,6 +291,7 @@ void PurchaseOrderFormDialog::addProductRow(const ProductCard &product, double q
 {
     const int row = m_itemsTable->rowCount();
     m_itemsTable->insertRow(row);
+    m_itemsTable->setRowHeight(row, 38);
 
     m_itemsTable->setItem(row, 0, new QTableWidgetItem(product.name));
     m_itemsTable->setItem(row, 1, new QTableWidgetItem(product.sku));
@@ -285,12 +304,10 @@ void PurchaseOrderFormDialog::addProductRow(const ProductCard &product, double q
     costItem->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
     m_itemsTable->setItem(row, 3, costItem);
 
-    const double lineTotal = qty * unitCost;
-    auto *totalItem = new QTableWidgetItem(money(lineTotal));
+    auto *totalItem = new QTableWidgetItem(money(qty * unitCost));
     totalItem->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
     m_itemsTable->setItem(row, 4, totalItem);
 
-    // Store product id + raw values in column 0 user role for payload building
     m_itemsTable->item(row, 0)->setData(Qt::UserRole, product.id);
     m_itemsTable->item(row, 2)->setData(Qt::UserRole, qty);
     m_itemsTable->item(row, 3)->setData(Qt::UserRole, unitCost);
@@ -308,7 +325,6 @@ void PurchaseOrderFormDialog::addProductRow(const ProductCard &product, double q
         }
     });
     m_itemsTable->setCellWidget(row, 5, delBtn);
-    m_itemsTable->setRowHeight(row, 36);
 }
 
 void PurchaseOrderFormDialog::onRemoveLine(int row)
@@ -321,34 +337,23 @@ void PurchaseOrderFormDialog::recalcTotal()
 {
     double total = 0.0;
     for (int r = 0; r < m_itemsTable->rowCount(); ++r) {
-        const double qty  = m_itemsTable->item(r, 2)->data(Qt::UserRole).toDouble();
-        const double cost = m_itemsTable->item(r, 3)->data(Qt::UserRole).toDouble();
-        total += qty * cost;
+        total += m_itemsTable->item(r, 2)->data(Qt::UserRole).toDouble()
+               * m_itemsTable->item(r, 3)->data(Qt::UserRole).toDouble();
     }
-    m_totalLabel->setText(tr("Total:  %1").arg(money(total)));
+    m_totalLabel->setText(tr("Order Total:  %1").arg(money(total)));
 }
 
 QJsonObject PurchaseOrderFormDialog::buildPayload(const QString &status) const
 {
     QJsonObject payload;
-
     const int supplierId = m_supplierCombo->currentData().toInt();
-    if (supplierId > 0) {
-        payload.insert(QStringLiteral("supplier_id"), supplierId);
-    }
-
+    if (supplierId > 0) payload.insert(QStringLiteral("supplier_id"), supplierId);
     payload.insert(QStringLiteral("purchase_date"), m_dateEdit->text().trimmed());
     payload.insert(QStringLiteral("status"), status);
-
     const QString expected = m_expectedEdit->text().trimmed();
-    if (!expected.isEmpty()) {
-        payload.insert(QStringLiteral("expected_delivery_date"), expected);
-    }
-
+    if (!expected.isEmpty()) payload.insert(QStringLiteral("expected_delivery_date"), expected);
     const QString notes = m_notesEdit->toPlainText().trimmed();
-    if (!notes.isEmpty()) {
-        payload.insert(QStringLiteral("notes"), notes);
-    }
+    if (!notes.isEmpty()) payload.insert(QStringLiteral("notes"), notes);
 
     QJsonArray items;
     for (int r = 0; r < m_itemsTable->rowCount(); ++r) {
@@ -359,7 +364,6 @@ QJsonObject PurchaseOrderFormDialog::buildPayload(const QString &status) const
         items.append(item);
     }
     payload.insert(QStringLiteral("items"), items);
-
     return payload;
 }
 
@@ -379,9 +383,7 @@ void PurchaseOrderFormDialog::submit(const QString &status, QPushButton *btn)
     m_placeOrderBtn->setEnabled(false);
 
     m_api->createPurchaseOrder(buildPayload(status),
-        [this](const QJsonObject &) {
-            accept();
-        },
+        [this](const QJsonObject &) { accept(); },
         [this](const QString &msg, int) {
             QMessageBox::warning(this, tr("Error"), msg);
             m_saveDraftBtn->setEnabled(true);
@@ -389,15 +391,8 @@ void PurchaseOrderFormDialog::submit(const QString &status, QPushButton *btn)
         });
 }
 
-void PurchaseOrderFormDialog::onSaveDraft()
-{
-    submit(QStringLiteral("draft"), m_saveDraftBtn);
-}
-
-void PurchaseOrderFormDialog::onPlaceOrder()
-{
-    submit(QStringLiteral("ordered"), m_placeOrderBtn);
-}
+void PurchaseOrderFormDialog::onSaveDraft()  { submit(QStringLiteral("draft"),   m_saveDraftBtn);  }
+void PurchaseOrderFormDialog::onPlaceOrder() { submit(QStringLiteral("ordered"), m_placeOrderBtn); }
 
 QString PurchaseOrderFormDialog::money(double v) const
 {

@@ -3,10 +3,10 @@
 #include "core/ApiClient.h"
 #include "core/Models.h"
 
+#include <QButtonGroup>
 #include <QDialog>
 #include <QVector>
 
-class QComboBox;
 class QLabel;
 class QListWidget;
 class QListWidgetItem;
@@ -26,7 +26,7 @@ public:
                                  QWidget *parent = nullptr);
 
 private slots:
-    void onFilterChanged();
+    void onFilterClicked();
     void onListItemClicked(QListWidgetItem *item);
     void onNewPo();
     void onPlaceOrder();
@@ -41,21 +41,25 @@ private:
     void showDetail(const PurchaseOrder &po);
     void showDetailPlaceholder();
     void setDetailButtons(const PurchaseOrder &po);
-    QString statusBadge(const PurchaseOrder &po) const;
+    void syncFilterButtons();
+    QString statusLabel(const PurchaseOrder &po) const;
     QString money(double v) const;
 
     ApiClient    *m_api = nullptr;
     BootstrapData m_bootstrap;
 
     QVector<PurchaseOrder> m_orders;
-    int m_selectedPoId = 0;
+    int m_selectedPoId   = 0;
+    QString m_activeFilter = QStringLiteral("all");
     PurchaseOrder m_selectedPo;
 
+    // Filter pills
+    QButtonGroup *m_filterGroup = nullptr;
+
     // Left panel
-    QComboBox    *m_filterCombo  = nullptr;
-    QListWidget  *m_list         = nullptr;
-    QPushButton  *m_newPoBtn     = nullptr;
-    QPushButton  *m_refreshBtn   = nullptr;
+    QListWidget  *m_list        = nullptr;
+    QPushButton  *m_newPoBtn    = nullptr;
+    QPushButton  *m_refreshBtn  = nullptr;
 
     // Right panel
     QStackedWidget *m_stack         = nullptr;
