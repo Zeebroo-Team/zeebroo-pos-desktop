@@ -26,6 +26,8 @@ qt_add_executable(ZeebrooPosDesktop
     src/ui/CartLineWidget.cpp
     src/ui/LayerPickerDialog.cpp
     src/ui/ReceiptDialog.cpp
+    src/ui/PurchaseOrderDialog.cpp
+    src/ui/PurchaseOrderFormDialog.cpp
     resources/resources.qrc
 )
 

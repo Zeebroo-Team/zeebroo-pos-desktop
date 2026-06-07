@@ -1,5 +1,6 @@
 #include "ui/MainWindow.h"
 #include "ui/PosSessionWidget.h"
+#include "ui/PurchaseOrderDialog.h"
 
 #include <QAction>
 #include <QApplication>
@@ -195,6 +196,14 @@ void MainWindow::buildMenuBar()
 
     posMenu->addSeparator();
 
+    auto *actPurchaseOrders = new QAction(tr("Purchase Orders…"), this);
+    actPurchaseOrders->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_P));
+    actPurchaseOrders->setStatusTip(tr("View and manage purchase orders"));
+    connect(actPurchaseOrders, &QAction::triggered, this, &MainWindow::openPurchaseOrders);
+    posMenu->addAction(actPurchaseOrders);
+
+    posMenu->addSeparator();
+
     auto *actClearCart = new QAction(tr("Clear Cart"), this);
     actClearCart->setShortcut(QKeySequence(Qt::Key_F8));
     actClearCart->setStatusTip(tr("Remove all items from the current cart"));
@@ -313,6 +322,16 @@ void MainWindow::updateTabTitle(int index, PosSessionWidget *session)
     const int count = session->cartItemCount();
     const QString base = tr("Session %1").arg(session->sessionNumber());
     m_tabs->setTabText(index, count > 0 ? tr("%1  (%2)").arg(base).arg(count) : base);
+}
+
+void MainWindow::openPurchaseOrders()
+{
+    PosSessionWidget *session = currentSession();
+    if (!session) return;
+
+    auto *dlg = new PurchaseOrderDialog(m_api, session->bootstrap(), this);
+    dlg->setAttribute(Qt::WA_DeleteOnClose);
+    dlg->exec();
 }
 
 } // namespace pos

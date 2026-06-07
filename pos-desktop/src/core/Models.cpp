@@ -128,6 +128,52 @@ BootstrapData BootstrapData::fromJson(const QJsonObject &data)
     return b;
 }
 
+Supplier Supplier::fromJson(const QJsonObject &o)
+{
+    Supplier s;
+    s.id          = o.value(QStringLiteral("id")).toInt();
+    s.name        = o.value(QStringLiteral("name")).toString();
+    s.contactName = o.value(QStringLiteral("contact_name")).toString();
+    s.email       = o.value(QStringLiteral("email")).toString();
+    s.phone       = o.value(QStringLiteral("phone")).toString();
+    return s;
+}
+
+PurchaseOrderItem PurchaseOrderItem::fromJson(const QJsonObject &o)
+{
+    PurchaseOrderItem i;
+    i.id          = o.value(QStringLiteral("id")).toInt();
+    i.productId   = o.value(QStringLiteral("product_id")).toInt();
+    i.productName = o.value(QStringLiteral("product_name")).toString();
+    i.sku         = o.value(QStringLiteral("sku")).toString();
+    i.quantity    = o.value(QStringLiteral("quantity")).toDouble();
+    i.unitCost    = o.value(QStringLiteral("unit_cost")).toDouble();
+    i.lineTotal   = o.value(QStringLiteral("line_total")).toDouble();
+    return i;
+}
+
+PurchaseOrder PurchaseOrder::fromJson(const QJsonObject &o)
+{
+    PurchaseOrder p;
+    p.id                   = o.value(QStringLiteral("id")).toInt();
+    p.poNumber             = o.value(QStringLiteral("po_number")).toString();
+    p.status               = o.value(QStringLiteral("status")).toString();
+    p.statusLabel          = o.value(QStringLiteral("status_label")).toString();
+    p.supplierId           = o.value(QStringLiteral("supplier_id")).toInt();
+    p.supplierName         = o.value(QStringLiteral("supplier_name")).toString();
+    p.purchaseDate         = o.value(QStringLiteral("purchase_date")).toString();
+    p.expectedDeliveryDate = o.value(QStringLiteral("expected_delivery_date")).toString();
+    p.notes                = o.value(QStringLiteral("notes")).toString();
+    p.subtotal             = o.value(QStringLiteral("subtotal")).toDouble();
+    p.total                = o.value(QStringLiteral("total")).toDouble();
+    p.itemsCount           = o.value(QStringLiteral("items_count")).toInt();
+    const QJsonArray items = o.value(QStringLiteral("items")).toArray();
+    for (const QJsonValue &v : items) {
+        p.items.append(PurchaseOrderItem::fromJson(v.toObject()));
+    }
+    return p;
+}
+
 SaleListItem SaleListItem::fromJson(const QJsonObject &o)
 {
     SaleListItem s;

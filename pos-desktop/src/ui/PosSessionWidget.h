@@ -30,6 +30,7 @@ public:
     int sessionNumber() const { return m_sessionNumber; }
     int cartItemCount() const { return m_cart.lines().size(); }
     QString currency() const  { return m_bootstrap.currency; }
+    const BootstrapData &bootstrap() const { return m_bootstrap; }
 
     // Called by MainWindow keyboard shortcuts
     void focusSearch();

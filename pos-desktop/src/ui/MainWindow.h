@@ -21,6 +21,7 @@ private slots:
     void addNewSession();
     void closeSession(int index);
     void showKeyboardShortcuts();
+    void openPurchaseOrders();
 
 private:
     void buildMenuBar();

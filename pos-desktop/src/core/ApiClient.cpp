@@ -194,4 +194,53 @@ void ApiClient::processReturn(int saleId, const QJsonObject &body, SuccessFn onO
     sendJson(req, QJsonDocument(body).toJson(), QStringLiteral("POST"), onOk, onErr);
 }
 
+void ApiClient::fetchSuppliers(SuccessFn onOk, ErrorFn onErr)
+{
+    QNetworkRequest req = buildRequest(QStringLiteral("/suppliers"));
+    sendGet(req, onOk, onErr);
+}
+
+void ApiClient::fetchPurchaseOrders(const QString &status, SuccessFn onOk, ErrorFn onErr)
+{
+    QUrlQuery q;
+    if (!status.isEmpty() && status != QStringLiteral("all")) {
+        q.addQueryItem(QStringLiteral("status"), status);
+    }
+    QNetworkRequest req = buildRequest(QStringLiteral("/purchase-orders"), q.isEmpty() ? nullptr : &q);
+    sendGet(req, onOk, onErr);
+}
+
+void ApiClient::fetchPurchaseOrder(int id, SuccessFn onOk, ErrorFn onErr)
+{
+    QNetworkRequest req = buildRequest(QStringLiteral("/purchase-orders/") + QString::number(id));
+    sendGet(req, onOk, onErr);
+}
+
+void ApiClient::createPurchaseOrder(const QJsonObject &body, SuccessFn onOk, ErrorFn onErr)
+{
+    QNetworkRequest req = buildRequest(QStringLiteral("/purchase-orders"));
+    sendJson(req, QJsonDocument(body).toJson(), QStringLiteral("POST"), onOk, onErr);
+}
+
+void ApiClient::placePurchaseOrder(int id, SuccessFn onOk, ErrorFn onErr)
+{
+    const QString path = QStringLiteral("/purchase-orders/") + QString::number(id) + QStringLiteral("/place");
+    QNetworkRequest req = buildRequest(path);
+    sendJson(req, QByteArray("{}"), QStringLiteral("POST"), onOk, onErr);
+}
+
+void ApiClient::receivePurchaseOrder(int id, SuccessFn onOk, ErrorFn onErr)
+{
+    const QString path = QStringLiteral("/purchase-orders/") + QString::number(id) + QStringLiteral("/receive");
+    QNetworkRequest req = buildRequest(path);
+    sendJson(req, QByteArray("{}"), QStringLiteral("POST"), onOk, onErr);
+}
+
+void ApiClient::cancelPurchaseOrder(int id, SuccessFn onOk, ErrorFn onErr)
+{
+    const QString path = QStringLiteral("/purchase-orders/") + QString::number(id) + QStringLiteral("/cancel");
+    QNetworkRequest req = buildRequest(path);
+    sendJson(req, QByteArray("{}"), QStringLiteral("POST"), onOk, onErr);
+}
+
 } // namespace pos

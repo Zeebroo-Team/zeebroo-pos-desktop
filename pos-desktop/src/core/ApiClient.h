@@ -32,6 +32,14 @@ public:
     void fetchSale(int saleId, SuccessFn onOk, ErrorFn onErr);
     void processReturn(int saleId, const QJsonObject &body, SuccessFn onOk, ErrorFn onErr);
 
+    void fetchSuppliers(SuccessFn onOk, ErrorFn onErr);
+    void fetchPurchaseOrders(const QString &status, SuccessFn onOk, ErrorFn onErr);
+    void fetchPurchaseOrder(int id, SuccessFn onOk, ErrorFn onErr);
+    void createPurchaseOrder(const QJsonObject &body, SuccessFn onOk, ErrorFn onErr);
+    void placePurchaseOrder(int id, SuccessFn onOk, ErrorFn onErr);
+    void receivePurchaseOrder(int id, SuccessFn onOk, ErrorFn onErr);
+    void cancelPurchaseOrder(int id, SuccessFn onOk, ErrorFn onErr);
+
 signals:
     void unauthorized();
 

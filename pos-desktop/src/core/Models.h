@@ -86,6 +86,57 @@ struct BootstrapData {
     static BootstrapData fromJson(const QJsonObject &data);
 };
 
+// ── Purchase Order models ────────────────────────────────────────────────────
+
+struct Supplier {
+    int     id = 0;
+    QString name;
+    QString contactName;
+    QString email;
+    QString phone;
+
+    static Supplier fromJson(const QJsonObject &o);
+};
+
+struct PurchaseOrderItem {
+    int     id          = 0;
+    int     productId   = 0;
+    QString productName;
+    QString sku;
+    double  quantity    = 0.0;
+    double  unitCost    = 0.0;
+    double  lineTotal   = 0.0;
+
+    static PurchaseOrderItem fromJson(const QJsonObject &o);
+};
+
+struct PurchaseOrder {
+    int     id           = 0;
+    QString poNumber;
+    QString status;
+    QString statusLabel;
+    int     supplierId   = 0;
+    QString supplierName;
+    QString purchaseDate;
+    QString expectedDeliveryDate;
+    QString notes;
+    double  subtotal     = 0.0;
+    double  total        = 0.0;
+    int     itemsCount   = 0;
+    QVector<PurchaseOrderItem> items;
+
+    bool isDraft()             const { return status == QStringLiteral("draft"); }
+    bool isOrdered()           const { return status == QStringLiteral("ordered"); }
+    bool isPartiallyReceived() const { return status == QStringLiteral("partially_received"); }
+    bool isReceived()          const { return status == QStringLiteral("received"); }
+    bool isCancelled()         const { return status == QStringLiteral("cancelled"); }
+    bool canPlaceOrder()       const { return isDraft(); }
+    bool canReceive()          const { return !isCancelled() && !isReceived(); }
+    bool canCancel()           const { return isDraft() || isOrdered(); }
+
+    static PurchaseOrder fromJson(const QJsonObject &o);
+};
+
 // ── Sale / Return models ─────────────────────────────────────────────────────
 
 struct SaleListItem {
