@@ -56,7 +56,7 @@ void AddSupplierDialog::buildUi()
         field = new QLineEdit(card);
         field->setObjectName(QStringLiteral("supplierFormField"));
         field->setPlaceholderText(placeholder);
-        field->setFixedHeight(40);
+        field->setFixedHeight(32);
         col->addWidget(lbl);
         col->addWidget(field);
         cardLayout->addLayout(col);
@@ -89,14 +89,14 @@ void AddSupplierDialog::buildUi()
 
     auto *cancelBtn = new QPushButton(tr("Cancel"), bar);
     cancelBtn->setObjectName(QStringLiteral("poCloseBtn"));
-    cancelBtn->setFixedHeight(40);
-    cancelBtn->setMinimumWidth(90);
+    cancelBtn->setFixedHeight(32);
+    cancelBtn->setMinimumWidth(80);
     connect(cancelBtn, &QPushButton::clicked, this, &QDialog::reject);
 
     m_saveBtn = new QPushButton(tr("Add Supplier"), bar);
     m_saveBtn->setObjectName(QStringLiteral("poPlaceBtn"));
-    m_saveBtn->setFixedHeight(40);
-    m_saveBtn->setMinimumWidth(130);
+    m_saveBtn->setFixedHeight(32);
+    m_saveBtn->setMinimumWidth(110);
     m_saveBtn->setDefault(true);
     m_saveBtn->setCursor(Qt::PointingHandCursor);
     connect(m_saveBtn, &QPushButton::clicked, this, &AddSupplierDialog::onSave);

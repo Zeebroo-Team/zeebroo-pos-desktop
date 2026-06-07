@@ -1637,18 +1637,18 @@ QLineEdit:hover, QTextEdit:hover, QDoubleSpinBox:hover {
 #poGradientHeader {
     background: #ffffff;
     border-bottom: 1px solid #e8ecf5;
-    min-height: 90px;
+    min-height: 64px;
 }
 
 #poHeaderTitle {
-    font-size: 20px;
+    font-size: 15px;
     font-weight: 800;
     color: #0f172a;
-    letter-spacing: -0.3px;
+    letter-spacing: -0.2px;
 }
 
 #poHeaderSubtitle {
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 400;
     color: #64748b;
 }
@@ -1657,11 +1657,11 @@ QLineEdit:hover, QTextEdit:hover, QDoubleSpinBox:hover {
 #poHeaderRefreshBtn {
     background: #f8fafc;
     border: 1.5px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 0 14px;
+    border-radius: 6px;
+    padding: 0 10px;
     color: #475569;
     font-weight: 600;
-    font-size: 13px;
+    font-size: 12px;
 }
 #poHeaderRefreshBtn:hover {
     background: #f1f5f9;
@@ -1681,11 +1681,11 @@ QLineEdit:hover, QTextEdit:hover, QDoubleSpinBox:hover {
     background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
                                 stop:0 #6366f1, stop:1 #4338ca);
     border: none;
-    border-radius: 8px;
-    padding: 0 18px;
+    border-radius: 6px;
+    padding: 0 14px;
     color: #ffffff;
     font-weight: 800;
-    font-size: 13px;
+    font-size: 12px;
 }
 #poHeaderNewBtn:hover {
     background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
@@ -1699,10 +1699,10 @@ QLineEdit:hover, QTextEdit:hover, QDoubleSpinBox:hover {
 #poFilterPill {
     background: #f1f5f9;
     border: 1.5px solid #e2e8f0;
-    border-radius: 15px;
-    padding: 0 14px;
+    border-radius: 11px;
+    padding: 0 10px;
     color: #64748b;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 600;
 }
 #poFilterPill:hover {
@@ -1721,7 +1721,7 @@ QLineEdit:hover, QTextEdit:hover, QDoubleSpinBox:hover {
 #poListPanel {
     background: #f8fafc;
     border-right: 1px solid #e2e8f0;
-    min-width: 300px;
+    min-width: 220px;
 }
 
 #poList {
@@ -1756,7 +1756,7 @@ QLineEdit:hover, QTextEdit:hover, QDoubleSpinBox:hover {
 }
 
 #poListPoNum {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 800;
     color: #0f172a;
 }
@@ -1766,18 +1766,18 @@ QLineEdit:hover, QTextEdit:hover, QDoubleSpinBox:hover {
 }
 
 #poListSupplier {
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 500;
     color: #475569;
 }
 
 #poListDate {
-    font-size: 11px;
+    font-size: 10px;
     color: #94a3b8;
 }
 
 #poListAmount {
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 700;
     color: #1e293b;
 }
@@ -1802,14 +1802,14 @@ QLineEdit:hover, QTextEdit:hover, QDoubleSpinBox:hover {
     background: #f0f2f7;
 }
 #poPlaceholderIcon {
-    font-size: 48px;
+    font-size: 36px;
     color: #cbd5e1;
 }
 #poPlaceholderLabel {
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 500;
     color: #94a3b8;
-    margin-top: 8px;
+    margin-top: 6px;
 }
 
 /* White detail cards */
@@ -1821,40 +1821,40 @@ QLineEdit:hover, QTextEdit:hover, QDoubleSpinBox:hover {
 
 /* PO number */
 #detPoNumber {
-    font-size: 20px;
+    font-size: 15px;
     font-weight: 900;
     color: #0f172a;
-    letter-spacing: -0.5px;
+    letter-spacing: -0.3px;
 }
 
 /* Status badge — inline style applied from C++ per status */
 #detStatusBadge {
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 800;
-    border-radius: 10px;
-    padding: 3px 12px;
+    border-radius: 8px;
+    padding: 2px 9px;
 }
 
 /* Meta keys / values */
 #detMetaKey {
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 700;
     color: #94a3b8;
-    letter-spacing: 0.8px;
+    letter-spacing: 0.6px;
 }
 
 #detMetaVal {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
     color: #1e293b;
 }
 
 /* Section labels */
 #detSectionLabel {
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 800;
     color: #94a3b8;
-    letter-spacing: 1px;
+    letter-spacing: 0.8px;
 }
 
 /* Items table */
@@ -1874,12 +1874,12 @@ QLineEdit:hover, QTextEdit:hover, QDoubleSpinBox:hover {
 #detItemsTable QHeaderView::section {
     background: #f8fafc;
     color: #94a3b8;
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 800;
     border: none;
     border-bottom: 2px solid #eef0f6;
-    padding: 8px 10px;
-    letter-spacing: 0.6px;
+    padding: 5px 8px;
+    letter-spacing: 0.5px;
 }
 
 #detItemsTable QHeaderView::section:first {
@@ -1892,10 +1892,10 @@ QLineEdit:hover, QTextEdit:hover, QDoubleSpinBox:hover {
 
 /* Total label */
 #detTotalLabel {
-    font-size: 15px;
+    font-size: 13px;
     font-weight: 900;
     color: #0f172a;
-    letter-spacing: -0.2px;
+    letter-spacing: -0.1px;
 }
 
 /* ── Action bar ──────────────────────────────────────────────────── */
@@ -1912,9 +1912,9 @@ QLineEdit:hover, QTextEdit:hover, QDoubleSpinBox:hover {
     color: #ffffff;
     border: none;
     border-radius: 8px;
-    padding: 0 22px;
+    padding: 0 16px;
     font-weight: 800;
-    font-size: 13px;
+    font-size: 12px;
     letter-spacing: 0.1px;
 }
 #poPlaceBtn:hover {
@@ -1931,9 +1931,9 @@ QLineEdit:hover, QTextEdit:hover, QDoubleSpinBox:hover {
     color: #ffffff;
     border: none;
     border-radius: 8px;
-    padding: 0 22px;
+    padding: 0 16px;
     font-weight: 800;
-    font-size: 13px;
+    font-size: 12px;
 }
 #poReceiveBtn:hover {
     background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
@@ -1948,9 +1948,9 @@ QLineEdit:hover, QTextEdit:hover, QDoubleSpinBox:hover {
     border: 1.5px solid #fca5a5;
     color: #ef4444;
     border-radius: 8px;
-    padding: 0 22px;
+    padding: 0 16px;
     font-weight: 700;
-    font-size: 13px;
+    font-size: 12px;
 }
 #poCancelPoBtn:hover {
     background: #fef2f2;
@@ -1970,10 +1970,10 @@ QLineEdit:hover, QTextEdit:hover, QDoubleSpinBox:hover {
     background: #f8fafc;
     border: 1.5px solid #e2e8f0;
     border-radius: 8px;
-    padding: 0 22px;
+    padding: 0 16px;
     color: #475569;
     font-weight: 700;
-    font-size: 13px;
+    font-size: 12px;
 }
 #poCloseBtn:hover {
     background: #f1f5f9;
@@ -2001,20 +2001,20 @@ QLineEdit:hover, QTextEdit:hover, QDoubleSpinBox:hover {
 }
 
 #poFormLabel {
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 800;
     color: #64748b;
-    letter-spacing: 0.8px;
+    letter-spacing: 0.6px;
 }
 
 /* Supplier / date / expected fields */
 #poSupplierCombo, #poDateEdit, #poExpectedEdit {
     background: #ffffff;
     border: 1.5px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 0 12px;
+    border-radius: 7px;
+    padding: 0 10px;
     color: #1e293b;
-    font-size: 13px;
+    font-size: 12px;
     selection-background-color: #c7d2fe;
 }
 #poSupplierCombo:focus, #poDateEdit:focus, #poExpectedEdit:focus {
@@ -2029,10 +2029,10 @@ QLineEdit:hover, QTextEdit:hover, QDoubleSpinBox:hover {
 #poNotesEdit {
     background: #ffffff;
     border: 1.5px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 8px 12px;
+    border-radius: 7px;
+    padding: 6px 10px;
     color: #1e293b;
-    font-size: 13px;
+    font-size: 12px;
 }
 #poNotesEdit:focus {
     border-color: #6366f1;
@@ -2043,10 +2043,10 @@ QLineEdit:hover, QTextEdit:hover, QDoubleSpinBox:hover {
 #poProductCombo {
     background: #ffffff;
     border: 1.5px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 0 12px;
+    border-radius: 7px;
+    padding: 0 10px;
     color: #1e293b;
-    font-size: 13px;
+    font-size: 12px;
 }
 #poProductCombo:focus { border-color: #6366f1; background: #fafbff; }
 #poProductCombo:hover { border-color: #c7d2fe; }
@@ -2055,10 +2055,10 @@ QLineEdit:hover, QTextEdit:hover, QDoubleSpinBox:hover {
 #poAddQty, #poAddCost {
     background: #ffffff;
     border: 1.5px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 0 10px;
+    border-radius: 7px;
+    padding: 0 8px;
     color: #1e293b;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
 }
 #poAddQty:focus, #poAddCost:focus {
@@ -2070,9 +2070,9 @@ QLineEdit:hover, QTextEdit:hover, QDoubleSpinBox:hover {
 #poAddSupplierBtn {
     background: #f1f5f9;
     border: 1.5px solid #e2e8f0;
-    border-radius: 8px;
+    border-radius: 7px;
     color: #6366f1;
-    font-size: 20px;
+    font-size: 16px;
     font-weight: 900;
 }
 #poAddSupplierBtn:hover {
@@ -2088,10 +2088,10 @@ QLineEdit:hover, QTextEdit:hover, QDoubleSpinBox:hover {
 #supplierFormField {
     background: #ffffff;
     border: 1.5px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 0 12px;
+    border-radius: 7px;
+    padding: 0 10px;
     color: #1e293b;
-    font-size: 13px;
+    font-size: 12px;
 }
 #supplierFormField:focus {
     border-color: #6366f1;
@@ -2106,11 +2106,11 @@ QLineEdit:hover, QTextEdit:hover, QDoubleSpinBox:hover {
     background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
                                 stop:0 #6366f1, stop:1 #4338ca);
     border: none;
-    border-radius: 8px;
-    padding: 0 18px;
+    border-radius: 7px;
+    padding: 0 14px;
     color: #ffffff;
     font-weight: 800;
-    font-size: 13px;
+    font-size: 12px;
 }
 #poAddLineBtn:hover {
     background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
@@ -2123,10 +2123,10 @@ QLineEdit:hover, QTextEdit:hover, QDoubleSpinBox:hover {
     background: #ffffff;
     border: 1.5px solid #e2e8f0;
     border-radius: 8px;
-    padding: 0 22px;
+    padding: 0 16px;
     color: #475569;
     font-weight: 700;
-    font-size: 13px;
+    font-size: 12px;
 }
 #poSaveDraftBtn:hover {
     background: #f8fafc;
@@ -2141,9 +2141,9 @@ QLineEdit:hover, QTextEdit:hover, QDoubleSpinBox:hover {
     background: transparent;
     border: none;
     color: #cbd5e1;
-    font-size: 16px;
+    font-size: 13px;
     font-weight: 900;
-    border-radius: 5px;
+    border-radius: 4px;
 }
 #poDelLineBtn:hover {
     background: #fef2f2;

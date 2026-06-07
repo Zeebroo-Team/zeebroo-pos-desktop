@@ -49,8 +49,8 @@ PurchaseOrderDialog::PurchaseOrderDialog(ApiClient *api, const BootstrapData &bo
     , m_bootstrap(bootstrap)
 {
     setWindowTitle(tr("Purchase Orders"));
-    setMinimumSize(1000, 640);
-    resize(1160, 720);
+    setMinimumSize(820, 500);
+    resize(960, 580);
     setObjectName(QStringLiteral("purchaseOrderDialog"));
     buildUi();
     refreshList();
@@ -68,7 +68,7 @@ void PurchaseOrderDialog::buildUi()
     auto *headerBar = new QWidget(this);
     headerBar->setObjectName(QStringLiteral("poGradientHeader"));
     auto *headerLayout = new QVBoxLayout(headerBar);
-    headerLayout->setContentsMargins(20, 16, 20, 0);
+    headerLayout->setContentsMargins(16, 10, 16, 0);
     headerLayout->setSpacing(0);
 
     // Top row: title + buttons
@@ -87,20 +87,20 @@ void PurchaseOrderDialog::buildUi()
     m_refreshBtn = new QPushButton(tr("⟳  Refresh"), headerBar);
     m_refreshBtn->setObjectName(QStringLiteral("poHeaderRefreshBtn"));
     m_refreshBtn->setCursor(Qt::PointingHandCursor);
-    m_refreshBtn->setFixedHeight(36);
+    m_refreshBtn->setFixedHeight(30);
     connect(m_refreshBtn, &QPushButton::clicked, this, &PurchaseOrderDialog::refreshList);
 
     m_newPoBtn = new QPushButton(tr("＋  New Purchase Order"), headerBar);
     m_newPoBtn->setObjectName(QStringLiteral("poHeaderNewBtn"));
     m_newPoBtn->setCursor(Qt::PointingHandCursor);
-    m_newPoBtn->setFixedHeight(36);
+    m_newPoBtn->setFixedHeight(30);
     connect(m_newPoBtn, &QPushButton::clicked, this, &PurchaseOrderDialog::onNewPo);
 
     topRow->addLayout(titleCol, 1);
     topRow->addWidget(m_refreshBtn);
     topRow->addWidget(m_newPoBtn);
     headerLayout->addLayout(topRow);
-    headerLayout->addSpacing(12);
+    headerLayout->addSpacing(8);
 
     // Filter pill row
     auto *pillRow = new QHBoxLayout;
@@ -124,7 +124,7 @@ void PurchaseOrderDialog::buildUi()
         btn->setObjectName(QStringLiteral("poFilterPill"));
         btn->setCheckable(true);
         btn->setCursor(Qt::PointingHandCursor);
-        btn->setFixedHeight(30);
+        btn->setFixedHeight(24);
         btn->setProperty("filterValue", value);
         if (value == QStringLiteral("all")) btn->setChecked(true);
         connect(btn, &QPushButton::clicked, this, &PurchaseOrderDialog::onFilterClicked);
@@ -208,15 +208,15 @@ void PurchaseOrderDialog::buildUi()
     detailScroll->setObjectName(QStringLiteral("poDetailScroll"));
 
     auto *detailLayout = new QVBoxLayout(detailPage);
-    detailLayout->setContentsMargins(20, 20, 20, 20);
-    detailLayout->setSpacing(14);
+    detailLayout->setContentsMargins(14, 14, 14, 14);
+    detailLayout->setSpacing(10);
 
     // ── PO summary card ──────────────────────────────────────────────────────
     auto *summaryCard = new QFrame(detailPage);
     summaryCard->setObjectName(QStringLiteral("poDetailCard"));
     auto *summaryLayout = new QVBoxLayout(summaryCard);
-    summaryLayout->setContentsMargins(16, 14, 16, 14);
-    summaryLayout->setSpacing(10);
+    summaryLayout->setContentsMargins(12, 10, 12, 10);
+    summaryLayout->setSpacing(7);
 
     auto *poHeaderRow = new QHBoxLayout;
     m_detPoNumber = new QLabel(summaryCard);
@@ -230,7 +230,7 @@ void PurchaseOrderDialog::buildUi()
 
     // Meta info row
     auto *metaRow = new QHBoxLayout;
-    metaRow->setSpacing(24);
+    metaRow->setSpacing(16);
 
     auto makeMetaCell = [&](QLabel *&val, const QString &keyText) {
         auto *cell = new QVBoxLayout;
@@ -257,8 +257,8 @@ void PurchaseOrderDialog::buildUi()
     auto *itemsCard = new QFrame(detailPage);
     itemsCard->setObjectName(QStringLiteral("poDetailCard"));
     auto *itemsCardLayout = new QVBoxLayout(itemsCard);
-    itemsCardLayout->setContentsMargins(16, 14, 16, 14);
-    itemsCardLayout->setSpacing(10);
+    itemsCardLayout->setContentsMargins(12, 10, 12, 10);
+    itemsCardLayout->setSpacing(7);
 
     auto *itemsHeader = new QHBoxLayout;
     auto *itemsLbl = new QLabel(tr("LINE ITEMS"), itemsCard);
@@ -279,7 +279,7 @@ void PurchaseOrderDialog::buildUi()
     m_detItemsTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     m_detItemsTable->setSelectionMode(QAbstractItemView::NoSelection);
     m_detItemsTable->setAlternatingRowColors(true);
-    m_detItemsTable->setMinimumHeight(140);
+    m_detItemsTable->setMinimumHeight(100);
     m_detItemsTable->setShowGrid(false);
     itemsCardLayout->addWidget(m_detItemsTable);
 
@@ -298,25 +298,25 @@ void PurchaseOrderDialog::buildUi()
     auto *actionCard = new QFrame(detailPage);
     actionCard->setObjectName(QStringLiteral("poActionBar"));
     auto *actionLayout = new QHBoxLayout(actionCard);
-    actionLayout->setContentsMargins(16, 12, 16, 12);
-    actionLayout->setSpacing(10);
+    actionLayout->setContentsMargins(12, 8, 12, 8);
+    actionLayout->setSpacing(8);
 
     m_placeBtn = new QPushButton(tr("↑  Place Order"), actionCard);
     m_placeBtn->setObjectName(QStringLiteral("poPlaceBtn"));
     m_placeBtn->setCursor(Qt::PointingHandCursor);
-    m_placeBtn->setFixedHeight(40);
+    m_placeBtn->setFixedHeight(32);
     connect(m_placeBtn, &QPushButton::clicked, this, &PurchaseOrderDialog::onPlaceOrder);
 
     m_receiveBtn = new QPushButton(tr("✓  Mark as Received"), actionCard);
     m_receiveBtn->setObjectName(QStringLiteral("poReceiveBtn"));
     m_receiveBtn->setCursor(Qt::PointingHandCursor);
-    m_receiveBtn->setFixedHeight(40);
+    m_receiveBtn->setFixedHeight(32);
     connect(m_receiveBtn, &QPushButton::clicked, this, &PurchaseOrderDialog::onReceive);
 
     m_cancelPoBtn = new QPushButton(tr("✕  Cancel PO"), actionCard);
     m_cancelPoBtn->setObjectName(QStringLiteral("poCancelPoBtn"));
     m_cancelPoBtn->setCursor(Qt::PointingHandCursor);
-    m_cancelPoBtn->setFixedHeight(40);
+    m_cancelPoBtn->setFixedHeight(32);
     connect(m_cancelPoBtn, &QPushButton::clicked, this, &PurchaseOrderDialog::onCancelPo);
 
     actionLayout->addWidget(m_placeBtn);
@@ -327,19 +327,19 @@ void PurchaseOrderDialog::buildUi()
 
     m_stack->addWidget(detailScroll);
     splitter->addWidget(m_stack);
-    splitter->setSizes({320, 840});
+    splitter->setSizes({250, 710});
     root->addWidget(splitter, 1);
 
     // ── Bottom bar ───────────────────────────────────────────────────────────
     auto *bottomBar = new QWidget(this);
     bottomBar->setObjectName(QStringLiteral("poBottomBar"));
     auto *bottomLayout = new QHBoxLayout(bottomBar);
-    bottomLayout->setContentsMargins(20, 10, 20, 10);
+    bottomLayout->setContentsMargins(16, 6, 16, 6);
     bottomLayout->addStretch();
     auto *closeBtn = new QPushButton(tr("Close"), bottomBar);
     closeBtn->setObjectName(QStringLiteral("poCloseBtn"));
-    closeBtn->setFixedHeight(38);
-    closeBtn->setMinimumWidth(100);
+    closeBtn->setFixedHeight(30);
+    closeBtn->setMinimumWidth(80);
     connect(closeBtn, &QPushButton::clicked, this, &QDialog::accept);
     bottomLayout->addWidget(closeBtn);
     root->addWidget(bottomBar);
@@ -388,7 +388,7 @@ void PurchaseOrderDialog::populateList(const QVector<PurchaseOrder> &orders)
     if (orders.isEmpty()) {
         auto *item = new QListWidgetItem(m_list);
         item->setFlags(Qt::NoItemFlags);
-        item->setSizeHint({0, 60});
+        item->setSizeHint({0, 44});
 
         auto *w = new QWidget;
         w->setObjectName(QStringLiteral("poListEmpty"));
@@ -404,7 +404,7 @@ void PurchaseOrderDialog::populateList(const QVector<PurchaseOrder> &orders)
     for (const PurchaseOrder &po : orders) {
         auto *item = new QListWidgetItem(m_list);
         item->setData(Qt::UserRole, po.id);
-        item->setSizeHint({0, 82});
+        item->setSizeHint({0, 62});
         item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
 
         // ── Custom card widget for each list item ──────────────────────────
@@ -422,8 +422,8 @@ void PurchaseOrderDialog::populateList(const QVector<PurchaseOrder> &orders)
         // Body column
         auto *body = new QWidget(w);
         auto *bodyLayout = new QVBoxLayout(body);
-        bodyLayout->setContentsMargins(10, 10, 8, 10);
-        bodyLayout->setSpacing(3);
+        bodyLayout->setContentsMargins(8, 7, 6, 7);
+        bodyLayout->setSpacing(2);
 
         auto *poNumRow = new QHBoxLayout;
         auto *poNumLbl = new QLabel(po.poNumber, body);
@@ -511,7 +511,7 @@ void PurchaseOrderDialog::showDetail(const PurchaseOrder &po)
     for (const PurchaseOrderItem &itm : po.items) {
         const int row = m_detItemsTable->rowCount();
         m_detItemsTable->insertRow(row);
-        m_detItemsTable->setRowHeight(row, 36);
+        m_detItemsTable->setRowHeight(row, 26);
         m_detItemsTable->setItem(row, 0, new QTableWidgetItem(itm.productName));
         m_detItemsTable->setItem(row, 1, new QTableWidgetItem(itm.sku));
         auto *qtyItem = new QTableWidgetItem(QString::number(itm.quantity, 'f', 2));

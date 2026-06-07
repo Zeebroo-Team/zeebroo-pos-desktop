@@ -26,8 +26,8 @@ PurchaseOrderFormDialog::PurchaseOrderFormDialog(ApiClient *api, const Bootstrap
     , m_bootstrap(bootstrap)
 {
     setWindowTitle(tr("New Purchase Order"));
-    setMinimumSize(780, 620);
-    resize(860, 700);
+    setMinimumSize(640, 480);
+    resize(720, 540);
     setObjectName(QStringLiteral("poFormDialog"));
     buildUi();
     loadSuppliers();
@@ -62,16 +62,16 @@ void PurchaseOrderFormDialog::buildUi()
     auto *canvas = new QWidget;
     canvas->setObjectName(QStringLiteral("poFormCanvas"));
     auto *canvasLayout = new QVBoxLayout(canvas);
-    canvasLayout->setContentsMargins(20, 20, 20, 20);
-    canvasLayout->setSpacing(16);
+    canvasLayout->setContentsMargins(14, 14, 14, 14);
+    canvasLayout->setSpacing(10);
 
     // ── Card helper lambda ────────────────────────────────────────────────────
     auto makeCard = [&](const QString &heading) -> QVBoxLayout * {
         auto *card = new QFrame(canvas);
         card->setObjectName(QStringLiteral("poDetailCard"));
         auto *cardLayout = new QVBoxLayout(card);
-        cardLayout->setContentsMargins(16, 14, 16, 16);
-        cardLayout->setSpacing(12);
+        cardLayout->setContentsMargins(12, 10, 12, 12);
+        cardLayout->setSpacing(8);
         if (!heading.isEmpty()) {
             auto *lbl = new QLabel(heading, card);
             lbl->setObjectName(QStringLiteral("detSectionLabel"));
@@ -95,7 +95,7 @@ void PurchaseOrderFormDialog::buildUi()
     auto *infoCard = makeCard(tr("ORDER INFORMATION"));
 
     auto *row1 = new QHBoxLayout;
-    row1->setSpacing(14);
+    row1->setSpacing(10);
 
     // Supplier field: label above, then [combo] [+ button] inline
     auto *supplierCol = new QVBoxLayout;
@@ -110,12 +110,12 @@ void PurchaseOrderFormDialog::buildUi()
     m_supplierCombo = new QComboBox(canvas);
     m_supplierCombo->setObjectName(QStringLiteral("poSupplierCombo"));
     m_supplierCombo->addItem(tr("— No supplier —"), 0);
-    m_supplierCombo->setMinimumWidth(180);
-    m_supplierCombo->setFixedHeight(40);
+    m_supplierCombo->setMinimumWidth(150);
+    m_supplierCombo->setFixedHeight(32);
 
     m_addSupplierBtn = new QPushButton(tr("+"), canvas);
     m_addSupplierBtn->setObjectName(QStringLiteral("poAddSupplierBtn"));
-    m_addSupplierBtn->setFixedSize(40, 40);
+    m_addSupplierBtn->setFixedSize(32, 32);
     m_addSupplierBtn->setCursor(Qt::PointingHandCursor);
     m_addSupplierBtn->setToolTip(tr("Add new supplier"));
     connect(m_addSupplierBtn, &QPushButton::clicked, this, &PurchaseOrderFormDialog::onAddSupplier);
@@ -130,13 +130,13 @@ void PurchaseOrderFormDialog::buildUi()
     m_dateEdit->setObjectName(QStringLiteral("poDateEdit"));
     m_dateEdit->setPlaceholderText(QStringLiteral("YYYY-MM-DD"));
     m_dateEdit->setText(QDate::currentDate().toString(QStringLiteral("yyyy-MM-dd")));
-    m_dateEdit->setFixedHeight(40);
+    m_dateEdit->setFixedHeight(32);
     row1->addLayout(makeField(tr("Purchase Date *"), m_dateEdit, canvas), 1);
 
     m_expectedEdit = new QLineEdit(canvas);
     m_expectedEdit->setObjectName(QStringLiteral("poExpectedEdit"));
     m_expectedEdit->setPlaceholderText(tr("YYYY-MM-DD (optional)"));
-    m_expectedEdit->setFixedHeight(40);
+    m_expectedEdit->setFixedHeight(32);
     row1->addLayout(makeField(tr("Expected Delivery"), m_expectedEdit, canvas), 1);
 
     infoCard->addLayout(row1);
@@ -144,21 +144,21 @@ void PurchaseOrderFormDialog::buildUi()
     m_notesEdit = new QTextEdit(canvas);
     m_notesEdit->setObjectName(QStringLiteral("poNotesEdit"));
     m_notesEdit->setPlaceholderText(tr("Order notes (optional)"));
-    m_notesEdit->setFixedHeight(72);
+    m_notesEdit->setFixedHeight(54);
     infoCard->addLayout(makeField(tr("Notes"), m_notesEdit, canvas));
 
     // ── Card 2: Add Product ───────────────────────────────────────────────────
     auto *addCard = makeCard(tr("ADD PRODUCT LINE"));
 
     auto *addRow = new QHBoxLayout;
-    addRow->setSpacing(10);
+    addRow->setSpacing(7);
 
     m_productCombo = new QComboBox(canvas);
     m_productCombo->setObjectName(QStringLiteral("poProductCombo"));
     m_productCombo->setEditable(true);
     m_productCombo->setInsertPolicy(QComboBox::NoInsert);
     m_productCombo->setPlaceholderText(tr("Search and select a product…"));
-    m_productCombo->setFixedHeight(40);
+    m_productCombo->setFixedHeight(32);
 
     for (const ProductCard &p : m_bootstrap.products) {
         m_productCombo->addItem(
@@ -173,19 +173,19 @@ void PurchaseOrderFormDialog::buildUi()
     m_addQtyEdit->setObjectName(QStringLiteral("poAddQty"));
     m_addQtyEdit->setPlaceholderText(tr("Qty"));
     m_addQtyEdit->setText(QStringLiteral("1"));
-    m_addQtyEdit->setFixedSize(80, 40);
+    m_addQtyEdit->setFixedSize(68, 32);
 
     m_addCostEdit = new QLineEdit(canvas);
     m_addCostEdit->setObjectName(QStringLiteral("poAddCost"));
     m_addCostEdit->setPlaceholderText(tr("Unit cost"));
     m_addCostEdit->setText(QStringLiteral("0.00"));
-    m_addCostEdit->setFixedSize(110, 40);
+    m_addCostEdit->setFixedSize(95, 32);
 
     m_addLineBtn = new QPushButton(tr("＋  Add Line"), canvas);
     m_addLineBtn->setObjectName(QStringLiteral("poAddLineBtn"));
     m_addLineBtn->setCursor(Qt::PointingHandCursor);
-    m_addLineBtn->setFixedHeight(40);
-    m_addLineBtn->setMinimumWidth(110);
+    m_addLineBtn->setFixedHeight(32);
+    m_addLineBtn->setMinimumWidth(95);
     connect(m_addLineBtn, &QPushButton::clicked, this, &PurchaseOrderFormDialog::onAddLine);
 
     addRow->addWidget(m_productCombo, 1);
@@ -212,7 +212,7 @@ void PurchaseOrderFormDialog::buildUi()
     m_itemsTable->setSelectionMode(QAbstractItemView::NoSelection);
     m_itemsTable->setAlternatingRowColors(true);
     m_itemsTable->setShowGrid(false);
-    m_itemsTable->setMinimumHeight(160);
+    m_itemsTable->setMinimumHeight(110);
     tableCard->addWidget(m_itemsTable);
 
     // Total row
@@ -235,27 +235,27 @@ void PurchaseOrderFormDialog::buildUi()
     auto *bottomBar = new QWidget(this);
     bottomBar->setObjectName(QStringLiteral("poBottomBar"));
     auto *bottomLayout = new QHBoxLayout(bottomBar);
-    bottomLayout->setContentsMargins(20, 12, 20, 12);
-    bottomLayout->setSpacing(10);
+    bottomLayout->setContentsMargins(16, 8, 16, 8);
+    bottomLayout->setSpacing(8);
 
     auto *cancelBtn = new QPushButton(tr("Cancel"), bottomBar);
     cancelBtn->setObjectName(QStringLiteral("poCloseBtn"));
-    cancelBtn->setFixedHeight(40);
-    cancelBtn->setMinimumWidth(90);
+    cancelBtn->setFixedHeight(32);
+    cancelBtn->setMinimumWidth(80);
     connect(cancelBtn, &QPushButton::clicked, this, &QDialog::reject);
 
     m_saveDraftBtn = new QPushButton(tr("Save as Draft"), bottomBar);
     m_saveDraftBtn->setObjectName(QStringLiteral("poSaveDraftBtn"));
     m_saveDraftBtn->setCursor(Qt::PointingHandCursor);
-    m_saveDraftBtn->setFixedHeight(40);
-    m_saveDraftBtn->setMinimumWidth(130);
+    m_saveDraftBtn->setFixedHeight(32);
+    m_saveDraftBtn->setMinimumWidth(110);
     connect(m_saveDraftBtn, &QPushButton::clicked, this, &PurchaseOrderFormDialog::onSaveDraft);
 
     m_placeOrderBtn = new QPushButton(tr("↑  Save & Place Order"), bottomBar);
     m_placeOrderBtn->setObjectName(QStringLiteral("poPlaceBtn"));
     m_placeOrderBtn->setCursor(Qt::PointingHandCursor);
-    m_placeOrderBtn->setFixedHeight(40);
-    m_placeOrderBtn->setMinimumWidth(160);
+    m_placeOrderBtn->setFixedHeight(32);
+    m_placeOrderBtn->setMinimumWidth(140);
     m_placeOrderBtn->setDefault(true);
     connect(m_placeOrderBtn, &QPushButton::clicked, this, &PurchaseOrderFormDialog::onPlaceOrder);
 
@@ -314,7 +314,7 @@ void PurchaseOrderFormDialog::addProductRow(const ProductCard &product, double q
 {
     const int row = m_itemsTable->rowCount();
     m_itemsTable->insertRow(row);
-    m_itemsTable->setRowHeight(row, 38);
+    m_itemsTable->setRowHeight(row, 26);
 
     m_itemsTable->setItem(row, 0, new QTableWidgetItem(product.name));
     m_itemsTable->setItem(row, 1, new QTableWidgetItem(product.sku));
@@ -338,7 +338,7 @@ void PurchaseOrderFormDialog::addProductRow(const ProductCard &product, double q
     auto *delBtn = new QPushButton(QStringLiteral("×"), this);
     delBtn->setObjectName(QStringLiteral("poDelLineBtn"));
     delBtn->setCursor(Qt::PointingHandCursor);
-    delBtn->setFixedSize(28, 28);
+    delBtn->setFixedSize(22, 22);
     connect(delBtn, &QPushButton::clicked, this, [this, delBtn]() {
         for (int r = 0; r < m_itemsTable->rowCount(); ++r) {
             if (m_itemsTable->cellWidget(r, 5) == delBtn) {
