@@ -21,7 +21,7 @@ LoginDialog::LoginDialog(ApiClient *api, QWidget *parent)
 {
     setWindowTitle(tr("Zeebroo POS — Sign in"));
     setModal(true);
-    setFixedSize(460, 600);
+    setFixedSize(460, 530);
     setObjectName(QStringLiteral("loginDialog"));
 
     Config::instance().load();
@@ -88,19 +88,6 @@ LoginDialog::LoginDialog(ApiClient *api, QWidget *parent)
     formLayout->addWidget(subLabel);
 
     formLayout->addSpacing(24);
-
-    // API URL
-    auto *apiLabel = new QLabel(tr("API base URL"), formCard);
-    apiLabel->setObjectName(QStringLiteral("loginFieldLabel"));
-    formLayout->addWidget(apiLabel);
-    formLayout->addSpacing(5);
-
-    m_apiUrl = new QLineEdit(Config::instance().apiBaseUrl(), formCard);
-    m_apiUrl->setObjectName(QStringLiteral("loginField"));
-    m_apiUrl->setPlaceholderText(QStringLiteral("http://localhost:8000/api/v1/pos"));
-    m_apiUrl->setFixedHeight(40);
-    formLayout->addWidget(m_apiUrl);
-    formLayout->addSpacing(14);
 
     // Email
     auto *emailLabel = new QLabel(tr("Email address"), formCard);
@@ -172,10 +159,16 @@ void LoginDialog::loadBusinesses()
                 m_business->addItem(name, id);
             }
             m_business->setEnabled(m_business->count() > 0);
-            if (m_business->count() == 1) {
+            if (m_business->count() == 0) {
+                QMessageBox::warning(this, tr("No business found"),
+                                     tr("No business is associated with your account. "
+                                        "Please contact your administrator."));
+                m_token.clear();
+                m_api->setAccessToken(QString());
+            } else if (m_business->count() == 1) {
                 m_businessId = m_business->currentData().toInt();
                 accept();
-            } else if (m_business->count() > 1) {
+            } else {
                 QMessageBox::information(this, tr("Select business"),
                                          tr("You have multiple businesses — select one and click Sign in again."));
             }
@@ -196,9 +189,6 @@ void LoginDialog::onLoginClicked()
         accept();
         return;
     }
-
-    Config::instance().setApiBaseUrl(m_apiUrl->text());
-    Config::instance().save();
 
     const QString email    = m_email->text().trimmed();
     const QString password = m_password->text();

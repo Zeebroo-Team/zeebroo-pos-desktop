@@ -975,10 +975,7 @@ QLineEdit:hover, QTextEdit:hover, QDoubleSpinBox:hover {
 }
 
 #loginBrand {
-    background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-        stop:0  #4f46e5,
-        stop:0.5 #6366f1,
-        stop:1  #7c3aed);
+    background: #ffffff;
 }
 
 #loginLogo {
@@ -988,7 +985,7 @@ QLineEdit:hover, QTextEdit:hover, QDoubleSpinBox:hover {
 #loginLogoFallback {
     font-size: 22px;
     font-weight: 800;
-    color: #ffffff;
+    color: #0f172a;
     letter-spacing: -0.5px;
     background: transparent;
 }
@@ -996,7 +993,7 @@ QLineEdit:hover, QTextEdit:hover, QDoubleSpinBox:hover {
 #loginTagline {
     font-size: 11px;
     font-weight: 600;
-    color: rgba(255, 255, 255, 0.72);
+    color: #64748b;
     letter-spacing: 0.5px;
     background: transparent;
 }

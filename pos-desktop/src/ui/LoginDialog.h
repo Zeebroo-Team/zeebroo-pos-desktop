@@ -24,7 +24,6 @@ private:
     void loadBusinesses();
 
     ApiClient *m_api = nullptr;
-    QLineEdit *m_apiUrl = nullptr;
     QLineEdit *m_email = nullptr;
     QLineEdit *m_password = nullptr;
     QComboBox *m_business = nullptr;
