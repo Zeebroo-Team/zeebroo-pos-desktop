@@ -21,6 +21,7 @@ qt_add_executable(ZeebrooPosDesktop
     src/ui/CheckoutDialog.cpp
     src/ui/AddProductDialog.cpp
     src/ui/ReturnDialog.cpp
+    src/ui/PosSessionWidget.cpp
     src/ui/ProductCardWidget.cpp
     src/ui/CartLineWidget.cpp
     src/ui/LayerPickerDialog.cpp

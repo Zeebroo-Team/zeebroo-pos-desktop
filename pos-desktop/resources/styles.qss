@@ -22,6 +22,84 @@ QWidget {
     background: #eceef4;
 }
 
+#posSessionWidget {
+    background: #eceef4;
+}
+
+/* ── Multi-session tab bar ───────────────────────────────────── */
+#posTabWidget {
+    background: #eceef4;
+}
+
+#posTabWidget::pane {
+    background: #eceef4;
+    border: none;
+    padding: 0;
+}
+
+#posTabWidget QTabBar {
+    background: #dde1ea;
+    border-bottom: 1px solid #c8cfdb;
+}
+
+#posTabWidget QTabBar::tab {
+    background: #e8ebf2;
+    color: #64748b;
+    border: none;
+    border-right: 1px solid #d1d8e4;
+    border-bottom: 2px solid transparent;
+    padding: 0 20px;
+    min-height: 34px;
+    min-width: 130px;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: "Inter", "SF Pro Display", "Segoe UI", system-ui, sans-serif;
+}
+
+#posTabWidget QTabBar::tab:selected {
+    background: #eceef4;
+    color: #0f172a;
+    border-bottom: 2px solid #6366f1;
+    font-weight: 700;
+}
+
+#posTabWidget QTabBar::tab:hover:!selected {
+    background: #eceef4;
+    color: #334155;
+}
+
+#posTabWidget QTabBar::close-button {
+    subcontrol-position: right;
+    subcontrol-origin: padding;
+    margin-left: 4px;
+}
+
+#posTabWidget QTabBar::close-button:hover {
+    background: rgba(239, 68, 68, 0.14);
+    border-radius: 3px;
+}
+
+#addSessionBtn {
+    background: rgba(99, 102, 241, 0.10);
+    color: #4f46e5;
+    border: 1px solid rgba(99, 102, 241, 0.25);
+    border-radius: 6px;
+    padding: 0 10px;
+    font-size: 12px;
+    font-weight: 700;
+    font-family: "Inter", "SF Pro Display", "Segoe UI", system-ui, sans-serif;
+    margin: 3px 6px 3px 0;
+}
+
+#addSessionBtn:hover {
+    background: rgba(99, 102, 241, 0.18);
+    border-color: rgba(99, 102, 241, 0.40);
+}
+
+#addSessionBtn:pressed {
+    background: rgba(99, 102, 241, 0.26);
+}
+
 QScrollArea {
     background: transparent;
     border: none;
