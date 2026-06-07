@@ -22,7 +22,7 @@ public:
 private:
     Config() = default;
 
-    QString m_apiBaseUrl = QStringLiteral("http://localhost:8000/api/v1/pos");
+    QString m_apiBaseUrl = QStringLiteral("https://platform.zeebroo.com/api/v1/pos");
     QString m_deviceName = QStringLiteral("pos-desktop-1");
 };
 
