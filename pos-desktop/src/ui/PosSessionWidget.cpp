@@ -19,6 +19,7 @@
 #include <QJsonObject>
 #include <QMessageBox>
 #include <QScrollArea>
+#include <QScrollBar>
 #include <QSizePolicy>
 #include <QResizeEvent>
 #include <QTimer>
@@ -177,6 +178,7 @@ void PosSessionWidget::buildUi()
         m_searchEdit->clear();
         m_skuEdit->clear();
         m_activeCategoryId = 0;
+        m_currentPage = 1;
         reloadBootstrap();
     });
 
@@ -358,6 +360,38 @@ void PosSessionWidget::buildUi()
     m_productScroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     centerLay->addWidget(m_productScroll, 1);
 
+    // ── Pagination bar ────────────────────────────────────────────────────────
+    m_paginationBar = new QWidget(center);
+    m_paginationBar->setObjectName(QStringLiteral("paginationBar"));
+    auto *pagLay = new QHBoxLayout(m_paginationBar);
+    pagLay->setContentsMargins(12, 6, 12, 6);
+    pagLay->setSpacing(8);
+
+    m_prevPageBtn = new QPushButton(QStringLiteral("← Prev"), m_paginationBar);
+    m_prevPageBtn->setObjectName(QStringLiteral("pageBtn"));
+    m_prevPageBtn->setCursor(Qt::PointingHandCursor);
+    m_prevPageBtn->setFixedHeight(32);
+    connect(m_prevPageBtn, &QPushButton::clicked, this, &PosSessionWidget::onPrevPage);
+
+    m_pageLabel = new QLabel(m_paginationBar);
+    m_pageLabel->setObjectName(QStringLiteral("pageLabel"));
+    m_pageLabel->setAlignment(Qt::AlignCenter);
+
+    m_nextPageBtn = new QPushButton(QStringLiteral("Next →"), m_paginationBar);
+    m_nextPageBtn->setObjectName(QStringLiteral("pageBtn"));
+    m_nextPageBtn->setCursor(Qt::PointingHandCursor);
+    m_nextPageBtn->setFixedHeight(32);
+    connect(m_nextPageBtn, &QPushButton::clicked, this, &PosSessionWidget::onNextPage);
+
+    pagLay->addStretch();
+    pagLay->addWidget(m_prevPageBtn);
+    pagLay->addWidget(m_pageLabel);
+    pagLay->addWidget(m_nextPageBtn);
+    pagLay->addStretch();
+
+    m_paginationBar->setVisible(false);
+    centerLay->addWidget(m_paginationBar);
+
     auto *totals = new QFrame(center);
     totals->setObjectName(QStringLiteral("totalsBar"));
     auto *totalsLay = new QHBoxLayout(totals);
@@ -413,6 +447,7 @@ void PosSessionWidget::triggerClearFilters()
     if (m_searchEdit) m_searchEdit->clear();
     if (m_skuEdit)    m_skuEdit->clear();
     m_activeCategoryId = 0;
+    m_currentPage = 1;
     reloadBootstrap();
 }
 
@@ -468,6 +503,7 @@ void PosSessionWidget::reloadBootstrap()
     m_api->bootstrap(
         m_searchEdit ? m_searchEdit->text() : QString(),
         m_activeCategoryId,
+        m_currentPage,
         [this](const QJsonObject &root) {
             applyBootstrap(BootstrapData::fromJson(root.value(QStringLiteral("data")).toObject()));
         },
@@ -506,6 +542,7 @@ void PosSessionWidget::applyBootstrap(const BootstrapData &data)
 
     rebuildCategoryBar();
     rebuildProductGrid();
+    updatePaginationBar();
     updateTotals();
 }
 
@@ -705,10 +742,15 @@ void PosSessionWidget::onCartChanged()
 void PosSessionWidget::onCategoryClicked(int id)
 {
     m_activeCategoryId = id;
+    m_currentPage = 1;
     reloadBootstrap();
 }
 
-void PosSessionWidget::onSearchTriggered() { reloadBootstrap(); }
+void PosSessionWidget::onSearchTriggered()
+{
+    m_currentPage = 1;
+    reloadBootstrap();
+}
 
 void PosSessionWidget::onSkuAdd()
 {
@@ -767,6 +809,37 @@ void PosSessionWidget::onAddProduct()
         if (p.inStock()) addProductToCart(p);
         reloadBootstrap();
     }
+}
+
+void PosSessionWidget::onPrevPage()
+{
+    if (m_currentPage <= 1) return;
+    --m_currentPage;
+    reloadBootstrap();
+    m_productScroll->verticalScrollBar()->setValue(0);
+}
+
+void PosSessionWidget::onNextPage()
+{
+    if (m_currentPage >= m_bootstrap.productsMeta.lastPage) return;
+    ++m_currentPage;
+    reloadBootstrap();
+    m_productScroll->verticalScrollBar()->setValue(0);
+}
+
+void PosSessionWidget::updatePaginationBar()
+{
+    const ProductsMeta &meta = m_bootstrap.productsMeta;
+    const bool multiPage = meta.lastPage > 1;
+    m_paginationBar->setVisible(multiPage);
+    if (!multiPage) return;
+
+    m_prevPageBtn->setEnabled(meta.currentPage > 1);
+    m_nextPageBtn->setEnabled(meta.currentPage < meta.lastPage);
+    m_pageLabel->setText(tr("Page %1 of %2  ·  %3 products")
+        .arg(meta.currentPage)
+        .arg(meta.lastPage)
+        .arg(meta.total));
 }
 
 } // namespace pos

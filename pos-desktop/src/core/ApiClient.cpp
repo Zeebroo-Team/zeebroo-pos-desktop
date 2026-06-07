@@ -135,7 +135,7 @@ void ApiClient::fetchBusinesses(SuccessFn onOk, ErrorFn onErr)
     sendGet(req, onOk, onErr);
 }
 
-void ApiClient::bootstrap(const QString &search, int categoryId, SuccessFn onOk, ErrorFn onErr)
+void ApiClient::bootstrap(const QString &search, int categoryId, int page, SuccessFn onOk, ErrorFn onErr)
 {
     QUrlQuery query;
     if (!search.trimmed().isEmpty()) {
@@ -143,6 +143,9 @@ void ApiClient::bootstrap(const QString &search, int categoryId, SuccessFn onOk,
     }
     if (categoryId > 0) {
         query.addQueryItem(QStringLiteral("category"), QString::number(categoryId));
+    }
+    if (page > 1) {
+        query.addQueryItem(QStringLiteral("page"), QString::number(page));
     }
     QNetworkRequest req = buildRequest(QStringLiteral("/online/bootstrap"), query.isEmpty() ? nullptr : &query);
     sendGet(req, onOk, onErr);

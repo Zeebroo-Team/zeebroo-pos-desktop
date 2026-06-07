@@ -118,6 +118,11 @@ BootstrapData BootstrapData::fromJson(const QJsonObject &data)
     for (const QJsonValue &v : accounts) {
         b.accounts.append(Account::fromJson(v.toObject()));
     }
+    const QJsonObject meta = data.value(QStringLiteral("products_meta")).toObject();
+    b.productsMeta.currentPage = meta.value(QStringLiteral("current_page")).toInt(1);
+    b.productsMeta.lastPage    = meta.value(QStringLiteral("last_page")).toInt(1);
+    b.productsMeta.perPage     = meta.value(QStringLiteral("per_page")).toInt(40);
+    b.productsMeta.total       = meta.value(QStringLiteral("total")).toInt(0);
     b.today = TodaySummary::fromJson(data.value(QStringLiteral("today")).toObject());
     b.settings = PosSettings::fromJson(data.value(QStringLiteral("settings")).toObject());
     return b;

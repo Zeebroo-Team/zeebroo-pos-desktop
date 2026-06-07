@@ -66,11 +66,19 @@ struct TodaySummary {
     static TodaySummary fromJson(const QJsonObject &o);
 };
 
+struct ProductsMeta {
+    int currentPage = 1;
+    int lastPage    = 1;
+    int perPage     = 40;
+    int total       = 0;
+};
+
 struct BootstrapData {
     Business business;
     QString currency;
     QVector<Category> categories;
     QVector<ProductCard> products;
+    ProductsMeta productsMeta;
     QVector<Account> accounts;
     TodaySummary today;
     PosSettings settings;

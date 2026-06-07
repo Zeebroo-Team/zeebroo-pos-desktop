@@ -59,6 +59,8 @@ private slots:
     void onReturn();
     void onAddProduct();
     void onCartChanged();
+    void onPrevPage();
+    void onNextPage();
 
 private:
     void buildUi();
@@ -67,6 +69,7 @@ private:
     void rebuildCart();
     void updateSalePanelChrome();
     void updateTotals();
+    void updatePaginationBar();
     void addProductToCart(const ProductCard &product);
     QPushButton *makeCategoryPill(const QString &text, int id, bool checked);
     void rebuildCategoryBar();
@@ -80,9 +83,10 @@ private:
     QHash<int, ProductCard> m_productsById;
     QHash<QString, ProductCard> m_productsBySku;
 
-    int m_activeCategoryId = 0;
+    int m_activeCategoryId    = 0;
+    int m_currentPage         = 1;
     int m_lastProductGridCols = 0;
-    double m_discountPercent = 0.0;
+    double m_discountPercent  = 0.0;
 
     QLabel *m_brandLabel = nullptr;
     QLabel *m_statSalesLabel = nullptr;
@@ -114,6 +118,12 @@ private:
     QDoubleSpinBox *m_discountSpin = nullptr;
     QWidget *m_discountRow = nullptr;
     QButtonGroup *m_categoryGroup = nullptr;
+
+    // Pagination bar
+    QWidget    *m_paginationBar  = nullptr;
+    QPushButton *m_prevPageBtn   = nullptr;
+    QPushButton *m_nextPageBtn   = nullptr;
+    QLabel      *m_pageLabel     = nullptr;
 };
 
 } // namespace pos

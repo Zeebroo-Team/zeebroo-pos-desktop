@@ -24,7 +24,7 @@ public:
 
     void login(const QString &email, const QString &password, SuccessFn onOk, ErrorFn onErr);
     void fetchBusinesses(SuccessFn onOk, ErrorFn onErr);
-    void bootstrap(const QString &search, int categoryId, SuccessFn onOk, ErrorFn onErr);
+    void bootstrap(const QString &search, int categoryId, int page, SuccessFn onOk, ErrorFn onErr);
     void productBySku(const QString &sku, SuccessFn onOk, ErrorFn onErr);
     void checkout(const QJsonObject &body, SuccessFn onOk, ErrorFn onErr);
     void createProduct(const QJsonObject &body, SuccessFn onOk, ErrorFn onErr);
