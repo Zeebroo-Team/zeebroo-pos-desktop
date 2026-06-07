@@ -404,36 +404,50 @@ void PurchaseOrderDialog::populateList(const QVector<PurchaseOrder> &orders)
     for (const PurchaseOrder &po : orders) {
         auto *item = new QListWidgetItem(m_list);
         item->setData(Qt::UserRole, po.id);
-        item->setSizeHint({0, 62});
+        item->setSizeHint({0, 72});   // 64 card + 4 top + 4 bottom gap
         item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
 
-        // ── Custom card widget for each list item ──────────────────────────
+        // ── Outer transparent wrapper — provides gap around the card ───────
         auto *w = new QWidget;
         w->setObjectName(QStringLiteral("poListItem"));
         w->setProperty("selected", false);
 
-        // Colored left status strip
-        auto *strip = new QWidget(w);
+        auto *outerLayout = new QHBoxLayout(w);
+        outerLayout->setContentsMargins(6, 4, 6, 4);
+        outerLayout->setSpacing(0);
+
+        // ── Inner card ────────────────────────────────────────────────────
+        auto *card = new QWidget(w);
+        card->setObjectName(QStringLiteral("poListCard"));
+
+        auto *cardLayout = new QHBoxLayout(card);
+        cardLayout->setContentsMargins(0, 0, 0, 0);
+        cardLayout->setSpacing(0);
+
+        // Colored left status strip (rounded left corners to match card)
+        auto *strip = new QWidget(card);
         strip->setFixedWidth(4);
         strip->setObjectName(QStringLiteral("poListStrip"));
         strip->setStyleSheet(
-            QStringLiteral("background:%1; border-radius:2px;").arg(statusColor(po)));
+            QStringLiteral("background:%1; border-radius:7px 0 0 7px;").arg(statusColor(po)));
 
         // Body column
-        auto *body = new QWidget(w);
+        auto *body = new QWidget(card);
         auto *bodyLayout = new QVBoxLayout(body);
-        bodyLayout->setContentsMargins(8, 7, 6, 7);
-        bodyLayout->setSpacing(2);
+        bodyLayout->setContentsMargins(10, 8, 10, 8);
+        bodyLayout->setSpacing(3);
 
+        // Row 1: PO number + status chip
         auto *poNumRow = new QHBoxLayout;
+        poNumRow->setSpacing(6);
         auto *poNumLbl = new QLabel(po.poNumber, body);
         poNumLbl->setObjectName(QStringLiteral("poListPoNum"));
 
-        // Status badge chip
         auto *statusChip = new QLabel(statusLabel(po), body);
         statusChip->setObjectName(QStringLiteral("poListStatusChip"));
         statusChip->setStyleSheet(
-            QStringLiteral("color:%1; background:%2; border-radius:8px; padding:1px 8px; font-size:10px; font-weight:700;")
+            QStringLiteral("color:%1; background:%2; border-radius:6px;"
+                           " padding:1px 7px; font-size:9px; font-weight:700;")
                 .arg(statusColor(po), statusBgColor(po)));
 
         poNumRow->addWidget(poNumLbl);
@@ -441,12 +455,15 @@ void PurchaseOrderDialog::populateList(const QVector<PurchaseOrder> &orders)
         poNumRow->addWidget(statusChip);
         bodyLayout->addLayout(poNumRow);
 
+        // Row 2: supplier name
         const QString supplierStr = po.supplierName.isEmpty() ? tr("No supplier") : po.supplierName;
         auto *supplierLbl = new QLabel(supplierStr, body);
         supplierLbl->setObjectName(QStringLiteral("poListSupplier"));
         bodyLayout->addWidget(supplierLbl);
 
+        // Row 3: date + amount
         auto *bottomRow = new QHBoxLayout;
+        bottomRow->setSpacing(0);
         auto *dateLbl = new QLabel(po.purchaseDate.isEmpty() ? tr("—") : po.purchaseDate, body);
         dateLbl->setObjectName(QStringLiteral("poListDate"));
         auto *amountLbl = new QLabel(money(po.total), body);
@@ -456,12 +473,9 @@ void PurchaseOrderDialog::populateList(const QVector<PurchaseOrder> &orders)
         bottomRow->addWidget(amountLbl);
         bodyLayout->addLayout(bottomRow);
 
-        // Compose item widget
-        auto *hLayout = new QHBoxLayout(w);
-        hLayout->setContentsMargins(0, 0, 0, 0);
-        hLayout->setSpacing(0);
-        hLayout->addWidget(strip);
-        hLayout->addWidget(body, 1);
+        cardLayout->addWidget(strip);
+        cardLayout->addWidget(body, 1);
+        outerLayout->addWidget(card);
 
         m_list->setItemWidget(item, w);
     }
