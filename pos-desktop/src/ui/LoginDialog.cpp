@@ -4,7 +4,6 @@
 #include "core/Config.h"
 
 #include <QComboBox>
-#include <QGraphicsDropShadowEffect>
 #include <QHBoxLayout>
 #include <QJsonArray>
 #include <QLabel>
@@ -21,7 +20,7 @@ LoginDialog::LoginDialog(ApiClient *api, QWidget *parent)
 {
     setWindowTitle(tr("Zeebroo POS — Sign in"));
     setModal(true);
-    setFixedSize(460, 580);
+    setFixedWidth(460);
     setObjectName(QStringLiteral("loginDialog"));
 
     Config::instance().load();
@@ -74,7 +73,7 @@ LoginDialog::LoginDialog(ApiClient *api, QWidget *parent)
     formLayout->setContentsMargins(36, 28, 36, 32);
     formLayout->setSpacing(0);
 
-    // Title + sub
+    // Title
     auto *titleLabel = new QLabel(tr("Sign in to your account"), formCard);
     titleLabel->setObjectName(QStringLiteral("loginTitle"));
     titleLabel->setAlignment(Qt::AlignLeft);
@@ -114,22 +113,26 @@ LoginDialog::LoginDialog(ApiClient *api, QWidget *parent)
     m_password->setPlaceholderText(QStringLiteral("••••••••"));
     m_password->setFixedHeight(40);
     formLayout->addWidget(m_password);
-    formLayout->addSpacing(14);
 
-    // Business
-    auto *bizLabel = new QLabel(tr("Business"), formCard);
+    // ── Business row (hidden until authenticated) ─────────────────
+    m_businessRow = new QWidget(formCard);
+    m_businessRow->setVisible(false);
+    auto *bizRowLayout = new QVBoxLayout(m_businessRow);
+    bizRowLayout->setContentsMargins(0, 14, 0, 0);
+    bizRowLayout->setSpacing(5);
+
+    auto *bizLabel = new QLabel(tr("Business"), m_businessRow);
     bizLabel->setObjectName(QStringLiteral("loginFieldLabel"));
-    formLayout->addWidget(bizLabel);
-    formLayout->addSpacing(5);
+    bizRowLayout->addWidget(bizLabel);
 
-    m_business = new QComboBox(formCard);
+    m_business = new QComboBox(m_businessRow);
     m_business->setObjectName(QStringLiteral("loginCombo"));
-    m_business->setEnabled(false);
     m_business->setFixedHeight(40);
-    m_business->addItem(tr("— sign in to load businesses —"));
-    formLayout->addWidget(m_business);
+    bizRowLayout->addWidget(m_business);
 
-    // Branch row (hidden until branch_pos_separate + multiple branches)
+    formLayout->addWidget(m_businessRow);
+
+    // ── Branch row (hidden until branch_pos_separate is enabled) ──
     m_branchRow = new QWidget(formCard);
     m_branchRow->setVisible(false);
     auto *branchRowLayout = new QVBoxLayout(m_branchRow);
@@ -147,71 +150,72 @@ LoginDialog::LoginDialog(ApiClient *api, QWidget *parent)
 
     formLayout->addWidget(m_branchRow);
 
-    formLayout->addStretch();
-    formLayout->addSpacing(8);
+    formLayout->addSpacing(24);
 
     // Sign-in button
-    auto *loginBtn = new QPushButton(tr("Sign in"), formCard);
-    loginBtn->setObjectName(QStringLiteral("loginBtn"));
-    loginBtn->setDefault(true);
-    loginBtn->setFixedHeight(44);
-    loginBtn->setCursor(Qt::PointingHandCursor);
-    formLayout->addWidget(loginBtn);
+    m_loginBtn = new QPushButton(tr("Sign in"), formCard);
+    m_loginBtn->setObjectName(QStringLiteral("loginBtn"));
+    m_loginBtn->setDefault(true);
+    m_loginBtn->setFixedHeight(44);
+    m_loginBtn->setCursor(Qt::PointingHandCursor);
+    formLayout->addWidget(m_loginBtn);
+
+    formLayout->addSpacing(4);
 
     root->addWidget(formCard);
 
-    connect(loginBtn, &QPushButton::clicked, this, &LoginDialog::onLoginClicked);
-    connect(m_password, &QLineEdit::returnPressed, loginBtn, &QPushButton::click);
+    connect(m_loginBtn, &QPushButton::clicked, this, &LoginDialog::onLoginClicked);
+    connect(m_password, &QLineEdit::returnPressed, m_loginBtn, &QPushButton::click);
 }
 
 void LoginDialog::loadBusinesses()
 {
-    m_business->clear();
+    m_loginBtn->setEnabled(false);
+    m_loginBtn->setText(tr("Loading…"));
     m_api->fetchBusinesses(
         [this](const QJsonObject &root) {
+            m_loginBtn->setEnabled(true);
             const QJsonArray data = root.value(QStringLiteral("data")).toArray();
-            for (const QJsonValue &v : data) {
-                const QJsonObject o = v.toObject();
-                const int id = o.value(QStringLiteral("id")).toInt();
-                const QString name = o.value(QStringLiteral("name")).toString();
-                m_business->addItem(name, id);
-            }
-            m_business->setEnabled(m_business->count() > 0);
-            if (m_business->count() == 0) {
+            if (data.isEmpty()) {
+                m_loginBtn->setText(tr("Sign in"));
+                m_token.clear();
+                m_api->setAccessToken(QString());
                 QMessageBox::warning(this, tr("No business found"),
                                      tr("No business is associated with your account. "
                                         "Please contact your administrator."));
-                m_token.clear();
-                m_api->setAccessToken(QString());
-            } else if (m_business->count() == 1) {
-                m_businessId = m_business->currentData().toInt();
-                m_api->setBusinessId(m_businessId);
-                loadBranches();
-            } else {
-                QMessageBox::information(this, tr("Select business"),
-                                         tr("You have multiple businesses — select one and click Sign in again."));
+                return;
             }
+            m_business->clear();
+            for (const QJsonValue &v : data) {
+                const QJsonObject o = v.toObject();
+                m_business->addItem(o.value(QStringLiteral("name")).toString(),
+                                    o.value(QStringLiteral("id")).toInt());
+            }
+            const int bizH = m_businessRow->sizeHint().height();
+            m_businessRow->setVisible(true);
+            m_step = Step::SelectBusiness;
+            m_loginBtn->setText(tr("Continue"));
+            resize(width(), height() + bizH);
         },
         [this](const QString &msg, int) {
-            QMessageBox::warning(this, tr("Businesses"), msg);
+            m_loginBtn->setEnabled(true);
+            m_loginBtn->setText(tr("Sign in"));
+            QMessageBox::warning(this, tr("Sign in"), msg);
         });
 }
 
 void LoginDialog::loadBranches()
 {
+    m_loginBtn->setEnabled(false);
+    m_loginBtn->setText(tr("Loading…"));
     m_api->fetchBranches(
         [this](const QJsonObject &root) {
+            m_loginBtn->setEnabled(true);
             const QJsonObject data = root.value(QStringLiteral("data")).toObject();
             const bool separate = data.value(QStringLiteral("branch_pos_separate")).toBool();
             const QJsonArray arr = data.value(QStringLiteral("branches")).toArray();
 
             if (!separate || arr.isEmpty()) {
-                accept();
-                return;
-            }
-
-            if (arr.size() == 1) {
-                m_branchId = arr.first().toObject().value(QStringLiteral("id")).toInt();
                 accept();
                 return;
             }
@@ -222,53 +226,69 @@ void LoginDialog::loadBranches()
                 m_branchCombo->addItem(o.value(QStringLiteral("name")).toString(),
                                        o.value(QStringLiteral("id")).toInt());
             }
+            const int branchH = m_branchRow->sizeHint().height();
             m_branchRow->setVisible(true);
-            m_step = Step::BranchPick;
-            QMessageBox::information(this, tr("Select branch"),
-                                     tr("Select a branch and click Sign in."));
+            m_step = Step::SelectBranch;
+            m_loginBtn->setText(tr("Sign in"));
+            resize(width(), height() + branchH);
         },
-        [this](const QString &, int) {
+        [this](const QString &msg, int status) {
+            m_loginBtn->setEnabled(true);
+            m_loginBtn->setText(tr("Continue"));
+            QMessageBox::warning(this, tr("Branches"),
+                tr("Could not load branches (status %1): %2\nProceeding without branch selection.").arg(status).arg(msg));
             accept();
         });
 }
 
 void LoginDialog::onLoginClicked()
 {
-    if (m_step == Step::BranchPick) {
-        m_branchId = m_branchCombo->currentData().toInt();
-        accept();
-        return;
+    switch (m_step) {
+    case Step::Auth: {
+        const QString email    = m_email->text().trimmed();
+        const QString password = m_password->text();
+        if (email.isEmpty() || password.isEmpty()) {
+            QMessageBox::warning(this, tr("Sign in"), tr("Please enter your email and password."));
+            return;
+        }
+        m_loginBtn->setEnabled(false);
+        m_loginBtn->setText(tr("Signing in…"));
+        m_api->login(
+            email, password,
+            [this](const QJsonObject &root) {
+                m_loginBtn->setEnabled(true);
+                m_token = root.value(QStringLiteral("access_token")).toString();
+                m_api->setAccessToken(m_token);
+                m_email->setEnabled(false);
+                m_password->setEnabled(false);
+                // Disconnect Enter shortcut — business/branch steps need explicit clicks
+                disconnect(m_password, &QLineEdit::returnPressed, m_loginBtn, &QPushButton::click);
+                loadBusinesses();
+            },
+            [this](const QString &msg, int) {
+                m_loginBtn->setEnabled(true);
+                m_loginBtn->setText(tr("Sign in"));
+                QMessageBox::warning(this, tr("Sign in"), msg);
+            });
+        break;
     }
-
-    if (!m_token.isEmpty()) {
+    case Step::SelectBusiness: {
         m_businessId = m_business->currentData().toInt();
         if (m_businessId <= 0) {
             QMessageBox::warning(this, tr("Sign in"), tr("Please select a business."));
             return;
         }
         m_api->setBusinessId(m_businessId);
+        m_business->setEnabled(false);
         loadBranches();
-        return;
+        break;
     }
-
-    const QString email    = m_email->text().trimmed();
-    const QString password = m_password->text();
-    if (email.isEmpty() || password.isEmpty()) {
-        QMessageBox::warning(this, tr("Sign in"), tr("Please enter your email and password."));
-        return;
+    case Step::SelectBranch: {
+        m_branchId = m_branchCombo->currentData().toInt();
+        accept();
+        break;
     }
-
-    m_api->login(
-        email,
-        password,
-        [this](const QJsonObject &root) {
-            m_token = root.value(QStringLiteral("access_token")).toString();
-            m_api->setAccessToken(m_token);
-            loadBusinesses();
-        },
-        [this](const QString &msg, int) {
-            QMessageBox::warning(this, tr("Sign in"), msg);
-        });
+    }
 }
 
 } // namespace pos

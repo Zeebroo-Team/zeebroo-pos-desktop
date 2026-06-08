@@ -134,6 +134,7 @@ BootstrapData BootstrapData::fromJson(const QJsonObject &data)
     b.today = TodaySummary::fromJson(data.value(QStringLiteral("today")).toObject());
     b.settings = PosSettings::fromJson(data.value(QStringLiteral("settings")).toObject());
     b.branchPosSeparate = data.value(QStringLiteral("branch_pos_separate")).toBool();
+    b.branchProductSeparate = data.value(QStringLiteral("branch_product_separate")).toBool();
     b.selectedBranchId = data.value(QStringLiteral("selected_branch_id")).toInt(0);
     const QJsonArray branches = data.value(QStringLiteral("branches")).toArray();
     for (const QJsonValue &v : branches) {

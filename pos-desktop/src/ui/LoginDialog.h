@@ -5,6 +5,7 @@
 class QComboBox;
 class QLabel;
 class QLineEdit;
+class QPushButton;
 class QWidget;
 
 namespace pos {
@@ -24,21 +25,23 @@ private slots:
     void onLoginClicked();
 
 private:
-    enum class Step { Auth, BranchPick };
+    enum class Step { Auth, SelectBusiness, SelectBranch };
 
     void loadBusinesses();
     void loadBranches();
 
-    ApiClient  *m_api       = nullptr;
-    QLineEdit  *m_email     = nullptr;
-    QLineEdit  *m_password  = nullptr;
-    QComboBox  *m_business  = nullptr;
-    QWidget    *m_branchRow = nullptr;
-    QComboBox  *m_branchCombo = nullptr;
+    ApiClient  *m_api          = nullptr;
+    QLineEdit  *m_email        = nullptr;
+    QLineEdit  *m_password     = nullptr;
+    QWidget    *m_businessRow  = nullptr;
+    QComboBox  *m_business     = nullptr;
+    QWidget    *m_branchRow    = nullptr;
+    QComboBox  *m_branchCombo  = nullptr;
+    QPushButton *m_loginBtn    = nullptr;
     QString     m_token;
-    int         m_businessId = 0;
-    int         m_branchId   = 0;
-    Step        m_step       = Step::Auth;
+    int         m_businessId   = 0;
+    int         m_branchId     = 0;
+    Step        m_step         = Step::Auth;
 };
 
 } // namespace pos

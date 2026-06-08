@@ -822,7 +822,11 @@ void PosSessionWidget::onReturn()
 
 void PosSessionWidget::onAddProduct()
 {
-    AddProductDialog dlg(m_api, m_bootstrap.currency, this);
+    AddProductDialog dlg(m_api, m_bootstrap.currency,
+                         m_bootstrap.branchProductSeparate,
+                         m_bootstrap.branches,
+                         m_bootstrap.selectedBranchId > 0 ? m_bootstrap.selectedBranchId : m_api->branchId(),
+                         this);
     if (dlg.exec() == QDialog::Accepted) {
         const ProductCard p = dlg.createdProduct();
         m_productsById.insert(p.id, p);

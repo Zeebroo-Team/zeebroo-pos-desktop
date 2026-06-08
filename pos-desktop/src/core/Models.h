@@ -90,6 +90,7 @@ struct BootstrapData {
     TodaySummary today;
     PosSettings settings;
     bool branchPosSeparate = false;
+    bool branchProductSeparate = false;
     QVector<Branch> branches;
     int selectedBranchId = 0;
 

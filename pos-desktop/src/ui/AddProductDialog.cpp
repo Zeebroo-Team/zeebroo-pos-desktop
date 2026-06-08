@@ -2,6 +2,7 @@
 
 #include "core/ApiClient.h"
 
+#include <QComboBox>
 #include <QDoubleSpinBox>
 #include <QFrame>
 #include <QHBoxLayout>
@@ -13,7 +14,12 @@
 
 namespace pos {
 
-AddProductDialog::AddProductDialog(ApiClient *api, const QString &currency, QWidget *parent)
+AddProductDialog::AddProductDialog(ApiClient *api,
+                                   const QString &currency,
+                                   bool branchProductSeparate,
+                                   const QVector<Branch> &branches,
+                                   int selectedBranchId,
+                                   QWidget *parent)
     : QDialog(parent)
     , m_api(api)
     , m_currency(currency)
@@ -113,6 +119,29 @@ AddProductDialog::AddProductDialog(ApiClient *api, const QString &currency, QWid
 
     formLay->addLayout(twoCol);
 
+    // ── Branch dropdown (shown whenever the business has branches) ─
+    if (!branches.isEmpty()) {
+        formLay->addSpacing(10);
+
+        auto *branchLbl = new QLabel(tr("BRANCH"), content);
+        branchLbl->setObjectName(QStringLiteral("checkoutSection"));
+        formLay->addWidget(branchLbl);
+
+        m_branchCombo = new QComboBox(content);
+        m_branchCombo->setFixedHeight(40);
+        m_branchCombo->setObjectName(QStringLiteral("addProductBranchCombo"));
+
+        int selectIdx = 0;
+        for (const Branch &b : branches) {
+            m_branchCombo->addItem(b.name, b.id);
+            if (b.id == selectedBranchId) {
+                selectIdx = m_branchCombo->count() - 1;
+            }
+        }
+        m_branchCombo->setCurrentIndex(selectIdx);
+        formLay->addWidget(m_branchCombo);
+    }
+
     // Error message (hidden until needed)
     formLay->addSpacing(8);
     m_errorLbl = new QLabel(content);
@@ -182,6 +211,16 @@ void AddProductDialog::onSubmit()
     body.insert(QStringLiteral("unit_price"), m_priceEdit->value());
     if (m_stockEdit->value() > 0.0) {
         body.insert(QStringLiteral("stock_quantity"), m_stockEdit->value());
+    }
+
+    // Use explicit branch combo selection if shown, otherwise fall back to login branch
+    if (m_branchCombo) {
+        const int branchId = m_branchCombo->currentData().toInt();
+        if (branchId > 0) {
+            body.insert(QStringLiteral("branch_id"), branchId);
+        }
+    } else if (m_api->branchId() > 0) {
+        body.insert(QStringLiteral("branch_id"), m_api->branchId());
     }
 
     m_api->createProduct(
