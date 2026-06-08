@@ -8,7 +8,6 @@
 
 #include "../../../pos-desktop/src/ui/MainWindow.h"
 #include <QtNetwork/QSslError>
-#include <QtGui/qtextcursor.h>
 #include <QtCore/qmetatype.h>
 
 #include <QtCore/qtmochelpers.h>
@@ -41,37 +40,25 @@ template <> constexpr inline auto pos::MainWindow::qt_create_metaobjectdata<qt_m
     namespace QMC = QtMocConstants;
     QtMocHelpers::StringRefStorage qt_stringData {
         "pos::MainWindow",
-        "reloadBootstrap",
+        "addNewSession",
         "",
-        "onCategoryClicked",
-        "id",
-        "onSearchTriggered",
-        "onSkuAdd",
-        "onClearCart",
-        "onCheckout",
-        "onAddProduct",
-        "onCartChanged"
+        "closeSession",
+        "index",
+        "showKeyboardShortcuts",
+        "openPurchaseOrders"
     };
 
     QtMocHelpers::UintData qt_methods {
-        // Slot 'reloadBootstrap'
+        // Slot 'addNewSession'
         QtMocHelpers::SlotData<void()>(1, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'onCategoryClicked'
+        // Slot 'closeSession'
         QtMocHelpers::SlotData<void(int)>(3, 2, QMC::AccessPrivate, QMetaType::Void, {{
             { QMetaType::Int, 4 },
         }}),
-        // Slot 'onSearchTriggered'
+        // Slot 'showKeyboardShortcuts'
         QtMocHelpers::SlotData<void()>(5, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'onSkuAdd'
+        // Slot 'openPurchaseOrders'
         QtMocHelpers::SlotData<void()>(6, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'onClearCart'
-        QtMocHelpers::SlotData<void()>(7, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'onCheckout'
-        QtMocHelpers::SlotData<void()>(8, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'onAddProduct'
-        QtMocHelpers::SlotData<void()>(9, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'onCartChanged'
-        QtMocHelpers::SlotData<void()>(10, 2, QMC::AccessPrivate, QMetaType::Void),
     };
     QtMocHelpers::UintData qt_properties {
     };
@@ -95,14 +82,10 @@ void pos::MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int 
     auto *_t = static_cast<MainWindow *>(_o);
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
-        case 0: _t->reloadBootstrap(); break;
-        case 1: _t->onCategoryClicked((*reinterpret_cast<std::add_pointer_t<int>>(_a[1]))); break;
-        case 2: _t->onSearchTriggered(); break;
-        case 3: _t->onSkuAdd(); break;
-        case 4: _t->onClearCart(); break;
-        case 5: _t->onCheckout(); break;
-        case 6: _t->onAddProduct(); break;
-        case 7: _t->onCartChanged(); break;
+        case 0: _t->addNewSession(); break;
+        case 1: _t->closeSession((*reinterpret_cast<std::add_pointer_t<int>>(_a[1]))); break;
+        case 2: _t->showKeyboardShortcuts(); break;
+        case 3: _t->openPurchaseOrders(); break;
         default: ;
         }
     }
@@ -127,14 +110,14 @@ int pos::MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 8)
+        if (_id < 4)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 8;
+        _id -= 4;
     }
     if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 8)
+        if (_id < 4)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 8;
+        _id -= 4;
     }
     return _id;
 }

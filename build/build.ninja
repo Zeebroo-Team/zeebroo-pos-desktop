@@ -152,6 +152,24 @@ build CMakeFiles/ZeebrooPosDesktop.dir/src/ui/AddProductDialog.cpp.o: CXX_COMPIL
   OBJECT_FILE_DIR = CMakeFiles/ZeebrooPosDesktop.dir/src/ui
   TARGET_SUPPORT_DIR = CMakeFiles/ZeebrooPosDesktop.dir
 
+build CMakeFiles/ZeebrooPosDesktop.dir/src/ui/ReturnDialog.cpp.o: CXX_COMPILER__ZeebrooPosDesktop_unscanned_ /Users/mac/Documents/Projects/socibiz/pos-desktop/pos-desktop/src/ui/ReturnDialog.cpp || cmake_object_order_depends_target_ZeebrooPosDesktop
+  DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB
+  DEP_FILE = CMakeFiles/ZeebrooPosDesktop.dir/src/ui/ReturnDialog.cpp.o.d
+  FLAGS = -std=gnu++17 -arch arm64
+  INCLUDES = -I/Users/mac/Documents/Projects/socibiz/pos-desktop/build/ZeebrooPosDesktop_autogen/include -I/Users/mac/Documents/Projects/socibiz/pos-desktop/pos-desktop/src -isystem /opt/homebrew/opt/qt6/lib/QtCore.framework/Headers -iframework /opt/homebrew/opt/qt6/lib -isystem /opt/homebrew/opt/qt6/share/qt/mkspecs/macx-clang -isystem /opt/homebrew/opt/qt6/include -isystem /opt/homebrew/opt/qt6/lib/QtGui.framework/Headers -isystem /opt/homebrew/opt/qt6/lib/QtWidgets.framework/Headers -isystem /opt/homebrew/opt/qt6/lib/QtNetwork.framework/Headers -isystem /opt/homebrew/opt/qt6/lib/QtMultimedia.framework/Headers -isystem /opt/homebrew/opt/qt6/lib/QtPrintSupport.framework/Headers
+  OBJECT_DIR = CMakeFiles/ZeebrooPosDesktop.dir
+  OBJECT_FILE_DIR = CMakeFiles/ZeebrooPosDesktop.dir/src/ui
+  TARGET_SUPPORT_DIR = CMakeFiles/ZeebrooPosDesktop.dir
+
+build CMakeFiles/ZeebrooPosDesktop.dir/src/ui/PosSessionWidget.cpp.o: CXX_COMPILER__ZeebrooPosDesktop_unscanned_ /Users/mac/Documents/Projects/socibiz/pos-desktop/pos-desktop/src/ui/PosSessionWidget.cpp || cmake_object_order_depends_target_ZeebrooPosDesktop
+  DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB
+  DEP_FILE = CMakeFiles/ZeebrooPosDesktop.dir/src/ui/PosSessionWidget.cpp.o.d
+  FLAGS = -std=gnu++17 -arch arm64
+  INCLUDES = -I/Users/mac/Documents/Projects/socibiz/pos-desktop/build/ZeebrooPosDesktop_autogen/include -I/Users/mac/Documents/Projects/socibiz/pos-desktop/pos-desktop/src -isystem /opt/homebrew/opt/qt6/lib/QtCore.framework/Headers -iframework /opt/homebrew/opt/qt6/lib -isystem /opt/homebrew/opt/qt6/share/qt/mkspecs/macx-clang -isystem /opt/homebrew/opt/qt6/include -isystem /opt/homebrew/opt/qt6/lib/QtGui.framework/Headers -isystem /opt/homebrew/opt/qt6/lib/QtWidgets.framework/Headers -isystem /opt/homebrew/opt/qt6/lib/QtNetwork.framework/Headers -isystem /opt/homebrew/opt/qt6/lib/QtMultimedia.framework/Headers -isystem /opt/homebrew/opt/qt6/lib/QtPrintSupport.framework/Headers
+  OBJECT_DIR = CMakeFiles/ZeebrooPosDesktop.dir
+  OBJECT_FILE_DIR = CMakeFiles/ZeebrooPosDesktop.dir/src/ui
+  TARGET_SUPPORT_DIR = CMakeFiles/ZeebrooPosDesktop.dir
+
 build CMakeFiles/ZeebrooPosDesktop.dir/src/ui/ProductCardWidget.cpp.o: CXX_COMPILER__ZeebrooPosDesktop_unscanned_ /Users/mac/Documents/Projects/socibiz/pos-desktop/pos-desktop/src/ui/ProductCardWidget.cpp || cmake_object_order_depends_target_ZeebrooPosDesktop
   DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB
   DEP_FILE = CMakeFiles/ZeebrooPosDesktop.dir/src/ui/ProductCardWidget.cpp.o.d
@@ -188,6 +206,33 @@ build CMakeFiles/ZeebrooPosDesktop.dir/src/ui/ReceiptDialog.cpp.o: CXX_COMPILER_
   OBJECT_FILE_DIR = CMakeFiles/ZeebrooPosDesktop.dir/src/ui
   TARGET_SUPPORT_DIR = CMakeFiles/ZeebrooPosDesktop.dir
 
+build CMakeFiles/ZeebrooPosDesktop.dir/src/ui/PurchaseOrderDialog.cpp.o: CXX_COMPILER__ZeebrooPosDesktop_unscanned_ /Users/mac/Documents/Projects/socibiz/pos-desktop/pos-desktop/src/ui/PurchaseOrderDialog.cpp || cmake_object_order_depends_target_ZeebrooPosDesktop
+  DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB
+  DEP_FILE = CMakeFiles/ZeebrooPosDesktop.dir/src/ui/PurchaseOrderDialog.cpp.o.d
+  FLAGS = -std=gnu++17 -arch arm64
+  INCLUDES = -I/Users/mac/Documents/Projects/socibiz/pos-desktop/build/ZeebrooPosDesktop_autogen/include -I/Users/mac/Documents/Projects/socibiz/pos-desktop/pos-desktop/src -isystem /opt/homebrew/opt/qt6/lib/QtCore.framework/Headers -iframework /opt/homebrew/opt/qt6/lib -isystem /opt/homebrew/opt/qt6/share/qt/mkspecs/macx-clang -isystem /opt/homebrew/opt/qt6/include -isystem /opt/homebrew/opt/qt6/lib/QtGui.framework/Headers -isystem /opt/homebrew/opt/qt6/lib/QtWidgets.framework/Headers -isystem /opt/homebrew/opt/qt6/lib/QtNetwork.framework/Headers -isystem /opt/homebrew/opt/qt6/lib/QtMultimedia.framework/Headers -isystem /opt/homebrew/opt/qt6/lib/QtPrintSupport.framework/Headers
+  OBJECT_DIR = CMakeFiles/ZeebrooPosDesktop.dir
+  OBJECT_FILE_DIR = CMakeFiles/ZeebrooPosDesktop.dir/src/ui
+  TARGET_SUPPORT_DIR = CMakeFiles/ZeebrooPosDesktop.dir
+
+build CMakeFiles/ZeebrooPosDesktop.dir/src/ui/PurchaseOrderFormDialog.cpp.o: CXX_COMPILER__ZeebrooPosDesktop_unscanned_ /Users/mac/Documents/Projects/socibiz/pos-desktop/pos-desktop/src/ui/PurchaseOrderFormDialog.cpp || cmake_object_order_depends_target_ZeebrooPosDesktop
+  DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB
+  DEP_FILE = CMakeFiles/ZeebrooPosDesktop.dir/src/ui/PurchaseOrderFormDialog.cpp.o.d
+  FLAGS = -std=gnu++17 -arch arm64
+  INCLUDES = -I/Users/mac/Documents/Projects/socibiz/pos-desktop/build/ZeebrooPosDesktop_autogen/include -I/Users/mac/Documents/Projects/socibiz/pos-desktop/pos-desktop/src -isystem /opt/homebrew/opt/qt6/lib/QtCore.framework/Headers -iframework /opt/homebrew/opt/qt6/lib -isystem /opt/homebrew/opt/qt6/share/qt/mkspecs/macx-clang -isystem /opt/homebrew/opt/qt6/include -isystem /opt/homebrew/opt/qt6/lib/QtGui.framework/Headers -isystem /opt/homebrew/opt/qt6/lib/QtWidgets.framework/Headers -isystem /opt/homebrew/opt/qt6/lib/QtNetwork.framework/Headers -isystem /opt/homebrew/opt/qt6/lib/QtMultimedia.framework/Headers -isystem /opt/homebrew/opt/qt6/lib/QtPrintSupport.framework/Headers
+  OBJECT_DIR = CMakeFiles/ZeebrooPosDesktop.dir
+  OBJECT_FILE_DIR = CMakeFiles/ZeebrooPosDesktop.dir/src/ui
+  TARGET_SUPPORT_DIR = CMakeFiles/ZeebrooPosDesktop.dir
+
+build CMakeFiles/ZeebrooPosDesktop.dir/src/ui/AddSupplierDialog.cpp.o: CXX_COMPILER__ZeebrooPosDesktop_unscanned_ /Users/mac/Documents/Projects/socibiz/pos-desktop/pos-desktop/src/ui/AddSupplierDialog.cpp || cmake_object_order_depends_target_ZeebrooPosDesktop
+  DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB
+  DEP_FILE = CMakeFiles/ZeebrooPosDesktop.dir/src/ui/AddSupplierDialog.cpp.o.d
+  FLAGS = -std=gnu++17 -arch arm64
+  INCLUDES = -I/Users/mac/Documents/Projects/socibiz/pos-desktop/build/ZeebrooPosDesktop_autogen/include -I/Users/mac/Documents/Projects/socibiz/pos-desktop/pos-desktop/src -isystem /opt/homebrew/opt/qt6/lib/QtCore.framework/Headers -iframework /opt/homebrew/opt/qt6/lib -isystem /opt/homebrew/opt/qt6/share/qt/mkspecs/macx-clang -isystem /opt/homebrew/opt/qt6/include -isystem /opt/homebrew/opt/qt6/lib/QtGui.framework/Headers -isystem /opt/homebrew/opt/qt6/lib/QtWidgets.framework/Headers -isystem /opt/homebrew/opt/qt6/lib/QtNetwork.framework/Headers -isystem /opt/homebrew/opt/qt6/lib/QtMultimedia.framework/Headers -isystem /opt/homebrew/opt/qt6/lib/QtPrintSupport.framework/Headers
+  OBJECT_DIR = CMakeFiles/ZeebrooPosDesktop.dir
+  OBJECT_FILE_DIR = CMakeFiles/ZeebrooPosDesktop.dir/src/ui
+  TARGET_SUPPORT_DIR = CMakeFiles/ZeebrooPosDesktop.dir
+
 build CMakeFiles/ZeebrooPosDesktop.dir/ZeebrooPosDesktop_autogen/3YJK5W5UP7/qrc_resources.cpp.o: CXX_COMPILER__ZeebrooPosDesktop_unscanned_ /Users/mac/Documents/Projects/socibiz/pos-desktop/build/ZeebrooPosDesktop_autogen/3YJK5W5UP7/qrc_resources.cpp || cmake_object_order_depends_target_ZeebrooPosDesktop
   DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB
   DEP_FILE = CMakeFiles/ZeebrooPosDesktop.dir/ZeebrooPosDesktop_autogen/3YJK5W5UP7/qrc_resources.cpp.o.d
@@ -205,7 +250,7 @@ build CMakeFiles/ZeebrooPosDesktop.dir/ZeebrooPosDesktop_autogen/3YJK5W5UP7/qrc_
 #############################################
 # Link the executable ZeebrooPosDesktop.app/Contents/MacOS/ZeebrooPosDesktop
 
-build ZeebrooPosDesktop.app/Contents/MacOS/ZeebrooPosDesktop: CXX_EXECUTABLE_LINKER__ZeebrooPosDesktop_ CMakeFiles/ZeebrooPosDesktop.dir/ZeebrooPosDesktop_autogen/mocs_compilation.cpp.o CMakeFiles/ZeebrooPosDesktop.dir/src/main.cpp.o CMakeFiles/ZeebrooPosDesktop.dir/src/core/Config.cpp.o CMakeFiles/ZeebrooPosDesktop.dir/src/core/Models.cpp.o CMakeFiles/ZeebrooPosDesktop.dir/src/core/ApiClient.cpp.o CMakeFiles/ZeebrooPosDesktop.dir/src/core/Cart.cpp.o CMakeFiles/ZeebrooPosDesktop.dir/src/core/PosBeep.cpp.o CMakeFiles/ZeebrooPosDesktop.dir/src/core/SaleReceipt.cpp.o CMakeFiles/ZeebrooPosDesktop.dir/src/ui/LoginDialog.cpp.o CMakeFiles/ZeebrooPosDesktop.dir/src/ui/MainWindow.cpp.o CMakeFiles/ZeebrooPosDesktop.dir/src/ui/CheckoutDialog.cpp.o CMakeFiles/ZeebrooPosDesktop.dir/src/ui/AddProductDialog.cpp.o CMakeFiles/ZeebrooPosDesktop.dir/src/ui/ProductCardWidget.cpp.o CMakeFiles/ZeebrooPosDesktop.dir/src/ui/CartLineWidget.cpp.o CMakeFiles/ZeebrooPosDesktop.dir/src/ui/LayerPickerDialog.cpp.o CMakeFiles/ZeebrooPosDesktop.dir/src/ui/ReceiptDialog.cpp.o CMakeFiles/ZeebrooPosDesktop.dir/ZeebrooPosDesktop_autogen/3YJK5W5UP7/qrc_resources.cpp.o | /opt/homebrew/opt/qt6/lib/QtMultimedia.framework/Versions/A/QtMultimedia /opt/homebrew/opt/qt6/lib/QtPrintSupport.framework/Versions/A/QtPrintSupport /opt/homebrew/opt/qt6/lib/QtNetwork.framework/Versions/A/QtNetwork /opt/homebrew/opt/qt6/lib/QtWidgets.framework/Versions/A/QtWidgets /opt/homebrew/opt/qt6/lib/QtGui.framework/Versions/A/QtGui /opt/homebrew/opt/qt6/lib/QtCore.framework/Versions/A/QtCore /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/libcups.tbd || ZeebrooPosDesktop_autogen ZeebrooPosDesktop_autogen_timestamp_deps
+build ZeebrooPosDesktop.app/Contents/MacOS/ZeebrooPosDesktop: CXX_EXECUTABLE_LINKER__ZeebrooPosDesktop_ CMakeFiles/ZeebrooPosDesktop.dir/ZeebrooPosDesktop_autogen/mocs_compilation.cpp.o CMakeFiles/ZeebrooPosDesktop.dir/src/main.cpp.o CMakeFiles/ZeebrooPosDesktop.dir/src/core/Config.cpp.o CMakeFiles/ZeebrooPosDesktop.dir/src/core/Models.cpp.o CMakeFiles/ZeebrooPosDesktop.dir/src/core/ApiClient.cpp.o CMakeFiles/ZeebrooPosDesktop.dir/src/core/Cart.cpp.o CMakeFiles/ZeebrooPosDesktop.dir/src/core/PosBeep.cpp.o CMakeFiles/ZeebrooPosDesktop.dir/src/core/SaleReceipt.cpp.o CMakeFiles/ZeebrooPosDesktop.dir/src/ui/LoginDialog.cpp.o CMakeFiles/ZeebrooPosDesktop.dir/src/ui/MainWindow.cpp.o CMakeFiles/ZeebrooPosDesktop.dir/src/ui/CheckoutDialog.cpp.o CMakeFiles/ZeebrooPosDesktop.dir/src/ui/AddProductDialog.cpp.o CMakeFiles/ZeebrooPosDesktop.dir/src/ui/ReturnDialog.cpp.o CMakeFiles/ZeebrooPosDesktop.dir/src/ui/PosSessionWidget.cpp.o CMakeFiles/ZeebrooPosDesktop.dir/src/ui/ProductCardWidget.cpp.o CMakeFiles/ZeebrooPosDesktop.dir/src/ui/CartLineWidget.cpp.o CMakeFiles/ZeebrooPosDesktop.dir/src/ui/LayerPickerDialog.cpp.o CMakeFiles/ZeebrooPosDesktop.dir/src/ui/ReceiptDialog.cpp.o CMakeFiles/ZeebrooPosDesktop.dir/src/ui/PurchaseOrderDialog.cpp.o CMakeFiles/ZeebrooPosDesktop.dir/src/ui/PurchaseOrderFormDialog.cpp.o CMakeFiles/ZeebrooPosDesktop.dir/src/ui/AddSupplierDialog.cpp.o CMakeFiles/ZeebrooPosDesktop.dir/ZeebrooPosDesktop_autogen/3YJK5W5UP7/qrc_resources.cpp.o | /opt/homebrew/opt/qt6/lib/QtMultimedia.framework/Versions/A/QtMultimedia /opt/homebrew/opt/qt6/lib/QtPrintSupport.framework/Versions/A/QtPrintSupport /opt/homebrew/opt/qt6/lib/QtNetwork.framework/Versions/A/QtNetwork /opt/homebrew/opt/qt6/lib/QtWidgets.framework/Versions/A/QtWidgets /opt/homebrew/opt/qt6/lib/QtGui.framework/Versions/A/QtGui /opt/homebrew/opt/qt6/lib/QtCore.framework/Versions/A/QtCore /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/libcups.tbd || ZeebrooPosDesktop_autogen ZeebrooPosDesktop_autogen_timestamp_deps
   FLAGS = -arch arm64
   LINK_FLAGS = -Wl,-search_paths_first -Wl,-headerpad_max_install_names
   LINK_LIBRARIES = -Wl,-rpath,/opt/homebrew/opt/qt6/lib  /opt/homebrew/opt/qt6/lib/QtMultimedia.framework/Versions/A/QtMultimedia  /opt/homebrew/opt/qt6/lib/QtPrintSupport.framework/Versions/A/QtPrintSupport  /opt/homebrew/opt/qt6/lib/QtNetwork.framework/Versions/A/QtNetwork  /opt/homebrew/opt/qt6/lib/QtWidgets.framework/Versions/A/QtWidgets  /opt/homebrew/opt/qt6/lib/QtGui.framework/Versions/A/QtGui  -framework AppKit  -framework OpenGL  -framework ImageIO  -framework Metal  /opt/homebrew/opt/qt6/lib/QtCore.framework/Versions/A/QtCore  -framework IOKit  -framework DiskArbitration  -framework UniformTypeIdentifiers  -framework ApplicationServices  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/libcups.tbd

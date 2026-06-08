@@ -1,4 +1,4 @@
-/Users/mac/Documents/Projects/socibiz/pos-desktop/build/ZeebrooPosDesktop_autogen/YPKJ5OE7LN/moc_MainWindow.cpp: /Users/mac/Documents/Projects/socibiz/pos-desktop/pos-desktop/src/ui/MainWindow.h \
+/Users/mac/Documents/Projects/socibiz/pos-desktop/build/ZeebrooPosDesktop_autogen/YPKJ5OE7LN/moc_ReturnDialog.cpp: /Users/mac/Documents/Projects/socibiz/pos-desktop/pos-desktop/src/ui/ReturnDialog.h \
   /Users/mac/Documents/Projects/socibiz/pos-desktop/build/ZeebrooPosDesktop_autogen/moc_predefs.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX26.2.sdk/usr/include/Availability.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX26.2.sdk/usr/include/AvailabilityInternal.h \
@@ -772,19 +772,10 @@
   /Library/Developer/CommandLineTools/usr/lib/clang/17/include/__stdarg_va_list.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/17/include/ptrcheck.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/17/include/stdarg.h \
-  /Users/mac/Documents/Projects/socibiz/pos-desktop/pos-desktop/src/core/ApiClient.h \
   /Users/mac/Documents/Projects/socibiz/pos-desktop/pos-desktop/src/core/Models.h \
-  /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtCore.framework/Versions/A/Headers/QFlags \
-  /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtCore.framework/Versions/A/Headers/QIODevice \
   /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtCore.framework/Versions/A/Headers/QJsonArray \
   /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtCore.framework/Versions/A/Headers/QJsonObject \
-  /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtCore.framework/Versions/A/Headers/QList \
-  /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtCore.framework/Versions/A/Headers/QMetaType \
-  /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtCore.framework/Versions/A/Headers/QObject \
-  /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtCore.framework/Versions/A/Headers/QSharedDataPointer \
   /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtCore.framework/Versions/A/Headers/QString \
-  /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtCore.framework/Versions/A/Headers/QUrl \
-  /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtCore.framework/Versions/A/Headers/QVariant \
   /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtCore.framework/Versions/A/Headers/QVector \
   /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtCore.framework/Versions/A/Headers/q17memory.h \
   /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtCore.framework/Versions/A/Headers/q20functional.h \
@@ -794,7 +785,6 @@
   /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtCore.framework/Versions/A/Headers/q20utility.h \
   /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtCore.framework/Versions/A/Headers/q23type_traits.h \
   /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtCore.framework/Versions/A/Headers/q23utility.h \
-  /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtCore.framework/Versions/A/Headers/q26numeric.h \
   /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtCore.framework/Versions/A/Headers/qalgorithms.h \
   /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtCore.framework/Versions/A/Headers/qalloc.h \
   /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtCore.framework/Versions/A/Headers/qanystringview.h \
@@ -825,7 +815,6 @@
   /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtCore.framework/Versions/A/Headers/qcontainerinfo.h \
   /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtCore.framework/Versions/A/Headers/qcontainertools_impl.h \
   /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtCore.framework/Versions/A/Headers/qcontiguouscache.h \
-  /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtCore.framework/Versions/A/Headers/qcryptographichash.h \
   /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtCore.framework/Versions/A/Headers/qdarwinhelpers.h \
   /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtCore.framework/Versions/A/Headers/qdatastream.h \
   /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtCore.framework/Versions/A/Headers/qdatetime.h \
@@ -842,7 +831,6 @@
   /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtCore.framework/Versions/A/Headers/qglobalstatic.h \
   /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtCore.framework/Versions/A/Headers/qhash.h \
   /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtCore.framework/Versions/A/Headers/qhashfunctions.h \
-  /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtCore.framework/Versions/A/Headers/qiodevice.h \
   /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtCore.framework/Versions/A/Headers/qiodevicebase.h \
   /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtCore.framework/Versions/A/Headers/qiterable.h \
   /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtCore.framework/Versions/A/Headers/qiterator.h \
@@ -861,7 +849,6 @@
   /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtCore.framework/Versions/A/Headers/qmargins.h \
   /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtCore.framework/Versions/A/Headers/qmath.h \
   /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtCore.framework/Versions/A/Headers/qmetacontainer.h \
-  /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtCore.framework/Versions/A/Headers/qmetaobject.h \
   /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtCore.framework/Versions/A/Headers/qmetatype.h \
   /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtCore.framework/Versions/A/Headers/qminmax.h \
   /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtCore.framework/Versions/A/Headers/qnamespace.h \
@@ -956,31 +943,9 @@
   /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtGui.framework/Versions/A/Headers/qtguiglobal.h \
   /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtGui.framework/Versions/A/Headers/qtransform.h \
   /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtGui.framework/Versions/A/Headers/qwindowdefs.h \
-  /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtNetwork.framework/Versions/A/Headers/QNetworkAccessManager \
-  /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtNetwork.framework/Versions/A/Headers/QNetworkReply \
-  /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtNetwork.framework/Versions/A/Headers/QNetworkRequest \
-  /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtNetwork.framework/Versions/A/Headers/QSslConfiguration \
-  /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtNetwork.framework/Versions/A/Headers/QSslPreSharedKeyAuthenticator \
-  /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtNetwork.framework/Versions/A/Headers/qabstractsocket.h \
-  /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtNetwork.framework/Versions/A/Headers/qhostaddress.h \
-  /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtNetwork.framework/Versions/A/Headers/qhttpheaders.h \
-  /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtNetwork.framework/Versions/A/Headers/qnetworkaccessmanager.h \
-  /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtNetwork.framework/Versions/A/Headers/qnetworkreply.h \
-  /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtNetwork.framework/Versions/A/Headers/qnetworkrequest.h \
-  /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtNetwork.framework/Versions/A/Headers/qssl.h \
-  /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtNetwork.framework/Versions/A/Headers/qsslcertificate.h \
-  /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtNetwork.framework/Versions/A/Headers/qsslconfiguration.h \
-  /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtNetwork.framework/Versions/A/Headers/qsslerror.h \
-  /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtNetwork.framework/Versions/A/Headers/qsslpresharedkeyauthenticator.h \
-  /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtNetwork.framework/Versions/A/Headers/qsslsocket.h \
-  /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtNetwork.framework/Versions/A/Headers/qtcpsocket.h \
-  /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtNetwork.framework/Versions/A/Headers/qtnetwork-config.h \
-  /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtNetwork.framework/Versions/A/Headers/qtnetworkexports.h \
-  /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtNetwork.framework/Versions/A/Headers/qtnetworkglobal.h \
-  /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtWidgets.framework/Versions/A/Headers/QMainWindow \
-  /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtWidgets.framework/Versions/A/Headers/qmainwindow.h \
+  /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtWidgets.framework/Versions/A/Headers/QDialog \
+  /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtWidgets.framework/Versions/A/Headers/qdialog.h \
   /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtWidgets.framework/Versions/A/Headers/qsizepolicy.h \
-  /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtWidgets.framework/Versions/A/Headers/qtabwidget.h \
   /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtWidgets.framework/Versions/A/Headers/qtwidgets-config.h \
   /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtWidgets.framework/Versions/A/Headers/qtwidgetsexports.h \
   /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtWidgets.framework/Versions/A/Headers/qtwidgetsglobal.h \

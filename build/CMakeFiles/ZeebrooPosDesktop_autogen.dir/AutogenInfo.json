@@ -490,6 +490,12 @@
 			null
 		],
 		[
+			"/Users/mac/Documents/Projects/socibiz/pos-desktop/pos-desktop/src/ui/AddSupplierDialog.h",
+			"Mu",
+			"YPKJ5OE7LN/moc_AddSupplierDialog.cpp",
+			null
+		],
+		[
 			"/Users/mac/Documents/Projects/socibiz/pos-desktop/pos-desktop/src/ui/CartLineWidget.h",
 			"Mu",
 			"YPKJ5OE7LN/moc_CartLineWidget.cpp",
@@ -520,15 +526,39 @@
 			null
 		],
 		[
+			"/Users/mac/Documents/Projects/socibiz/pos-desktop/pos-desktop/src/ui/PosSessionWidget.h",
+			"Mu",
+			"YPKJ5OE7LN/moc_PosSessionWidget.cpp",
+			null
+		],
+		[
 			"/Users/mac/Documents/Projects/socibiz/pos-desktop/pos-desktop/src/ui/ProductCardWidget.h",
 			"Mu",
 			"YPKJ5OE7LN/moc_ProductCardWidget.cpp",
 			null
 		],
 		[
+			"/Users/mac/Documents/Projects/socibiz/pos-desktop/pos-desktop/src/ui/PurchaseOrderDialog.h",
+			"Mu",
+			"YPKJ5OE7LN/moc_PurchaseOrderDialog.cpp",
+			null
+		],
+		[
+			"/Users/mac/Documents/Projects/socibiz/pos-desktop/pos-desktop/src/ui/PurchaseOrderFormDialog.h",
+			"Mu",
+			"YPKJ5OE7LN/moc_PurchaseOrderFormDialog.cpp",
+			null
+		],
+		[
 			"/Users/mac/Documents/Projects/socibiz/pos-desktop/pos-desktop/src/ui/ReceiptDialog.h",
 			"Mu",
 			"YPKJ5OE7LN/moc_ReceiptDialog.cpp",
+			null
+		],
+		[
+			"/Users/mac/Documents/Projects/socibiz/pos-desktop/pos-desktop/src/ui/ReturnDialog.h",
+			"Mu",
+			"YPKJ5OE7LN/moc_ReturnDialog.cpp",
 			null
 		]
 	],
@@ -648,6 +678,11 @@
 			null
 		],
 		[
+			"/Users/mac/Documents/Projects/socibiz/pos-desktop/pos-desktop/src/ui/AddSupplierDialog.cpp",
+			"Mu",
+			null
+		],
+		[
 			"/Users/mac/Documents/Projects/socibiz/pos-desktop/pos-desktop/src/ui/CartLineWidget.cpp",
 			"Mu",
 			null
@@ -673,12 +708,32 @@
 			null
 		],
 		[
+			"/Users/mac/Documents/Projects/socibiz/pos-desktop/pos-desktop/src/ui/PosSessionWidget.cpp",
+			"Mu",
+			null
+		],
+		[
 			"/Users/mac/Documents/Projects/socibiz/pos-desktop/pos-desktop/src/ui/ProductCardWidget.cpp",
 			"Mu",
 			null
 		],
 		[
+			"/Users/mac/Documents/Projects/socibiz/pos-desktop/pos-desktop/src/ui/PurchaseOrderDialog.cpp",
+			"Mu",
+			null
+		],
+		[
+			"/Users/mac/Documents/Projects/socibiz/pos-desktop/pos-desktop/src/ui/PurchaseOrderFormDialog.cpp",
+			"Mu",
+			null
+		],
+		[
 			"/Users/mac/Documents/Projects/socibiz/pos-desktop/pos-desktop/src/ui/ReceiptDialog.cpp",
+			"Mu",
+			null
+		],
+		[
+			"/Users/mac/Documents/Projects/socibiz/pos-desktop/pos-desktop/src/ui/ReturnDialog.cpp",
 			"Mu",
 			null
 		]

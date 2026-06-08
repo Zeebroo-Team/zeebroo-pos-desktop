@@ -1,4 +1,4 @@
-/Users/mac/Documents/Projects/socibiz/pos-desktop/build/ZeebrooPosDesktop_autogen/YPKJ5OE7LN/moc_MainWindow.cpp: /Users/mac/Documents/Projects/socibiz/pos-desktop/pos-desktop/src/ui/MainWindow.h \
+/Users/mac/Documents/Projects/socibiz/pos-desktop/build/ZeebrooPosDesktop_autogen/YPKJ5OE7LN/moc_AddSupplierDialog.cpp: /Users/mac/Documents/Projects/socibiz/pos-desktop/pos-desktop/src/ui/AddSupplierDialog.h \
   /Users/mac/Documents/Projects/socibiz/pos-desktop/build/ZeebrooPosDesktop_autogen/moc_predefs.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX26.2.sdk/usr/include/Availability.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX26.2.sdk/usr/include/AvailabilityInternal.h \
@@ -977,10 +977,9 @@
   /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtNetwork.framework/Versions/A/Headers/qtnetwork-config.h \
   /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtNetwork.framework/Versions/A/Headers/qtnetworkexports.h \
   /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtNetwork.framework/Versions/A/Headers/qtnetworkglobal.h \
-  /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtWidgets.framework/Versions/A/Headers/QMainWindow \
-  /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtWidgets.framework/Versions/A/Headers/qmainwindow.h \
+  /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtWidgets.framework/Versions/A/Headers/QDialog \
+  /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtWidgets.framework/Versions/A/Headers/qdialog.h \
   /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtWidgets.framework/Versions/A/Headers/qsizepolicy.h \
-  /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtWidgets.framework/Versions/A/Headers/qtabwidget.h \
   /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtWidgets.framework/Versions/A/Headers/qtwidgets-config.h \
   /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtWidgets.framework/Versions/A/Headers/qtwidgetsexports.h \
   /opt/homebrew/Cellar/qtbase/6.10.2/lib/QtWidgets.framework/Versions/A/Headers/qtwidgetsglobal.h \
