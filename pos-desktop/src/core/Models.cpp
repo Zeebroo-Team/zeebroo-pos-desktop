@@ -66,6 +66,14 @@ Category Category::fromJson(const QJsonObject &o)
     return c;
 }
 
+Branch Branch::fromJson(const QJsonObject &o)
+{
+    Branch b;
+    b.id = o.value(QStringLiteral("id")).toInt();
+    b.name = o.value(QStringLiteral("name")).toString();
+    return b;
+}
+
 Account Account::fromJson(const QJsonObject &o)
 {
     Account a;
@@ -125,6 +133,12 @@ BootstrapData BootstrapData::fromJson(const QJsonObject &data)
     b.productsMeta.total       = meta.value(QStringLiteral("total")).toInt(0);
     b.today = TodaySummary::fromJson(data.value(QStringLiteral("today")).toObject());
     b.settings = PosSettings::fromJson(data.value(QStringLiteral("settings")).toObject());
+    b.branchPosSeparate = data.value(QStringLiteral("branch_pos_separate")).toBool();
+    b.selectedBranchId = data.value(QStringLiteral("selected_branch_id")).toInt(0);
+    const QJsonArray branches = data.value(QStringLiteral("branches")).toArray();
+    for (const QJsonValue &v : branches) {
+        b.branches.append(Branch::fromJson(v.toObject()));
+    }
     return b;
 }
 

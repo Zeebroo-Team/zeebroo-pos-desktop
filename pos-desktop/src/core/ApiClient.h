@@ -16,14 +16,17 @@ public:
 
     QString accessToken() const { return m_token; }
     int businessId() const { return m_businessId; }
+    int branchId() const { return m_branchId; }
     void setAccessToken(const QString &token);
     void setBusinessId(int id);
+    void setBranchId(int id);
 
     using SuccessFn = std::function<void(const QJsonObject &)>;
     using ErrorFn = std::function<void(const QString &, int status)>;
 
     void login(const QString &email, const QString &password, SuccessFn onOk, ErrorFn onErr);
     void fetchBusinesses(SuccessFn onOk, ErrorFn onErr);
+    void fetchBranches(SuccessFn onOk, ErrorFn onErr);
     void bootstrap(const QString &search, int categoryId, int page, SuccessFn onOk, ErrorFn onErr);
     void productBySku(const QString &sku, SuccessFn onOk, ErrorFn onErr);
     void checkout(const QJsonObject &body, SuccessFn onOk, ErrorFn onErr);
@@ -54,6 +57,7 @@ private:
     QNetworkAccessManager m_nam;
     QString m_token;
     int m_businessId = 0;
+    int m_branchId   = 0;
 };
 
 } // namespace pos

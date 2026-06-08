@@ -21,7 +21,7 @@ LoginDialog::LoginDialog(ApiClient *api, QWidget *parent)
 {
     setWindowTitle(tr("Zeebroo POS — Sign in"));
     setModal(true);
-    setFixedSize(460, 530);
+    setFixedSize(460, 580);
     setObjectName(QStringLiteral("loginDialog"));
 
     Config::instance().load();
@@ -129,6 +129,24 @@ LoginDialog::LoginDialog(ApiClient *api, QWidget *parent)
     m_business->addItem(tr("— sign in to load businesses —"));
     formLayout->addWidget(m_business);
 
+    // Branch row (hidden until branch_pos_separate + multiple branches)
+    m_branchRow = new QWidget(formCard);
+    m_branchRow->setVisible(false);
+    auto *branchRowLayout = new QVBoxLayout(m_branchRow);
+    branchRowLayout->setContentsMargins(0, 14, 0, 0);
+    branchRowLayout->setSpacing(5);
+
+    auto *branchLabel = new QLabel(tr("Branch"), m_branchRow);
+    branchLabel->setObjectName(QStringLiteral("loginFieldLabel"));
+    branchRowLayout->addWidget(branchLabel);
+
+    m_branchCombo = new QComboBox(m_branchRow);
+    m_branchCombo->setObjectName(QStringLiteral("loginCombo"));
+    m_branchCombo->setFixedHeight(40);
+    branchRowLayout->addWidget(m_branchCombo);
+
+    formLayout->addWidget(m_branchRow);
+
     formLayout->addStretch();
     formLayout->addSpacing(8);
 
@@ -167,7 +185,8 @@ void LoginDialog::loadBusinesses()
                 m_api->setAccessToken(QString());
             } else if (m_business->count() == 1) {
                 m_businessId = m_business->currentData().toInt();
-                accept();
+                m_api->setBusinessId(m_businessId);
+                loadBranches();
             } else {
                 QMessageBox::information(this, tr("Select business"),
                                          tr("You have multiple businesses — select one and click Sign in again."));
@@ -178,15 +197,57 @@ void LoginDialog::loadBusinesses()
         });
 }
 
+void LoginDialog::loadBranches()
+{
+    m_api->fetchBranches(
+        [this](const QJsonObject &root) {
+            const QJsonObject data = root.value(QStringLiteral("data")).toObject();
+            const bool separate = data.value(QStringLiteral("branch_pos_separate")).toBool();
+            const QJsonArray arr = data.value(QStringLiteral("branches")).toArray();
+
+            if (!separate || arr.isEmpty()) {
+                accept();
+                return;
+            }
+
+            if (arr.size() == 1) {
+                m_branchId = arr.first().toObject().value(QStringLiteral("id")).toInt();
+                accept();
+                return;
+            }
+
+            m_branchCombo->clear();
+            for (const QJsonValue &v : arr) {
+                const QJsonObject o = v.toObject();
+                m_branchCombo->addItem(o.value(QStringLiteral("name")).toString(),
+                                       o.value(QStringLiteral("id")).toInt());
+            }
+            m_branchRow->setVisible(true);
+            m_step = Step::BranchPick;
+            QMessageBox::information(this, tr("Select branch"),
+                                     tr("Select a branch and click Sign in."));
+        },
+        [this](const QString &, int) {
+            accept();
+        });
+}
+
 void LoginDialog::onLoginClicked()
 {
+    if (m_step == Step::BranchPick) {
+        m_branchId = m_branchCombo->currentData().toInt();
+        accept();
+        return;
+    }
+
     if (!m_token.isEmpty()) {
         m_businessId = m_business->currentData().toInt();
         if (m_businessId <= 0) {
             QMessageBox::warning(this, tr("Sign in"), tr("Please select a business."));
             return;
         }
-        accept();
+        m_api->setBusinessId(m_businessId);
+        loadBranches();
         return;
     }
 

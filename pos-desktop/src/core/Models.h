@@ -38,6 +38,13 @@ struct Category {
     static Category fromJson(const QJsonObject &o);
 };
 
+struct Branch {
+    int id = 0;
+    QString name;
+
+    static Branch fromJson(const QJsonObject &o);
+};
+
 struct Account {
     int id = 0;
     QString label;
@@ -82,6 +89,9 @@ struct BootstrapData {
     QVector<Account> accounts;
     TodaySummary today;
     PosSettings settings;
+    bool branchPosSeparate = false;
+    QVector<Branch> branches;
+    int selectedBranchId = 0;
 
     static BootstrapData fromJson(const QJsonObject &data);
 };

@@ -25,6 +25,11 @@ void ApiClient::setBusinessId(int id)
     m_businessId = id;
 }
 
+void ApiClient::setBranchId(int id)
+{
+    m_branchId = id;
+}
+
 QNetworkRequest ApiClient::buildRequest(const QString &path, const QUrlQuery *query) const
 {
     QString base = Config::instance().apiBaseUrl();
@@ -135,6 +140,12 @@ void ApiClient::fetchBusinesses(SuccessFn onOk, ErrorFn onErr)
     sendGet(req, onOk, onErr);
 }
 
+void ApiClient::fetchBranches(SuccessFn onOk, ErrorFn onErr)
+{
+    QNetworkRequest req = buildRequest(QStringLiteral("/online/branches"));
+    sendGet(req, onOk, onErr);
+}
+
 void ApiClient::bootstrap(const QString &search, int categoryId, int page, SuccessFn onOk, ErrorFn onErr)
 {
     QUrlQuery query;
@@ -146,6 +157,9 @@ void ApiClient::bootstrap(const QString &search, int categoryId, int page, Succe
     }
     if (page > 1) {
         query.addQueryItem(QStringLiteral("page"), QString::number(page));
+    }
+    if (m_branchId > 0) {
+        query.addQueryItem(QStringLiteral("branch"), QString::number(m_branchId));
     }
     QNetworkRequest req = buildRequest(QStringLiteral("/online/bootstrap"), query.isEmpty() ? nullptr : &query);
     sendGet(req, onOk, onErr);

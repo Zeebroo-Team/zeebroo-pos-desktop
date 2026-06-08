@@ -31,6 +31,7 @@ int main(int argc, char *argv[])
 
         api.setAccessToken(login.accessToken());
         api.setBusinessId(login.businessId());
+        api.setBranchId(login.branchId());
 
         bool signedOut = false;
         {
@@ -46,6 +47,7 @@ int main(int argc, char *argv[])
         // Clear credentials and loop back to login
         api.setAccessToken(QString());
         api.setBusinessId(0);
+        api.setBranchId(0);
     }
 
     return 0;
