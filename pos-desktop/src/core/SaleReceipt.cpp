@@ -111,8 +111,13 @@ SaleReceipt SaleReceipt::fromApiSale(const QJsonObject &sale, const QString &bus
         line.sku = o.value(QStringLiteral("sku")).toString();
         line.quantity = o.value(QStringLiteral("quantity")).toDouble();
         line.unitSellPrice = o.value(QStringLiteral("unit_sell_price")).toDouble();
+        line.discountAmount = o.value(QStringLiteral("discount_amount")).toDouble();
         line.lineTotal = o.value(QStringLiteral("line_total")).toDouble();
         r.items.append(line);
+    }
+
+    for (const SaleReceiptLine &line : r.items) {
+        r.productDiscountTotal += line.discountAmount * line.quantity;
     }
 
     return r;
@@ -143,19 +148,31 @@ QString SaleReceipt::toPlainText(int paperChars) const
         if (!line.sku.isEmpty()) {
             out += wrapText(QStringLiteral("  ") + line.sku, w) + QLatin1Char('\n');
         }
-        out += padLine(QStringLiteral("  @ ") + money(line.unitSellPrice, currency),
-                       money(line.lineTotal, currency), w)
-            + QLatin1Char('\n');
+        const double originalUnit = line.unitSellPrice + line.discountAmount;
+        const QString unitLabel = line.discountAmount > 0.0
+            ? QStringLiteral("  @ ") + money(originalUnit, currency) + QStringLiteral(" -> ") + money(line.unitSellPrice, currency)
+            : QStringLiteral("  @ ") + money(line.unitSellPrice, currency);
+        out += padLine(unitLabel, money(line.lineTotal, currency), w) + QLatin1Char('\n');
+        if (line.discountAmount > 0.0) {
+            out += padLine(QStringLiteral("  Discount"),
+                           QStringLiteral("-") + money(line.discountAmount, currency) + QStringLiteral("/unit"),
+                           w) + QLatin1Char('\n');
+        }
     }
 
     out += repeatChar(QLatin1Char('-'), w) + QLatin1Char('\n');
-    out += padLine(QStringLiteral("Subtotal"), money(subtotal, currency), w) + QLatin1Char('\n');
+    if (productDiscountTotal > 0.0 || discountAmount > 0.0) {
+        out += padLine(QStringLiteral("Subtotal"), money(subtotal, currency), w) + QLatin1Char('\n');
+    }
+    if (productDiscountTotal > 0.0) {
+        out += padLine(QStringLiteral("Product discounts"), QStringLiteral("-") + money(productDiscountTotal, currency), w) + QLatin1Char('\n');
+    }
     if (discountAmount > 0.0) {
         QString discLabel = QStringLiteral("Discount");
         if (discountPercent > 0.0) {
             discLabel += QStringLiteral(" (") + QLocale().toString(discountPercent, 'f', 2) + QStringLiteral("%)");
         }
-        out += padLine(discLabel, money(discountAmount, currency), w) + QLatin1Char('\n');
+        out += padLine(discLabel, QStringLiteral("-") + money(discountAmount, currency), w) + QLatin1Char('\n');
     }
     out += padLine(QStringLiteral("TOTAL"), money(total, currency), w) + QLatin1Char('\n');
 
@@ -172,6 +189,11 @@ QString SaleReceipt::toPlainText(int paperChars) const
         out += wrapText(notes, w) + QLatin1Char('\n');
     }
 
+    const double totalSaved = productDiscountTotal + discountAmount;
+    if (totalSaved > 0.0) {
+        out += repeatChar(QLatin1Char('-'), w) + QLatin1Char('\n');
+        out += centerText(QStringLiteral("*** You saved ") + money(totalSaved, currency) + QStringLiteral(" ***"), w) + QLatin1Char('\n');
+    }
     out += repeatChar(QLatin1Char('='), w) + QLatin1Char('\n');
     out += centerText(QStringLiteral("Thank you!"), w) + QLatin1Char('\n');
 
@@ -222,16 +244,36 @@ QString SaleReceipt::toHtml() const
             html += QStringLiteral("<tr><td colspan='2' style='color:#666;font-size:9pt;'>") + htmlEsc(line.sku)
                 + QStringLiteral("</td></tr>");
         }
-        html += QStringLiteral("<tr><td>@ ") + htmlEsc(money(line.unitSellPrice, currency))
-            + QStringLiteral("</td><td class='r'>") + htmlEsc(money(line.lineTotal, currency))
-            + QStringLiteral("</td></tr>");
+        if (line.discountAmount > 0.0) {
+            const double originalUnit = line.unitSellPrice + line.discountAmount;
+            html += QStringLiteral("<tr><td>@ <del style='color:#999;'>") + htmlEsc(money(originalUnit, currency))
+                + QStringLiteral("</del> ") + htmlEsc(money(line.unitSellPrice, currency))
+                + QStringLiteral("</td><td class='r'>") + htmlEsc(money(line.lineTotal, currency))
+                + QStringLiteral("</td></tr>");
+            html += QStringLiteral("<tr><td style='color:#d97706;font-size:9pt;'>&#x2937; Discount &minus;")
+                + htmlEsc(money(line.discountAmount, currency))
+                + QStringLiteral("/unit</td><td class='r' style='color:#d97706;font-size:9pt;'>&minus;")
+                + htmlEsc(money(line.discountAmount * line.quantity, currency))
+                + QStringLiteral("</td></tr>");
+        } else {
+            html += QStringLiteral("<tr><td>@ ") + htmlEsc(money(line.unitSellPrice, currency))
+                + QStringLiteral("</td><td class='r'>") + htmlEsc(money(line.lineTotal, currency))
+                + QStringLiteral("</td></tr>");
+        }
     }
 
     html += QStringLiteral("</table><div class='sep'></div><table>");
-    html += QStringLiteral("<tr><td>") + htmlEsc(QStringLiteral("Subtotal")) + QStringLiteral("</td><td class='r'>")
-        + htmlEsc(money(subtotal, currency)) + QStringLiteral("</td></tr>");
+    if (productDiscountTotal > 0.0 || discountAmount > 0.0) {
+        html += QStringLiteral("<tr><td>") + htmlEsc(QStringLiteral("Subtotal")) + QStringLiteral("</td><td class='r'>")
+            + htmlEsc(money(subtotal, currency)) + QStringLiteral("</td></tr>");
+    }
+    if (productDiscountTotal > 0.0) {
+        html += QStringLiteral("<tr><td style='color:#d97706;'>") + htmlEsc(QStringLiteral("Product discounts"))
+            + QStringLiteral("</td><td class='r' style='color:#d97706;'>&minus;")
+            + htmlEsc(money(productDiscountTotal, currency)) + QStringLiteral("</td></tr>");
+    }
     if (discountAmount > 0.0) {
-        html += QStringLiteral("<tr><td>") + htmlEsc(QStringLiteral("Discount")) + QStringLiteral("</td><td class='r'>")
+        html += QStringLiteral("<tr><td>") + htmlEsc(QStringLiteral("Discount")) + QStringLiteral("</td><td class='r'>&minus;")
             + htmlEsc(money(discountAmount, currency)) + QStringLiteral("</td></tr>");
     }
     html += QStringLiteral("<tr class='total'><td>") + htmlEsc(QStringLiteral("TOTAL")) + QStringLiteral("</td><td class='r'>")
@@ -245,6 +287,12 @@ QString SaleReceipt::toHtml() const
     }
 
     html += QStringLiteral("</table>");
+
+    const double totalSaved = productDiscountTotal + discountAmount;
+    if (totalSaved > 0.0) {
+        html += QStringLiteral("<div class='sep'></div><div style='text-align:center;font-weight:bold;color:#b45309;border:1px dashed #f59e0b;padding:6px 4px;margin-top:6px;'>")
+            + htmlEsc(QStringLiteral("You saved ")) + htmlEsc(money(totalSaved, currency)) + QStringLiteral(" on this purchase!</div>");
+    }
 
     if (!notes.isEmpty()) {
         html += QStringLiteral("<div class='sep'></div><div>") + htmlEsc(QStringLiteral("Notes:")) + QStringLiteral("<br>")

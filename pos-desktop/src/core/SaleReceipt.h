@@ -11,6 +11,7 @@ struct SaleReceiptLine {
     QString sku;
     double quantity = 0.0;
     double unitSellPrice = 0.0;
+    double discountAmount = 0.0; // per-unit product discount
     double lineTotal = 0.0;
 };
 
@@ -26,6 +27,7 @@ struct SaleReceipt {
     double subtotal = 0.0;
     double discountPercent = 0.0;
     double discountAmount = 0.0;
+    double productDiscountTotal = 0.0; // sum of all per-item product discounts
     double total = 0.0;
     double amountPaid = 0.0;
     double amountTendered = 0.0;

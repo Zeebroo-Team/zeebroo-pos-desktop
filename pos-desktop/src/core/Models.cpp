@@ -34,6 +34,13 @@ ProductCard ProductCard::fromJson(const QJsonObject &o)
     p.requiresLayerPick = o.value(QStringLiteral("requires_layer_pick")).toBool();
     p.hasMultiplePrices = o.value(QStringLiteral("has_multiple_prices")).toBool();
     p.layers = layersFromJson(o.value(QStringLiteral("layers")).toArray());
+
+    const QJsonObject discount = o.value(QStringLiteral("discount")).toObject();
+    if (!discount.isEmpty()) {
+        p.discountAmount = discount.value(QStringLiteral("amount")).toDouble();
+        p.discountedSellPrice = discount.value(QStringLiteral("final_price")).toDouble();
+    }
+
     return p;
 }
 
@@ -52,8 +59,39 @@ QString ProductCard::priceLabel(const QString &currency) const
             .arg(maxP, 0, 'f', 2)
             .arg(suffix);
     }
+    const double effective = effectiveSellPrice();
+    if (effective > 0.0) {
+        return QString::number(effective, 'f', 2) + suffix;
+    }
+    return QStringLiteral("—");
+}
+
+QString ProductCard::priceLabelHtml(const QString &currency) const
+{
+    const QString suffix = currency.isEmpty() ? QString() : QStringLiteral(" ") + currency;
+    if (hasMultiplePrices && layers.size() > 1) {
+        double minP = layers.first().unitSellPrice;
+        double maxP = minP;
+        for (const StockLayer &layer : layers) {
+            minP = std::min(minP, layer.unitSellPrice);
+            maxP = std::max(maxP, layer.unitSellPrice);
+        }
+        return QStringLiteral("<b>%1–%2%3</b>")
+            .arg(minP, 0, 'f', 2)
+            .arg(maxP, 0, 'f', 2)
+            .arg(suffix.toHtmlEscaped());
+    }
+    if (hasDiscount() && unitSellPrice > 0.0) {
+        return QStringLiteral("<span style='text-decoration:line-through;color:#999;font-size:9pt;'>%1%3</span> "
+                              "<b style='color:#16a34a;'>%2%3</b>")
+            .arg(unitSellPrice, 0, 'f', 2)
+            .arg(discountedSellPrice, 0, 'f', 2)
+            .arg(suffix.toHtmlEscaped());
+    }
     if (unitSellPrice > 0.0) {
-        return QString::number(unitSellPrice, 'f', 2) + suffix;
+        return QStringLiteral("<b>%1%2</b>")
+            .arg(unitSellPrice, 0, 'f', 2)
+            .arg(suffix.toHtmlEscaped());
     }
     return QStringLiteral("—");
 }

@@ -51,6 +51,16 @@ CartLineWidget::CartLineWidget(const CartLine &line, const QString &unitPriceTex
     metaLbl->setWordWrap(true);
     root->addWidget(metaLbl);
 
+    if (line.discountAmount > 0.0) {
+        auto *discLbl = new QLabel(this);
+        discLbl->setObjectName(QStringLiteral("cartDiscountChip"));
+        discLbl->setTextFormat(Qt::RichText);
+        discLbl->setText(QStringLiteral("<span style='color:#d97706;'>&#x2192; Discount &minus;%1 / unit applied</span>")
+                             .arg(line.discountAmount, 0, 'f', 2));
+        discLbl->setWordWrap(true);
+        root->addWidget(discLbl);
+    }
+
     if (!line.layerLabel.isEmpty()) {
         auto *layerChip = new QLabel(line.layerLabel, this);
         layerChip->setObjectName(QStringLiteral("cartLayerChip"));

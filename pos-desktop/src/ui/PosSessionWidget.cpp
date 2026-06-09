@@ -670,15 +670,18 @@ void PosSessionWidget::addProductToCart(const ProductCard &product)
         if (dlg.exec() != QDialog::Accepted) return;
         const StockLayer layer = dlg.selectedLayer();
         if (layer.id <= 0) return;
-        line.layerId    = layer.id;
-        line.layerLabel = layer.label;
-        line.unitPrice  = layer.unitSellPrice;
+        line.layerId        = layer.id;
+        line.layerLabel     = layer.label;
+        line.unitPrice      = layer.unitSellPrice; // already discounted server-side
+        line.discountAmount = product.discountAmount;
     } else if (!product.layers.isEmpty()) {
-        line.layerId    = product.layers.first().id;
-        line.layerLabel = product.layers.first().label;
-        line.unitPrice  = product.layers.first().unitSellPrice;
+        line.layerId        = product.layers.first().id;
+        line.layerLabel     = product.layers.first().label;
+        line.unitPrice      = product.layers.first().unitSellPrice; // already discounted server-side
+        line.discountAmount = product.discountAmount;
     } else {
-        line.unitPrice = product.unitSellPrice;
+        line.unitPrice      = product.effectiveSellPrice();
+        line.discountAmount = product.discountAmount;
     }
 
     m_cart.addOrIncrement(line, 1.0);

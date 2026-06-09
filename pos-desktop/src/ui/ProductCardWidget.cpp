@@ -61,9 +61,11 @@ ProductCardWidget::ProductCardWidget(const ProductCard &product, const QString &
     metaLbl->setWordWrap(true);
     lay->addWidget(metaLbl);
 
-    auto *price = new QLabel(product.priceLabel(currency), this);
+    auto *price = new QLabel(this);
     price->setObjectName(QStringLiteral("productPrice"));
     price->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+    price->setTextFormat(Qt::RichText);
+    price->setText(product.priceLabelHtml(currency));
     lay->addWidget(price);
 
     lay->addStretch(0);

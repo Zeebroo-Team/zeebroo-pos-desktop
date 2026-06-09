@@ -20,6 +20,8 @@ struct ProductCard {
     QString sku;
     QString imageUrl;
     double unitSellPrice = 0.0;
+    double discountedSellPrice = 0.0; // 0 means no discount
+    double discountAmount = 0.0;      // per-unit discount amount
     double stockQuantity = 0.0;
     int layerCount = 0;
     bool requiresLayerPick = false;
@@ -28,7 +30,10 @@ struct ProductCard {
 
     static ProductCard fromJson(const QJsonObject &o);
     bool inStock() const { return stockQuantity > 0.0; }
+    bool hasDiscount() const { return discountAmount > 0.0; }
+    double effectiveSellPrice() const { return hasDiscount() ? discountedSellPrice : unitSellPrice; }
     QString priceLabel(const QString &currency) const;
+    QString priceLabelHtml(const QString &currency) const;
 };
 
 struct Category {
@@ -195,6 +200,7 @@ struct CartLine {
     QString sku;
     QString layerLabel;
     double unitPrice = 0.0;
+    double discountAmount = 0.0; // per-unit discount for display
     double quantity = 1.0;
 
     QString cartKey() const;
