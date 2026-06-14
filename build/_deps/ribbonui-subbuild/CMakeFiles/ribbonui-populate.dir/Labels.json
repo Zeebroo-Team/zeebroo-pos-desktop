@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-subbuild/CMakeFiles/ribbonui-populate"
+		},
+		{
+			"file" : "/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-subbuild/CMakeFiles/ribbonui-populate.rule"
+		},
+		{
+			"file" : "/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-subbuild/CMakeFiles/ribbonui-populate-complete.rule"
+		},
+		{
+			"file" : "/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-subbuild/ribbonui-populate-prefix/src/ribbonui-populate-stamp/ribbonui-populate-build.rule"
+		},
+		{
+			"file" : "/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-subbuild/ribbonui-populate-prefix/src/ribbonui-populate-stamp/ribbonui-populate-configure.rule"
+		},
+		{
+			"file" : "/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-subbuild/ribbonui-populate-prefix/src/ribbonui-populate-stamp/ribbonui-populate-download.rule"
+		},
+		{
+			"file" : "/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-subbuild/ribbonui-populate-prefix/src/ribbonui-populate-stamp/ribbonui-populate-install.rule"
+		},
+		{
+			"file" : "/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-subbuild/ribbonui-populate-prefix/src/ribbonui-populate-stamp/ribbonui-populate-mkdir.rule"
+		},
+		{
+			"file" : "/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-subbuild/ribbonui-populate-prefix/src/ribbonui-populate-stamp/ribbonui-populate-patch.rule"
+		},
+		{
+			"file" : "/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-subbuild/ribbonui-populate-prefix/src/ribbonui-populate-stamp/ribbonui-populate-test.rule"
+		},
+		{
+			"file" : "/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-subbuild/ribbonui-populate-prefix/src/ribbonui-populate-stamp/ribbonui-populate-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"ribbonui-populate"
+		],
+		"name" : "ribbonui-populate"
+	}
+}

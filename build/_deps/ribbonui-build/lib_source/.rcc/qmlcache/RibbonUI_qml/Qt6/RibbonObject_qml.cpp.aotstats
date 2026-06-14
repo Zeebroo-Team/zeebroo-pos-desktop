@@ -1,0 +1,39 @@
+{
+    "formatRevision": 1,
+    "modules": [
+        {
+            "moduleFiles": [
+                {
+                    "entries": [
+                        {
+                            "codegenResult": 0,
+                            "column": 30,
+                            "durationMicroseconds": 0,
+                            "functionName": "properties",
+                            "line": 5,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 34,
+                            "durationMicroseconds": 0,
+                            "functionName": "property_names",
+                            "line": 6,
+                            "message": "Cannot generate efficient code for storing an array in a non-sequence type"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 5,
+                            "durationMicroseconds": 0,
+                            "functionName": "getPropertiesReady",
+                            "line": 8,
+                            "message": "Cannot load property length from (component in /Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/lib_source/qml/Qt6/RibbonObject.qml)::property_names with type QVariant."
+                        }
+                    ],
+                    "filePath": "/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/lib_source/qml/Qt6/RibbonObject.qml"
+                }
+            ],
+            "moduleId": "RibbonUI(RibbonUI)"
+        }
+    ]
+}

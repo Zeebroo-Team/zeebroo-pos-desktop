@@ -1,0 +1,175 @@
+{
+	"BUILD_DIR" : "/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-build/3rdparty/qwindowkit/src/quick/QWKQuick_autogen",
+	"CMAKE_BINARY_DIR" : "/Users/mac/Documents/Projects/socibiz/pos-desktop/build",
+	"CMAKE_CURRENT_BINARY_DIR" : "/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-build/3rdparty/qwindowkit/src/quick",
+	"CMAKE_CURRENT_SOURCE_DIR" : "/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/src/quick",
+	"CMAKE_EXECUTABLE" : "/opt/homebrew/bin/cmake",
+	"CMAKE_LIST_FILES" : 
+	[
+		"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/src/quick/CMakeLists.txt"
+	],
+	"CMAKE_SOURCE_DIR" : "/Users/mac/Documents/Projects/socibiz/pos-desktop/pos-desktop",
+	"CROSS_CONFIG" : false,
+	"DEP_FILE" : "/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-build/3rdparty/qwindowkit/src/quick/QWKQuick_autogen/deps",
+	"DEP_FILE_RULE_NAME" : "QWKQuick_autogen/timestamp",
+	"HEADERS" : 
+	[
+		[
+			"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/src/quick/quickitemdelegate_p.h",
+			"MU",
+			"EWIEGA46WW/moc_quickitemdelegate_p.cpp",
+			null
+		],
+		[
+			"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/src/quick/quickwindowagent.h",
+			"MU",
+			"EWIEGA46WW/moc_quickwindowagent.cpp",
+			null
+		],
+		[
+			"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/src/quick/quickwindowagent_p.h",
+			"MU",
+			"EWIEGA46WW/moc_quickwindowagent_p.cpp",
+			null
+		],
+		[
+			"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/src/quick/qwkquickglobal.h",
+			"MU",
+			"EWIEGA46WW/moc_qwkquickglobal.cpp",
+			null
+		]
+	],
+	"HEADER_EXTENSIONS" : [ "h", "hh", "h++", "hm", "hpp", "hxx", "in", "txx" ],
+	"INCLUDE_DIR" : "/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-build/3rdparty/qwindowkit/src/quick/QWKQuick_autogen/include",
+	"MOC_COMPILATION_FILE" : "/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-build/3rdparty/qwindowkit/src/quick/QWKQuick_autogen/mocs_compilation.cpp",
+	"MOC_DEFINITIONS" : 
+	[
+		"QT_CORE_LIB",
+		"QT_GUI_LIB",
+		"QT_NETWORK_LIB",
+		"QT_NO_DEBUG",
+		"QT_OPENGL_LIB",
+		"QT_QMLINTEGRATION_LIB",
+		"QT_QMLMETA_LIB",
+		"QT_QMLMODELS_LIB",
+		"QT_QMLWORKERSCRIPT_LIB",
+		"QT_QML_LIB",
+		"QT_QUICK_LIB",
+		"QWK_CORE_STATIC",
+		"QWK_QUICK_LIBRARY",
+		"QWK_QUICK_STATIC"
+	],
+	"MOC_DEPEND_FILTERS" : 
+	[
+		[
+			"Q_PLUGIN_METADATA",
+			"[\n][ \t]*Q_PLUGIN_METADATA[ \t]*\\([^\\)]*FILE[ \t]*\"([^\"]+)\""
+		]
+	],
+	"MOC_INCLUDES" : 
+	[
+		"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/src/quick",
+		"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-build/3rdparty/qwindowkit/etc/include",
+		"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/src/quick",
+		"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-build/3rdparty/qwindowkit/include",
+		"/opt/homebrew/opt/qt6/lib/QtCore.framework/Headers",
+		"/opt/homebrew/opt/qt6/lib/QtCore.framework",
+		"/opt/homebrew/opt/qt6/share/qt/mkspecs/macx-clang",
+		"/opt/homebrew/opt/qt6/include",
+		"/opt/homebrew/opt/qt6/lib/QtGui.framework/Headers",
+		"/opt/homebrew/opt/qt6/lib/QtGui.framework",
+		"/opt/homebrew/opt/qt6/lib/QtQuick.framework/Headers",
+		"/opt/homebrew/opt/qt6/lib/QtQuick.framework",
+		"/opt/homebrew/opt/qt6/lib/QtQml.framework/Headers",
+		"/opt/homebrew/opt/qt6/lib/QtQml.framework",
+		"/opt/homebrew/opt/qt6/include/QtQmlIntegration",
+		"/opt/homebrew/opt/qt6/lib/QtNetwork.framework/Headers",
+		"/opt/homebrew/opt/qt6/lib/QtNetwork.framework",
+		"/opt/homebrew/opt/qt6/lib/QtOpenGL.framework/Headers",
+		"/opt/homebrew/opt/qt6/lib/QtOpenGL.framework",
+		"/opt/homebrew/opt/qt6/lib/QtCore.framework/Versions/A/Headers/6.10.2",
+		"/opt/homebrew/opt/qt6/lib/QtCore.framework/Versions/A/Headers/6.10.2/QtCore",
+		"/opt/homebrew/opt/qt6/lib/QtGui.framework/Versions/A/Headers/6.10.2",
+		"/opt/homebrew/opt/qt6/lib/QtGui.framework/Versions/A/Headers/6.10.2/QtGui",
+		"/opt/homebrew/opt/qt6/lib/QtQuick.framework/Versions/A/Headers/6.10.2",
+		"/opt/homebrew/opt/qt6/lib/QtQuick.framework/Versions/A/Headers/6.10.2/QtQuick",
+		"/opt/homebrew/opt/qt6/lib/QtQmlModels.framework/Versions/A/Headers/6.10.2",
+		"/opt/homebrew/opt/qt6/lib/QtQmlModels.framework/Versions/A/Headers/6.10.2/QtQmlModels",
+		"/opt/homebrew/opt/qt6/lib/QtQml.framework/Versions/A/Headers/6.10.2",
+		"/opt/homebrew/opt/qt6/lib/QtQml.framework/Versions/A/Headers/6.10.2/QtQml",
+		"/opt/homebrew/opt/qt6/lib/QtQmlModels.framework/Headers",
+		"/opt/homebrew/opt/qt6/lib/QtQmlModels.framework",
+		"/opt/homebrew/opt/qt6/lib/QtQmlMeta.framework/Versions/A/Headers/6.10.2",
+		"/opt/homebrew/opt/qt6/lib/QtQmlMeta.framework/Versions/A/Headers/6.10.2/QtQmlMeta",
+		"/opt/homebrew/opt/qt6/lib/QtQmlWorkerScript.framework/Versions/A/Headers/6.10.2",
+		"/opt/homebrew/opt/qt6/lib/QtQmlWorkerScript.framework/Versions/A/Headers/6.10.2/QtQmlWorkerScript",
+		"/opt/homebrew/opt/qt6/lib/QtQmlWorkerScript.framework/Headers",
+		"/opt/homebrew/opt/qt6/lib/QtQmlWorkerScript.framework",
+		"/opt/homebrew/opt/qt6/lib/QtQmlMeta.framework/Headers",
+		"/opt/homebrew/opt/qt6/lib/QtQmlMeta.framework",
+		"/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1",
+		"/Library/Developer/CommandLineTools/usr/lib/clang/17/include",
+		"/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include",
+		"/Library/Developer/CommandLineTools/usr/include"
+	],
+	"MOC_MACRO_NAMES" : 
+	[
+		"Q_OBJECT",
+		"Q_GADGET",
+		"Q_NAMESPACE",
+		"Q_NAMESPACE_EXPORT",
+		"Q_GADGET_EXPORT",
+		"Q_ENUM_NS"
+	],
+	"MOC_OPTIONS" : [],
+	"MOC_PATH_PREFIX" : false,
+	"MOC_PREDEFS_CMD" : 
+	[
+		"/usr/bin/c++",
+		"-std=gnu++17",
+		"-w",
+		"-dM",
+		"-E",
+		"/opt/homebrew/share/cmake/Modules/CMakeCXXCompilerABI.cpp"
+	],
+	"MOC_PREDEFS_FILE" : "/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-build/3rdparty/qwindowkit/src/quick/QWKQuick_autogen/moc_predefs.h",
+	"MOC_RELAXED_MODE" : false,
+	"MOC_SKIP" : [],
+	"MULTI_CONFIG" : false,
+	"PARALLEL" : 8,
+	"PARSE_CACHE_FILE" : "/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-build/3rdparty/qwindowkit/src/quick/CMakeFiles/QWKQuick_autogen.dir/ParseCache.txt",
+	"QT_MOC_EXECUTABLE" : "/opt/homebrew/opt/qt6/share/qt/libexec/moc",
+	"QT_UIC_EXECUTABLE" : "/opt/homebrew/opt/qt6/share/qt/libexec/uic",
+	"QT_VERSION_MAJOR" : 6,
+	"QT_VERSION_MINOR" : 10,
+	"SETTINGS_FILE" : "/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-build/3rdparty/qwindowkit/src/quick/CMakeFiles/QWKQuick_autogen.dir/AutogenUsed.txt",
+	"SOURCES" : 
+	[
+		[
+			"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/src/quick/quickitemdelegate.cpp",
+			"MU",
+			null
+		],
+		[
+			"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/src/quick/quickwindowagent.cpp",
+			"MU",
+			null
+		],
+		[
+			"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/src/quick/quickwindowagent_mac.cpp",
+			"MU",
+			null
+		],
+		[
+			"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/src/quick/qwkquickglobal.cpp",
+			"MU",
+			null
+		]
+	],
+	"UIC_OPTIONS" : [],
+	"UIC_SEARCH_PATHS" : [],
+	"UIC_SKIP" : [],
+	"UIC_UI_FILES" : [],
+	"USE_BETTER_GRAPH" : true,
+	"VERBOSITY" : 0
+}

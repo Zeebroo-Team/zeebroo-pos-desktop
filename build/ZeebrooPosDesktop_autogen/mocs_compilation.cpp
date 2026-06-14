@@ -14,3 +14,4 @@
 #include "YPKJ5OE7LN/moc_PurchaseOrderFormDialog.cpp"
 #include "YPKJ5OE7LN/moc_ReceiptDialog.cpp"
 #include "YPKJ5OE7LN/moc_ReturnDialog.cpp"
+#include "YPKJ5OE7LN/moc_RibbonDashboardWindow.cpp"

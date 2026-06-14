@@ -1,0 +1,10 @@
+{
+	"InstallScripts" : 
+	[
+		"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_build/qmsetup/cmake_install.cmake",
+		"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_build/qmsetup/src/cmake_install.cmake",
+		"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_build/qmsetup/src/syscmdline/cmake_install.cmake",
+		"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_build/qmsetup/src/corecmd/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

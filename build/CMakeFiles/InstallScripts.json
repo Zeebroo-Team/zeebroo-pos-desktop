@@ -1,7 +1,13 @@
 {
 	"InstallScripts" : 
 	[
-		"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/cmake_install.cmake"
+		"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/cmake_install.cmake",
+		"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-build/cmake_install.cmake",
+		"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-build/3rdparty/qwindowkit/cmake_install.cmake",
+		"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-build/3rdparty/qwindowkit/src/cmake_install.cmake",
+		"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-build/3rdparty/qwindowkit/src/core/cmake_install.cmake",
+		"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-build/3rdparty/qwindowkit/src/quick/cmake_install.cmake",
+		"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-build/lib_source/cmake_install.cmake"
 	],
 	"Parallel" : false
 }

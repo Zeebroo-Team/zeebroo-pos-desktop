@@ -1,0 +1,229 @@
+{
+	"BUILD_DIR" : "/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-build/3rdparty/qwindowkit/src/core/QWKCore_autogen",
+	"CMAKE_BINARY_DIR" : "/Users/mac/Documents/Projects/socibiz/pos-desktop/build",
+	"CMAKE_CURRENT_BINARY_DIR" : "/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-build/3rdparty/qwindowkit/src/core",
+	"CMAKE_CURRENT_SOURCE_DIR" : "/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/src/core",
+	"CMAKE_EXECUTABLE" : "/opt/homebrew/bin/cmake",
+	"CMAKE_LIST_FILES" : 
+	[
+		"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/src/core/CMakeLists.txt"
+	],
+	"CMAKE_SOURCE_DIR" : "/Users/mac/Documents/Projects/socibiz/pos-desktop/pos-desktop",
+	"CROSS_CONFIG" : false,
+	"DEP_FILE" : "/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-build/3rdparty/qwindowkit/src/core/QWKCore_autogen/deps",
+	"DEP_FILE_RULE_NAME" : "QWKCore_autogen/timestamp",
+	"HEADERS" : 
+	[
+		[
+			"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/src/core/contexts/abstractwindowcontext_p.h",
+			"MU",
+			"RKRGZEBPE2/moc_abstractwindowcontext_p.cpp",
+			null
+		],
+		[
+			"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/src/core/contexts/cocoawindowcontext_p.h",
+			"MU",
+			"RKRGZEBPE2/moc_cocoawindowcontext_p.cpp",
+			null
+		],
+		[
+			"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/src/core/kernel/nativeeventfilter_p.h",
+			"MU",
+			"7GB2EGQPHR/moc_nativeeventfilter_p.cpp",
+			null
+		],
+		[
+			"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/src/core/kernel/sharedeventfilter_p.h",
+			"MU",
+			"7GB2EGQPHR/moc_sharedeventfilter_p.cpp",
+			null
+		],
+		[
+			"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/src/core/kernel/winidchangeeventfilter_p.h",
+			"MU",
+			"7GB2EGQPHR/moc_winidchangeeventfilter_p.cpp",
+			null
+		],
+		[
+			"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/src/core/qwkglobal.h",
+			"MU",
+			"EWIEGA46WW/moc_qwkglobal.cpp",
+			null
+		],
+		[
+			"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/src/core/qwkglobal_p.h",
+			"MU",
+			"EWIEGA46WW/moc_qwkglobal_p.cpp",
+			null
+		],
+		[
+			"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/src/core/shared/systemwindow_p.h",
+			"MU",
+			"MTKJWXDCAS/moc_systemwindow_p.cpp",
+			null
+		],
+		[
+			"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/src/core/style/styleagent.h",
+			"MU",
+			"HI6LWCXMXM/moc_styleagent.cpp",
+			null
+		],
+		[
+			"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/src/core/style/styleagent_p.h",
+			"MU",
+			"HI6LWCXMXM/moc_styleagent_p.cpp",
+			null
+		],
+		[
+			"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/src/core/windowagentbase.h",
+			"MU",
+			"EWIEGA46WW/moc_windowagentbase.cpp",
+			null
+		],
+		[
+			"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/src/core/windowagentbase_p.h",
+			"MU",
+			"EWIEGA46WW/moc_windowagentbase_p.cpp",
+			null
+		],
+		[
+			"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/src/core/windowitemdelegate_p.h",
+			"MU",
+			"EWIEGA46WW/moc_windowitemdelegate_p.cpp",
+			null
+		]
+	],
+	"HEADER_EXTENSIONS" : [ "h", "hh", "h++", "hm", "hpp", "hxx", "in", "txx" ],
+	"INCLUDE_DIR" : "/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-build/3rdparty/qwindowkit/src/core/QWKCore_autogen/include",
+	"MOC_COMPILATION_FILE" : "/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-build/3rdparty/qwindowkit/src/core/QWKCore_autogen/mocs_compilation.cpp",
+	"MOC_DEFINITIONS" : 
+	[
+		"QT_CORE_LIB",
+		"QT_GUI_LIB",
+		"QT_NO_DEBUG",
+		"QWK_CORE_LIBRARY",
+		"QWK_CORE_STATIC"
+	],
+	"MOC_DEPEND_FILTERS" : 
+	[
+		[
+			"Q_PLUGIN_METADATA",
+			"[\n][ \t]*Q_PLUGIN_METADATA[ \t]*\\([^\\)]*FILE[ \t]*\"([^\"]+)\""
+		]
+	],
+	"MOC_INCLUDES" : 
+	[
+		"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/src/core",
+		"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/src/core/contexts",
+		"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/src/core/kernel",
+		"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/src/core/shared",
+		"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/src/core/style",
+		"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-build/3rdparty/qwindowkit/etc/include",
+		"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/src/core",
+		"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-build/3rdparty/qwindowkit/include",
+		"/opt/homebrew/opt/qt6/lib/QtCore.framework/Headers",
+		"/opt/homebrew/opt/qt6/lib/QtCore.framework",
+		"/opt/homebrew/opt/qt6/share/qt/mkspecs/macx-clang",
+		"/opt/homebrew/opt/qt6/include",
+		"/opt/homebrew/opt/qt6/lib/QtGui.framework/Headers",
+		"/opt/homebrew/opt/qt6/lib/QtGui.framework",
+		"/opt/homebrew/opt/qt6/lib/QtCore.framework/Versions/A/Headers/6.10.2",
+		"/opt/homebrew/opt/qt6/lib/QtCore.framework/Versions/A/Headers/6.10.2/QtCore",
+		"/opt/homebrew/opt/qt6/lib/QtGui.framework/Versions/A/Headers/6.10.2",
+		"/opt/homebrew/opt/qt6/lib/QtGui.framework/Versions/A/Headers/6.10.2/QtGui",
+		"/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1",
+		"/Library/Developer/CommandLineTools/usr/lib/clang/17/include",
+		"/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include",
+		"/Library/Developer/CommandLineTools/usr/include"
+	],
+	"MOC_MACRO_NAMES" : 
+	[
+		"Q_OBJECT",
+		"Q_GADGET",
+		"Q_NAMESPACE",
+		"Q_NAMESPACE_EXPORT",
+		"Q_GADGET_EXPORT",
+		"Q_ENUM_NS"
+	],
+	"MOC_OPTIONS" : [],
+	"MOC_PATH_PREFIX" : false,
+	"MOC_PREDEFS_CMD" : 
+	[
+		"/usr/bin/c++",
+		"-std=gnu++17",
+		"-w",
+		"-dM",
+		"-E",
+		"/opt/homebrew/share/cmake/Modules/CMakeCXXCompilerABI.cpp"
+	],
+	"MOC_PREDEFS_FILE" : "/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-build/3rdparty/qwindowkit/src/core/QWKCore_autogen/moc_predefs.h",
+	"MOC_RELAXED_MODE" : false,
+	"MOC_SKIP" : [],
+	"MULTI_CONFIG" : false,
+	"PARALLEL" : 8,
+	"PARSE_CACHE_FILE" : "/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-build/3rdparty/qwindowkit/src/core/CMakeFiles/QWKCore_autogen.dir/ParseCache.txt",
+	"QT_MOC_EXECUTABLE" : "/opt/homebrew/opt/qt6/share/qt/libexec/moc",
+	"QT_UIC_EXECUTABLE" : "/opt/homebrew/opt/qt6/share/qt/libexec/uic",
+	"QT_VERSION_MAJOR" : 6,
+	"QT_VERSION_MINOR" : 10,
+	"SETTINGS_FILE" : "/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-build/3rdparty/qwindowkit/src/core/CMakeFiles/QWKCore_autogen.dir/AutogenUsed.txt",
+	"SOURCES" : 
+	[
+		[
+			"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/src/core/contexts/abstractwindowcontext.cpp",
+			"MU",
+			null
+		],
+		[
+			"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/src/core/contexts/cocoawindowcontext.mm",
+			"MU",
+			null
+		],
+		[
+			"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/src/core/kernel/nativeeventfilter.cpp",
+			"MU",
+			null
+		],
+		[
+			"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/src/core/kernel/sharedeventfilter.cpp",
+			"MU",
+			null
+		],
+		[
+			"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/src/core/kernel/winidchangeeventfilter.cpp",
+			"MU",
+			null
+		],
+		[
+			"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/src/core/qwkglobal.cpp",
+			"MU",
+			null
+		],
+		[
+			"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/src/core/style/styleagent.cpp",
+			"MU",
+			null
+		],
+		[
+			"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/src/core/style/styleagent_mac.mm",
+			"MU",
+			null
+		],
+		[
+			"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/src/core/windowagentbase.cpp",
+			"MU",
+			null
+		],
+		[
+			"/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/src/core/windowitemdelegate.cpp",
+			"MU",
+			null
+		]
+	],
+	"UIC_OPTIONS" : [],
+	"UIC_SEARCH_PATHS" : [],
+	"UIC_SKIP" : [],
+	"UIC_UI_FILES" : [],
+	"USE_BETTER_GRAPH" : true,
+	"VERBOSITY" : 0
+}

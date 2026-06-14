@@ -1,0 +1,45 @@
+[1/17] Building CXX object src/syscmdline/CMakeFiles/syscmdline.dir/src/sharedbase.cpp.o
+[2/17] Building CXX object src/syscmdline/CMakeFiles/syscmdline.dir/src/symbol.cpp.o
+[3/17] Building CXX object src/syscmdline/CMakeFiles/syscmdline.dir/src/utils.cpp.o
+[4/17] Building CXX object src/syscmdline/CMakeFiles/syscmdline.dir/src/value.cpp.o
+[5/17] Building CXX object src/syscmdline/CMakeFiles/syscmdline.dir/src/system.cpp.o
+[6/17] Building CXX object src/syscmdline/CMakeFiles/syscmdline.dir/src/argument.cpp.o
+[7/17] Building CXX object src/syscmdline/CMakeFiles/syscmdline.dir/src/option.cpp.o
+[8/17] Building CXX object src/syscmdline/CMakeFiles/syscmdline.dir/src/helplayout.cpp.o
+[9/17] Building CXX object src/corecmd/CMakeFiles/qmcorecmd.dir/sha-256.cpp.o
+[10/17] Building CXX object src/syscmdline/CMakeFiles/syscmdline.dir/src/parseresult.cpp.o
+[11/17] Building CXX object src/syscmdline/CMakeFiles/syscmdline.dir/src/command.cpp.o
+[12/17] Building CXX object src/syscmdline/CMakeFiles/syscmdline.dir/src/parser.cpp.o
+[13/17] Linking CXX static library lib/libsyscmdline.a
+[14/17] Building CXX object src/corecmd/CMakeFiles/qmcorecmd.dir/utils.cpp.o
+[15/17] Building CXX object src/corecmd/CMakeFiles/qmcorecmd.dir/utils_unix.cpp.o
+[16/17] Building CXX object src/corecmd/CMakeFiles/qmcorecmd.dir/main.cpp.o
+/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/qmsetup/src/corecmd/main.cpp:1349:65: warning: 'multi' is deprecated [-Wdeprecated-declarations]
+ 1349 |             SCL::Argument("src", "Source files or directories").multi(),
+      |                                                                 ^
+/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/qmsetup/src/syscmdline/include/syscmdline/argument.h:93:9: note: 'multi' has been explicitly marked deprecated here
+   93 |         SYSCMDLINE_DECL_DEPRECATED inline Argument &multi(bool multiValueEnabled = true);
+      |         ^
+/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/qmsetup/src/syscmdline/include/syscmdline/global.h:52:53: note: expanded from macro 'SYSCMDLINE_DECL_DEPRECATED'
+   52 | #  define SYSCMDLINE_DECL_DEPRECATED __attribute__((__deprecated__))
+      |                                                     ^
+/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/qmsetup/src/corecmd/main.cpp:1364:49: warning: 'multi' is deprecated [-Wdeprecated-declarations]
+ 1364 |             SCL::Argument("dir", "Directories").multi(),
+      |                                                 ^
+/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/qmsetup/src/syscmdline/include/syscmdline/argument.h:93:9: note: 'multi' has been explicitly marked deprecated here
+   93 |         SYSCMDLINE_DECL_DEPRECATED inline Argument &multi(bool multiValueEnabled = true);
+      |         ^
+/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/qmsetup/src/syscmdline/include/syscmdline/global.h:52:53: note: expanded from macro 'SYSCMDLINE_DECL_DEPRECATED'
+   52 | #  define SYSCMDLINE_DECL_DEPRECATED __attribute__((__deprecated__))
+      |                                                     ^
+/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/qmsetup/src/corecmd/main.cpp:1427:61: warning: 'multi' is deprecated [-Wdeprecated-declarations]
+ 1427 |             SCL::Argument("file", OS_EXECUTABLE " file(s)").multi(),
+      |                                                             ^
+/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/qmsetup/src/syscmdline/include/syscmdline/argument.h:93:9: note: 'multi' has been explicitly marked deprecated here
+   93 |         SYSCMDLINE_DECL_DEPRECATED inline Argument &multi(bool multiValueEnabled = true);
+      |         ^
+/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/3rdparty/qwindowkit/qmsetup/src/syscmdline/include/syscmdline/global.h:52:53: note: expanded from macro 'SYSCMDLINE_DECL_DEPRECATED'
+   52 | #  define SYSCMDLINE_DECL_DEPRECATED __attribute__((__deprecated__))
+      |                                                     ^
+3 warnings generated.
+[17/17] Linking CXX executable bin/qmcorecmd

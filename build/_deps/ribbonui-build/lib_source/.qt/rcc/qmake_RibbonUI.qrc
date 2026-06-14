@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="/qt/qml/RibbonUI">
+    <file alias="qmldir">/Users/mac/Documents/Projects/socibiz/pos-desktop/build/RibbonUI/qmldir</file>
+  </qresource>
+</RCC>
+

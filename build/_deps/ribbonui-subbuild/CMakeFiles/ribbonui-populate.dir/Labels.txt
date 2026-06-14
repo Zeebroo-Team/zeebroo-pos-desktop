@@ -1,0 +1,14 @@
+# Target labels
+ ribbonui-populate
+# Source files and their labels
+/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-subbuild/CMakeFiles/ribbonui-populate
+/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-subbuild/CMakeFiles/ribbonui-populate.rule
+/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-subbuild/CMakeFiles/ribbonui-populate-complete.rule
+/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-subbuild/ribbonui-populate-prefix/src/ribbonui-populate-stamp/ribbonui-populate-build.rule
+/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-subbuild/ribbonui-populate-prefix/src/ribbonui-populate-stamp/ribbonui-populate-configure.rule
+/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-subbuild/ribbonui-populate-prefix/src/ribbonui-populate-stamp/ribbonui-populate-download.rule
+/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-subbuild/ribbonui-populate-prefix/src/ribbonui-populate-stamp/ribbonui-populate-install.rule
+/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-subbuild/ribbonui-populate-prefix/src/ribbonui-populate-stamp/ribbonui-populate-mkdir.rule
+/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-subbuild/ribbonui-populate-prefix/src/ribbonui-populate-stamp/ribbonui-populate-patch.rule
+/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-subbuild/ribbonui-populate-prefix/src/ribbonui-populate-stamp/ribbonui-populate-test.rule
+/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-subbuild/ribbonui-populate-prefix/src/ribbonui-populate-stamp/ribbonui-populate-update.rule

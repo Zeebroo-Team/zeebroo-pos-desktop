@@ -1,0 +1,7 @@
+<RCC>
+  <qresource prefix="/">
+    <file alias="i18n/RibbonUI_zh_CN.qm">/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/lib_source/i18n/RibbonUI_zh_CN.qm</file>
+    <file alias="i18n/RibbonUI_en_US.qm">/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/lib_source/i18n/RibbonUI_en_US.qm</file>
+  </qresource>
+</RCC>
+

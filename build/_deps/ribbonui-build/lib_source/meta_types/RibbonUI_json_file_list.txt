@@ -1,0 +1,6 @@
+/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-build/lib_source/RibbonUI_autogen/include/../6YEA5652QU/moc_definitions.cpp.json
+/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-build/lib_source/RibbonUI_autogen/include/../6YEA5652QU/moc_platformsupport.cpp.json
+/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-build/lib_source/RibbonUI_autogen/include/../6YEA5652QU/moc_ribbonconfig.cpp.json
+/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-build/lib_source/RibbonUI_autogen/include/../6YEA5652QU/moc_ribbonlocalization.cpp.json
+/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-build/lib_source/RibbonUI_autogen/include/../6YEA5652QU/moc_ribbontheme.cpp.json
+/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-build/lib_source/RibbonUI_autogen/include/../6YEA5652QU/moc_ribbonui.cpp.json

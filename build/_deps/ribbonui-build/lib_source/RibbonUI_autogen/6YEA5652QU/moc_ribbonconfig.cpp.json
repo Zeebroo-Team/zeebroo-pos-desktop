@@ -1,0 +1,106 @@
+{
+    "classes": [
+        {
+            "classInfos": [
+                {
+                    "name": "QML.Element",
+                    "value": "auto"
+                },
+                {
+                    "name": "QML.Singleton",
+                    "value": "true"
+                }
+            ],
+            "className": "RibbonConfig",
+            "lineNumber": 9,
+            "methods": [
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "qstrnodename",
+                            "type": "QString"
+                        },
+                        {
+                            "name": "qstrkeyname",
+                            "type": "QString"
+                        },
+                        {
+                            "name": "qvarvalue",
+                            "type": "QVariant"
+                        }
+                    ],
+                    "index": 0,
+                    "lineNumber": 17,
+                    "name": "set",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "qstrnodename",
+                            "type": "QString"
+                        },
+                        {
+                            "name": "qstrkeyname",
+                            "type": "QString"
+                        },
+                        {
+                            "name": "qvarvalue",
+                            "type": "QVariant"
+                        }
+                    ],
+                    "index": 1,
+                    "lineNumber": 18,
+                    "name": "setArray",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "qstrnodename",
+                            "type": "QString"
+                        },
+                        {
+                            "name": "qstrkeyname",
+                            "type": "QString"
+                        }
+                    ],
+                    "index": 2,
+                    "lineNumber": 19,
+                    "name": "get",
+                    "returnType": "QVariant"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "qstrnodename",
+                            "type": "QString"
+                        },
+                        {
+                            "name": "qstrkeyname",
+                            "type": "QString"
+                        }
+                    ],
+                    "index": 3,
+                    "lineNumber": 20,
+                    "name": "getArray",
+                    "returnType": "QVariant"
+                }
+            ],
+            "object": true,
+            "qualifiedClassName": "RibbonConfig",
+            "superClasses": [
+                {
+                    "access": "public",
+                    "name": "QObject"
+                }
+            ]
+        }
+    ],
+    "inputFile": "ribbonconfig.h",
+    "outputRevision": 69
+}

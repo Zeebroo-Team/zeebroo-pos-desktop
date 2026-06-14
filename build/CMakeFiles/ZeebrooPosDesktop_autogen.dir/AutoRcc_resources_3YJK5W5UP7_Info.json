@@ -11,7 +11,8 @@
 	[
 		"/Users/mac/Documents/Projects/socibiz/pos-desktop/pos-desktop/resources/styles.qss",
 		"/Users/mac/Documents/Projects/socibiz/pos-desktop/pos-desktop/resources/logo.png",
-		"/Users/mac/Documents/Projects/socibiz/pos-desktop/pos-desktop/resources/sounds/beep.wav"
+		"/Users/mac/Documents/Projects/socibiz/pos-desktop/pos-desktop/resources/sounds/beep.wav",
+		"/Users/mac/Documents/Projects/socibiz/pos-desktop/pos-desktop/resources/qml/RibbonDashboard.qml"
 	],
 	"LOCK_FILE" : "/Users/mac/Documents/Projects/socibiz/pos-desktop/build/CMakeFiles/ZeebrooPosDesktop_autogen.dir/AutoRcc_resources_3YJK5W5UP7_Lock.lock",
 	"MULTI_CONFIG" : false,

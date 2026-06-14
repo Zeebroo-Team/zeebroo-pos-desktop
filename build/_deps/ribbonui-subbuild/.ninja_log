@@ -1,0 +1,21 @@
+# ninja log v7
+0	17	1781319978674545364	ribbonui-populate-prefix/src/ribbonui-populate-stamp/ribbonui-populate-mkdir	7ed43e1388043bd9
+0	17	1781319978674545364	/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-subbuild/ribbonui-populate-prefix/src/ribbonui-populate-stamp/ribbonui-populate-mkdir	7ed43e1388043bd9
+17	59740	1781320038397621409	ribbonui-populate-prefix/src/ribbonui-populate-stamp/ribbonui-populate-download	2de95b9e72c375f3
+17	59740	1781320038397621409	/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-subbuild/ribbonui-populate-prefix/src/ribbonui-populate-stamp/ribbonui-populate-download	2de95b9e72c375f3
+59740	61703	1781320038398379985	ribbonui-populate-prefix/src/ribbonui-populate-stamp/ribbonui-populate-update	e0477ba2375aa36a
+59740	61703	1781320038398379985	/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-subbuild/ribbonui-populate-prefix/src/ribbonui-populate-stamp/ribbonui-populate-update	e0477ba2375aa36a
+61703	61717	1781320040374097690	ribbonui-populate-prefix/src/ribbonui-populate-stamp/ribbonui-populate-patch	e1d971fbee0e3107
+61703	61717	1781320040374097690	/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-subbuild/ribbonui-populate-prefix/src/ribbonui-populate-stamp/ribbonui-populate-patch	e1d971fbee0e3107
+61717	61731	1781320040388190391	ribbonui-populate-prefix/src/ribbonui-populate-stamp/ribbonui-populate-configure	d096c6af10c7ac28
+61717	61731	1781320040388190391	/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-subbuild/ribbonui-populate-prefix/src/ribbonui-populate-stamp/ribbonui-populate-configure	d096c6af10c7ac28
+61731	61745	1781320040402459840	ribbonui-populate-prefix/src/ribbonui-populate-stamp/ribbonui-populate-build	83d632b2e2fcc40c
+61731	61745	1781320040402459840	/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-subbuild/ribbonui-populate-prefix/src/ribbonui-populate-stamp/ribbonui-populate-build	83d632b2e2fcc40c
+61745	61759	1781320040416345168	ribbonui-populate-prefix/src/ribbonui-populate-stamp/ribbonui-populate-install	17a7a7c5b0f59f6f
+61745	61759	1781320040416345168	/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-subbuild/ribbonui-populate-prefix/src/ribbonui-populate-stamp/ribbonui-populate-install	17a7a7c5b0f59f6f
+61759	61773	1781320040430310120	ribbonui-populate-prefix/src/ribbonui-populate-stamp/ribbonui-populate-test	2fa9f465b13390d
+61759	61773	1781320040430310120	/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-subbuild/ribbonui-populate-prefix/src/ribbonui-populate-stamp/ribbonui-populate-test	2fa9f465b13390d
+61773	61792	1781320040449546897	CMakeFiles/ribbonui-populate-complete	f61a5b7f6427c761
+61773	61792	1781320040449546897	ribbonui-populate-prefix/src/ribbonui-populate-stamp/ribbonui-populate-done	f61a5b7f6427c761
+61773	61792	1781320040449546897	/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-subbuild/CMakeFiles/ribbonui-populate-complete	f61a5b7f6427c761
+61773	61792	1781320040449546897	/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-subbuild/ribbonui-populate-prefix/src/ribbonui-populate-stamp/ribbonui-populate-done	f61a5b7f6427c761

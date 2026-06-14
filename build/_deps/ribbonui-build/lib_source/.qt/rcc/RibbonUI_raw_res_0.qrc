@@ -1,0 +1,7 @@
+<RCC>
+  <qresource prefix="/qt/qml/RibbonUI/">
+    <file alias="resources/FluentSystemIcons-Resizable.ttf">/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/lib_source/resources/FluentSystemIcons-Resizable.ttf</file>
+    <file alias="resources/imgs/icon.png">/Users/mac/Documents/Projects/socibiz/pos-desktop/build/_deps/ribbonui-src/lib_source/resources/imgs/icon.png</file>
+  </qresource>
+</RCC>
+

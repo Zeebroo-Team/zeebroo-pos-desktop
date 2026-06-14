@@ -1,0 +1,9 @@
+-rootPath
+/Users/mac/Documents/Projects/socibiz/pos-desktop/pos-desktop
+-cmake-output
+-output-file
+/Users/mac/Documents/Projects/socibiz/pos-desktop/build/.qt/qml_imports/ZeebrooPosDesktop_build.cmake
+-importPath
+/Users/mac/Documents/Projects/socibiz/pos-desktop/build
+-importPath
+/opt/homebrew/opt/qt6/share/qt/qml
