@@ -8,6 +8,7 @@ class QTabWidget;
 namespace pos {
 
 class PosSessionWidget;
+class RibbonDashboardWindow;
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -22,16 +23,18 @@ private slots:
     void closeSession(int index);
     void showKeyboardShortcuts();
     void openPurchaseOrders();
+    void openRibbonDashboard();
 
 private:
     void buildMenuBar();
     PosSessionWidget *currentSession() const;
     void updateTabTitle(int index, PosSessionWidget *session);
 
-    ApiClient  *m_api           = nullptr;
-    QTabWidget *m_tabs          = nullptr;
-    int         m_sessionCounter = 0;
-    bool        m_signedOut      = false;
+    ApiClient              *m_api             = nullptr;
+    QTabWidget             *m_tabs            = nullptr;
+    RibbonDashboardWindow  *m_ribbonDashboard = nullptr;
+    int                     m_sessionCounter  = 0;
+    bool                    m_signedOut       = false;
 };
 
 } // namespace pos

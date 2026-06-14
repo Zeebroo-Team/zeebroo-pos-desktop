@@ -3,5 +3,6 @@
         <file>styles.qss</file>
         <file>sounds/beep.wav</file>
         <file>logo.png</file>
+        <file>qml/RibbonDashboard.qml</file>
     </qresource>
 </RCC>

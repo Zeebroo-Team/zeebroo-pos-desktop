@@ -1,6 +1,7 @@
 #include "ui/MainWindow.h"
 #include "ui/PosSessionWidget.h"
 #include "ui/PurchaseOrderDialog.h"
+#include "ui/RibbonDashboardWindow.h"
 
 #include <QAction>
 #include <QApplication>
@@ -228,6 +229,15 @@ void MainWindow::buildMenuBar()
     });
     posMenu->addAction(actCheckout);
 
+    // ── Dashboard ─────────────────────────────────────────────────────────────
+    QMenu *dashMenu = menuBar()->addMenu(tr("&Dashboard"));
+
+    auto *actRibbon = new QAction(tr("Open Ribbon Dashboard…"), this);
+    actRibbon->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_D));
+    actRibbon->setStatusTip(tr("Open the ribbon-style POS dashboard"));
+    connect(actRibbon, &QAction::triggered, this, &MainWindow::openRibbonDashboard);
+    dashMenu->addAction(actRibbon);
+
     // ── Help ──────────────────────────────────────────────────────────────────
     QMenu *helpMenu = menuBar()->addMenu(tr("&Help"));
 
@@ -332,6 +342,13 @@ void MainWindow::openPurchaseOrders()
     auto *dlg = new PurchaseOrderDialog(m_api, session->bootstrap(), this);
     dlg->setAttribute(Qt::WA_DeleteOnClose);
     dlg->exec();
+}
+
+void MainWindow::openRibbonDashboard()
+{
+    if (!m_ribbonDashboard)
+        m_ribbonDashboard = new RibbonDashboardWindow(m_api, this);
+    m_ribbonDashboard->show();
 }
 
 } // namespace pos

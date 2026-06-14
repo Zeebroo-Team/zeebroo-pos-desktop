@@ -6,7 +6,27 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Network Multimedia PrintSupport)
+find_package(Qt6 REQUIRED COMPONENTS
+    Core Gui Widgets Network Multimedia PrintSupport Quick Qml
+    CorePrivate QuickPrivate QmlPrivate   # needed by RibbonUI's internal linking
+)
+
+# ── RibbonUI (QML ribbon component library) ───────────────────────────────────
+include(FetchContent)
+FetchContent_Declare(
+    RibbonUI
+    GIT_REPOSITORY https://github.com/mentalfl0w/RibbonUI.git
+    GIT_TAG        main
+    GIT_SUBMODULES_RECURSE ON
+)
+set(RIBBONUI_BUILD_EXAMPLES              OFF CACHE BOOL "" FORCE)
+set(RIBBONUI_BUILD_STATIC_LIB           ON  CACHE BOOL "" FORCE)
+set(RIBBONUI_UNIVERSAL_BUILD_MACOS      OFF CACHE BOOL "" FORCE)
+if(APPLE)
+    # Homebrew Qt is arm64-only; prevent RibbonUI from enabling universal build
+    set(CMAKE_OSX_ARCHITECTURES         "arm64" CACHE STRING "" FORCE)
+endif()
+FetchContent_MakeAvailable(RibbonUI)
 
 qt_add_executable(ZeebrooPosDesktop
     src/main.cpp
@@ -29,6 +49,7 @@ qt_add_executable(ZeebrooPosDesktop
     src/ui/PurchaseOrderDialog.cpp
     src/ui/PurchaseOrderFormDialog.cpp
     src/ui/AddSupplierDialog.cpp
+    src/ui/RibbonDashboardWindow.cpp
     resources/resources.qrc
 )
 
@@ -41,6 +62,10 @@ target_link_libraries(ZeebrooPosDesktop PRIVATE
     Qt6::Network
     Qt6::Multimedia
     Qt6::PrintSupport
+    Qt6::Quick
+    Qt6::Qml
+    RibbonUI
+    RibbonUIplugin   # static QML plugin — registers "import RibbonUI" at startup
 )
 
 if(WIN32)

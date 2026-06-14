@@ -208,6 +208,46 @@ void ApiClient::processReturn(int saleId, const QJsonObject &body, SuccessFn onO
     sendJson(req, QJsonDocument(body).toJson(), QStringLiteral("POST"), onOk, onErr);
 }
 
+void ApiClient::createBill(const QJsonObject &body, SuccessFn onOk, ErrorFn onErr)
+{
+    QNetworkRequest req = buildRequest(QStringLiteral("/expenses/bills"));
+    sendJson(req, QJsonDocument(body).toJson(QJsonDocument::Compact), QStringLiteral("POST"), onOk, onErr);
+}
+
+void ApiClient::fetchLoans(SuccessFn onOk, ErrorFn onErr)
+{
+    QNetworkRequest req = buildRequest(QStringLiteral("/loans"));
+    sendGet(req, onOk, onErr);
+}
+
+void ApiClient::fetchAccounts(SuccessFn onOk, ErrorFn onErr)
+{
+    QNetworkRequest req = buildRequest(QStringLiteral("/accounts"));
+    sendGet(req, onOk, onErr);
+}
+
+void ApiClient::fetchBillAssignmentTargets(SuccessFn onOk, ErrorFn onErr)
+{
+    QNetworkRequest req = buildRequest(QStringLiteral("/expenses/bill-assignment-targets"));
+    sendGet(req, onOk, [this, onOk, onErr](const QString &msg, int status) {
+        if (status == 404) {
+            // Endpoint not yet deployed — fall back to settings with include=assignment_targets
+            QUrlQuery q;
+            q.addQueryItem(QStringLiteral("include"), QStringLiteral("assignment_targets"));
+            QNetworkRequest req2 = buildRequest(QStringLiteral("/online/settings"), &q);
+            sendGet(req2, [onOk](const QJsonObject &resp) {
+                const QJsonObject inner = resp.value(QStringLiteral("data")).toObject()
+                                             .value(QStringLiteral("assignment_targets")).toObject();
+                QJsonObject repackaged;
+                repackaged.insert(QStringLiteral("data"), inner);
+                if (onOk) onOk(repackaged);
+            }, onErr);
+        } else if (onErr) {
+            onErr(msg, status);
+        }
+    });
+}
+
 void ApiClient::fetchSuppliers(SuccessFn onOk, ErrorFn onErr)
 {
     QNetworkRequest req = buildRequest(QStringLiteral("/suppliers"));

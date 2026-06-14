@@ -17,9 +17,10 @@ class LoginDialog : public QDialog {
 public:
     explicit LoginDialog(ApiClient *api, QWidget *parent = nullptr);
 
-    QString accessToken() const { return m_token; }
-    int businessId() const { return m_businessId; }
-    int branchId() const { return m_branchId; }
+    QString accessToken()  const { return m_token; }
+    QString businessName() const { return m_businessName; }
+    int     businessId()   const { return m_businessId; }
+    int     branchId()     const { return m_branchId; }
 
 private slots:
     void onLoginClicked();
@@ -39,6 +40,7 @@ private:
     QComboBox  *m_branchCombo  = nullptr;
     QPushButton *m_loginBtn    = nullptr;
     QString     m_token;
+    QString     m_businessName;
     int         m_businessId   = 0;
     int         m_branchId     = 0;
     Step        m_step         = Step::Auth;

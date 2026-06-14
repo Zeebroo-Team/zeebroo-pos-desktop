@@ -273,7 +273,8 @@ void LoginDialog::onLoginClicked()
         break;
     }
     case Step::SelectBusiness: {
-        m_businessId = m_business->currentData().toInt();
+        m_businessId   = m_business->currentData().toInt();
+        m_businessName = m_business->currentText();
         if (m_businessId <= 0) {
             QMessageBox::warning(this, tr("Sign in"), tr("Please select a business."));
             return;
