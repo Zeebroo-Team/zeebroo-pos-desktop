@@ -25,6 +25,10 @@ public:
     Q_INVOKABLE void openPos();
     Q_INVOKABLE void submitBill(const QVariantMap &data);
     Q_INVOKABLE void fetchLoans();
+    Q_INVOKABLE void fetchBills();
+    Q_INVOKABLE void fetchRentals();
+    Q_INVOKABLE void fetchModifications();
+    Q_INVOKABLE void fetchEmployees();
     Q_INVOKABLE void fetchAccounts();
     Q_INVOKABLE void fetchBillAssignmentTargets();
 
@@ -33,6 +37,10 @@ signals:
     void billCreated(const QString &billName);
     void billError(const QString &message);
     void loansLoaded(const QVariantList &loans);
+    void billsLoaded(const QVariantList &bills);
+    void rentalsLoaded(const QVariantList &rentals);
+    void modificationsLoaded(const QVariantList &modifications);
+    void employeesLoaded(const QVariantList &employees);
     void accountsLoaded(const QVariantList &accounts);
     void billAssignmentTargetsLoaded(const QVariantMap &targets);
     void billAssignmentTargetsError(const QString &message);

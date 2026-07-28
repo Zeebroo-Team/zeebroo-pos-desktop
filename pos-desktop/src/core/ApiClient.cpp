@@ -226,26 +226,98 @@ void ApiClient::fetchAccounts(SuccessFn onOk, ErrorFn onErr)
     sendGet(req, onOk, onErr);
 }
 
+// Builds the canonical { "data": { branches, departments, … } } shape from individual parts.
+static QJsonObject buildAssignmentTargetResponse(
+    const QJsonArray &branches,
+    const QJsonArray &departments  = {},
+    const QJsonArray &properties   = {},
+    const QJsonArray &employees    = {},
+    const QJsonArray &modifications= {},
+    const QJsonArray &rentals      = {})
+{
+    QJsonObject data;
+    data.insert(QStringLiteral("branches"),      branches);
+    data.insert(QStringLiteral("departments"),   departments);
+    data.insert(QStringLiteral("properties"),    properties);
+    data.insert(QStringLiteral("employees"),     employees);
+    data.insert(QStringLiteral("modifications"), modifications);
+    data.insert(QStringLiteral("rentals"),       rentals);
+    QJsonObject wrap;
+    wrap.insert(QStringLiteral("data"), data);
+    return wrap;
+}
+
 void ApiClient::fetchBillAssignmentTargets(SuccessFn onOk, ErrorFn onErr)
 {
+    // Level 1: dedicated endpoint (available after full deploy)
     QNetworkRequest req = buildRequest(QStringLiteral("/expenses/bill-assignment-targets"));
-    sendGet(req, onOk, [this, onOk, onErr](const QString &msg, int status) {
-        if (status == 404) {
-            // Endpoint not yet deployed — fall back to settings with include=assignment_targets
-            QUrlQuery q;
-            q.addQueryItem(QStringLiteral("include"), QStringLiteral("assignment_targets"));
-            QNetworkRequest req2 = buildRequest(QStringLiteral("/online/settings"), &q);
-            sendGet(req2, [onOk](const QJsonObject &resp) {
-                const QJsonObject inner = resp.value(QStringLiteral("data")).toObject()
-                                             .value(QStringLiteral("assignment_targets")).toObject();
-                QJsonObject repackaged;
-                repackaged.insert(QStringLiteral("data"), inner);
-                if (onOk) onOk(repackaged);
-            }, onErr);
-        } else if (onErr) {
-            onErr(msg, status);
+    sendGet(req, onOk, [this, onOk, onErr](const QString &, int status) {
+        if (status != 404) {
+            if (onErr) onErr(QStringLiteral("Server error fetching assignment targets"), status);
+            return;
         }
+
+        // Level 2: settings endpoint with include=assignment_targets (mid-deploy fallback)
+        QUrlQuery q;
+        q.addQueryItem(QStringLiteral("include"), QStringLiteral("assignment_targets"));
+        QNetworkRequest req2 = buildRequest(QStringLiteral("/online/settings"), &q);
+        sendGet(req2, [this, onOk](const QJsonObject &resp) {
+            const QJsonObject inner = resp.value(QStringLiteral("data")).toObject()
+                                         .value(QStringLiteral("assignment_targets")).toObject();
+            if (!inner.isEmpty()) {
+                // Server returned the full targets block — use it directly
+                QJsonObject wrap;
+                wrap.insert(QStringLiteral("data"), inner);
+                if (onOk) onOk(wrap);
+                return;
+            }
+
+            // Level 3: old server — pull branches from the always-deployed /online/branches
+            QNetworkRequest req3 = buildRequest(QStringLiteral("/online/branches"));
+            sendGet(req3, [onOk](const QJsonObject &brResp) {
+                const QJsonArray branches = brResp.value(QStringLiteral("data")).toObject()
+                                                  .value(QStringLiteral("branches")).toArray();
+                if (onOk) onOk(buildAssignmentTargetResponse(branches));
+            }, [onOk](const QString &, int) {
+                // Even branches failed — return empty but still call onOk so UI doesn't hang
+                if (onOk) onOk(buildAssignmentTargetResponse(QJsonArray{}));
+            });
+        }, [this, onOk](const QString &, int) {
+            // Settings call failed — try branches as last resort
+            QNetworkRequest req3 = buildRequest(QStringLiteral("/online/branches"));
+            sendGet(req3, [onOk](const QJsonObject &brResp) {
+                const QJsonArray branches = brResp.value(QStringLiteral("data")).toObject()
+                                                  .value(QStringLiteral("branches")).toArray();
+                if (onOk) onOk(buildAssignmentTargetResponse(branches));
+            }, [onOk](const QString &, int) {
+                if (onOk) onOk(buildAssignmentTargetResponse(QJsonArray{}));
+            });
+        });
     });
+}
+
+void ApiClient::fetchBills(SuccessFn onOk, ErrorFn onErr)
+{
+    QNetworkRequest req = buildRequest(QStringLiteral("/expenses/bills"));
+    sendGet(req, onOk, onErr);
+}
+
+void ApiClient::fetchRentals(SuccessFn onOk, ErrorFn onErr)
+{
+    QNetworkRequest req = buildRequest(QStringLiteral("/expenses/rentals"));
+    sendGet(req, onOk, onErr);
+}
+
+void ApiClient::fetchModifications(SuccessFn onOk, ErrorFn onErr)
+{
+    QNetworkRequest req = buildRequest(QStringLiteral("/expenses/modifications"));
+    sendGet(req, onOk, onErr);
+}
+
+void ApiClient::fetchEmployees(SuccessFn onOk, ErrorFn onErr)
+{
+    QNetworkRequest req = buildRequest(QStringLiteral("/hr/employees"));
+    sendGet(req, onOk, onErr);
 }
 
 void ApiClient::fetchSuppliers(SuccessFn onOk, ErrorFn onErr)

@@ -105,8 +105,9 @@ RibbonWindow {
 
         // ── Tab state — plain booleans + active string ────────────────────
         property bool   flowchartTabOpen:  true
+        property bool   billsTabOpen:      false
         property bool   createBillTabOpen: false
-        property string activeTab:         "flowchart"   // "flowchart" | "createBill" | ""
+        property string activeTab:         "flowchart"   // "flowchart" | "bills" | "createBill" | ""
 
         // ── Zoom (flowchart only) ─────────────────────────────────────────
         property real zoomLevel: 1.0
@@ -174,7 +175,7 @@ RibbonWindow {
                             onClicked: {
                                 contentArea.flowchartTabOpen = false
                                 if (contentArea.activeTab === "flowchart")
-                                    contentArea.activeTab = contentArea.createBillTabOpen ? "createBill" : ""
+                                    contentArea.activeTab = contentArea.billsTabOpen ? "bills" : contentArea.createBillTabOpen ? "createBill" : ""
                             }
                         }
                     }
@@ -225,9 +226,54 @@ RibbonWindow {
                     }
                 }
 
+                // ── Bills chip ─────────────────────────────────────────────
+                Item {
+                    id: billsChip
+                    visible: contentArea.billsTabOpen
+                    property bool isActive: contentArea.activeTab === "bills"
+                    width: visible ? (blRow.implicitWidth + 20) : 0
+                    height: tabStrip.height + 1
+                    y: -1
+
+                    Rectangle {
+                        anchors.fill: parent; radius: 7
+                        color: billsChip.isActive
+                               ? (RibbonTheme.isDarkMode ? "#1e1e2e" : "#f0f2f5")
+                               : (RibbonTheme.isDarkMode ? "#1a1a2e" : "#e8eaf2")
+                        border.width: 1
+                        border.color: RibbonTheme.isDarkMode ? "#2a2a42" : "#cdd0e0"
+                        Rectangle {
+                            anchors { bottom: parent.bottom; left: parent.left; right: parent.right }
+                            height: 8
+                            color: billsChip.isActive
+                                   ? (RibbonTheme.isDarkMode ? "#1e1e2e" : "#f0f2f5")
+                                   : "transparent"
+                        }
+                        MouseArea {
+                            anchors.fill: parent; cursorShape: Qt.PointingHandCursor
+                            onClicked: contentArea.activeTab = "bills"
+                        }
+                    }
+                    RowLayout {
+                        id: blRow
+                        anchors { left: parent.left; right: parent.right; verticalCenter: parent.verticalCenter; leftMargin: 10; rightMargin: 2 }
+                        spacing: 5
+                        RibbonIcon { iconSource: RibbonIcons.Document; iconSize: 13; color: "#4e8ef7"; opacity: billsChip.isActive ? 1.0 : 0.5 }
+                        RibbonText { text: qsTr("Bills"); font.pixelSize: 12; opacity: billsChip.isActive ? 1.0 : 0.6 }
+                        RibbonButton {
+                            showBg: false; adaptHeight: true; iconSource: RibbonIcons.Dismiss; tipText: qsTr("Close tab")
+                            onClicked: {
+                                contentArea.billsTabOpen = false
+                                if (contentArea.activeTab === "bills")
+                                    contentArea.activeTab = contentArea.flowchartTabOpen ? "flowchart" : contentArea.createBillTabOpen ? "createBill" : ""
+                            }
+                        }
+                    }
+                }
+
                 // "Reopen" button when all tabs closed
                 RibbonButton {
-                    visible: !contentArea.flowchartTabOpen && !contentArea.createBillTabOpen
+                    visible: !contentArea.flowchartTabOpen && !contentArea.billsTabOpen && !contentArea.createBillTabOpen
                     anchors.verticalCenter: parent.verticalCenter
                     showBg: false; adaptHeight: true; iconSource: RibbonIcons.Add
                     text: qsTr("Flowchart"); tipText: qsTr("Reopen Flowchart panel")
@@ -325,16 +371,15 @@ RibbonWindow {
                 property real expNodeX: cx + r1 * Math.cos(-150 * Math.PI / 180)
                 property real expNodeY: cy + r1 * Math.sin(-150 * Math.PI / 180)
 
-                // Sub-node 3×3 grid (118×36 cells, 6px col-gap, 8px row-gap)
-                readonly property real subCellW:  118
-                readonly property real subCellH:  36
-                readonly property real subColGap: 6
-                readonly property real subRowGap: 8
-                property real gridW:    3 * subCellW + 2 * subColGap   // 366
-                property real gridH:    3 * subCellH + 2 * subRowGap   // 124
-                property real gridRight: expNodeX - 84
-                property real gridLeft:  gridRight - gridW
-                property real gridTop:   expNodeY - gridH / 2
+                // Sub-node card dimensions
+                readonly property real subCellW: 118
+                readonly property real subCellH: 36
+                // Radial distance from Expenses center to sub-node centers
+                // 0.45 * min ensures chord at 24° step = ~131px > subCellW, so no overlap
+                property real r2: Math.min(width, height) * 0.45
+                // Leaf node radial parameters
+                readonly property real lnLeafGap:  88
+                readonly property real lnLeafStep: 54
 
                 property var mainNodes: [
                     { idx: 0, label: qsTr("POS"),       icon: RibbonIcons.Cart,          accent: "#4caf7d", angle: -90,  action: "openPos" },
@@ -345,40 +390,56 @@ RibbonWindow {
                     { idx: 5, label: qsTr("Expenses"),  icon: RibbonIcons.MoneyDismiss,  accent: "#f74e6c", angle: -150, action: "" },
                 ]
 
-                // idx indexes into subNodeCenters; row/col set the initial grid position
+                // idx indexes into subNodeCenters; angle (deg, QML y-down) sets the radial initial position
+                // Fan at 24° steps from 130°→322° keeps chord > subCellW and stays clear of hub/POS
                 property var expenseSubNodes: [
-                    { idx: 0, row: 0, col: 0, label: qsTr("Bill"),             icon: RibbonIcons.Document,        accent: "#4e8ef7", action: "openBill" },
-                    { idx: 1, row: 0, col: 1, label: qsTr("Loan Setup"),       icon: RibbonIcons.MoneyCalculator, accent: "#9c6ef7", action: "" },
-                    { idx: 2, row: 0, col: 2, label: qsTr("Rental"),           icon: RibbonIcons.Home,            accent: "#f7a54e", action: "" },
-                    { idx: 3, row: 1, col: 0, label: qsTr("Employee Salary"),  icon: RibbonIcons.PersonMoney,     accent: "#4caf7d", action: "" },
-                    { idx: 4, row: 1, col: 1, label: qsTr("Modification"),     icon: RibbonIcons.Wrench,          accent: "#f0a030", action: "" },
-                    { idx: 5, row: 1, col: 2, label: qsTr("Purchase Order"),   icon: RibbonIcons.ShoppingBag,     accent: "#4ee0f7", action: "" },
-                    { idx: 6, row: 2, col: 0, label: qsTr("Legal"),            icon: RibbonIcons.Scales,          accent: "#f74e6c", action: "" },
-                    { idx: 7, row: 2, col: 1, label: qsTr("Marketing"),        icon: RibbonIcons.Megaphone,       accent: "#e040fb", action: "" },
-                    { idx: 8, row: 2, col: 2, label: qsTr("Transport"),        icon: RibbonIcons.Airplane,        accent: "#60c060", action: "" },
+                    { idx: 0, angle: 130, label: qsTr("Bill"),             icon: RibbonIcons.Document,        accent: "#4e8ef7", action: "openBill" },
+                    { idx: 1, angle: 154, label: qsTr("Loan Setup"),       icon: RibbonIcons.MoneyCalculator, accent: "#9c6ef7", action: "" },
+                    { idx: 2, angle: 178, label: qsTr("Rental"),           icon: RibbonIcons.Home,            accent: "#f7a54e", action: "" },
+                    { idx: 3, angle: 202, label: qsTr("Employee Salary"),  icon: RibbonIcons.PersonMoney,     accent: "#4caf7d", action: "" },
+                    { idx: 4, angle: 226, label: qsTr("Modification"),     icon: RibbonIcons.Wrench,          accent: "#f0a030", action: "" },
+                    { idx: 5, angle: 250, label: qsTr("Purchase Order"),   icon: RibbonIcons.ShoppingBag,     accent: "#4ee0f7", action: "" },
+                    { idx: 6, angle: 274, label: qsTr("Legal"),            icon: RibbonIcons.Scales,          accent: "#f74e6c", action: "" },
+                    { idx: 7, angle: 298, label: qsTr("Marketing"),        icon: RibbonIcons.Megaphone,       accent: "#e040fb", action: "" },
+                    { idx: 8, angle: 322, label: qsTr("Transport"),        icon: RibbonIcons.Airplane,        accent: "#60c060", action: "" },
                 ]
 
                 // Delegates write here on every move; canvas reads these for line endpoints
                 property var mainNodeCenters: [Qt.point(0,0), Qt.point(0,0), Qt.point(0,0), Qt.point(0,0), Qt.point(0,0), Qt.point(0,0)]
                 property var subNodeCenters:  [Qt.point(0,0), Qt.point(0,0), Qt.point(0,0), Qt.point(0,0), Qt.point(0,0), Qt.point(0,0), Qt.point(0,0), Qt.point(0,0), Qt.point(0,0)]
 
-                // Live loans fetched from API — displayed as leaf nodes under Loan Setup (subIdx=1)
-                property var loanNodes: []
-                readonly property real lnW:   subCellW
-                readonly property real lnH:   subCellH
-                readonly property real lnGap: 6
-                // Initial column position mirrors Loan Setup column (col=1) in the expense grid
-                property real lnNodeX:    gridLeft + 1 * (subCellW + subColGap)
-                property real lnNodeYBase: gridTop - Math.max(1, loanNodes.length) * (lnH + lnGap) - 14
+                // Live data nodes fetched from API — smaller than sub-nodes
+                readonly property real lnW: 96
+                readonly property real lnH: 24
+
+                property var loanNodes:     []
+                property var billNodes:     []
+                property var rentalNodes:   []
+                property var employeeNodes: []
+                property var modNodes:      []
+
+                // Actual center positions of leaf nodes (updated on every move)
+                property var billLeafCenters:     []
+                property var loanLeafCenters:     []
+                property var rentalLeafCenters:   []
+                property var employeeLeafCenters: []
+                property var modLeafCenters:      []
 
                 Connections {
                     target: appController
-                    function onLoansLoaded(loans) {
-                        flowChart.loanNodes = loans
-                        lineCanvas.requestPaint()
-                    }
+                    function onLoansLoaded(loans)         { flowChart.loanNodes    = loans;     lineCanvas.requestPaint() }
+                    function onBillsLoaded(bills)         { flowChart.billNodes    = bills;     lineCanvas.requestPaint() }
+                    function onRentalsLoaded(rentals)     { flowChart.rentalNodes  = rentals;   lineCanvas.requestPaint() }
+                    function onModificationsLoaded(mods)  { flowChart.modNodes     = mods;      lineCanvas.requestPaint() }
+                    function onEmployeesLoaded(emps)      { flowChart.employeeNodes= emps;      lineCanvas.requestPaint() }
                 }
-                Component.onCompleted: Qt.callLater(function() { appController.fetchLoans() })
+                Component.onCompleted: Qt.callLater(function() {
+                    appController.fetchLoans()
+                    appController.fetchBills()
+                    appController.fetchRentals()
+                    appController.fetchModifications()
+                    appController.fetchEmployees()
+                })
 
                 // Push `item` out of all overlapping nodes. Call on drag release.
                 // selfIdx / isSub identify which node is being moved (skip self-check).
@@ -426,11 +487,12 @@ RibbonWindow {
                     onPaint: {
                         var ctx = getContext("2d")
                         ctx.clearRect(0, 0, width, height)
-                        var lineCol  = RibbonTheme.isDarkMode ? "#3a3a5a" : "#c0cce0"
-                        var arrowCol = RibbonTheme.isDarkMode ? "#5a6a9a" : "#8898c8"
+                        var lineCol  = RibbonTheme.isDarkMode ? "#4a5a8a" : "#9aaacf"
                         var hubR = 56, nodeR = 22
+                        var mainNodes    = flowChart.mainNodes
+                        var expSubNodes  = flowChart.expenseSubNodes
 
-                        // Hub → each main node using actual (possibly dragged) center positions
+                        // Hub → each main node — solid colored lines with filled arrow
                         var mCenters = flowChart.mainNodeCenters
                         for (var i = 0; i < mCenters.length; i++) {
                             var nc = mCenters[i]
@@ -443,18 +505,19 @@ RibbonWindow {
                             var y1 = flowChart.cy + nny * hubR
                             var x2 = nc.x - nnx * nodeR
                             var y2 = nc.y - nny * nodeR
-                            ctx.strokeStyle = lineCol; ctx.lineWidth = 1.5; ctx.setLineDash([6, 5])
+                            var accent = (mainNodes && mainNodes[i]) ? mainNodes[i].accent : lineCol
+                            ctx.strokeStyle = accent; ctx.lineWidth = 2.5; ctx.setLineDash([])
                             ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke()
-                            ctx.setLineDash([]); ctx.fillStyle = arrowCol
-                            var sz = 7, aa = Math.atan2(y2 - y1, x2 - x1)
+                            ctx.fillStyle = accent
+                            var sz = 9, aa = Math.atan2(y2 - y1, x2 - x1)
                             ctx.beginPath()
                             ctx.moveTo(x2, y2)
-                            ctx.lineTo(x2 - sz * Math.cos(aa - 0.42), y2 - sz * Math.sin(aa - 0.42))
-                            ctx.lineTo(x2 - sz * Math.cos(aa + 0.42), y2 - sz * Math.sin(aa + 0.42))
+                            ctx.lineTo(x2 - sz * Math.cos(aa - 0.38), y2 - sz * Math.sin(aa - 0.38))
+                            ctx.lineTo(x2 - sz * Math.cos(aa + 0.38), y2 - sz * Math.sin(aa + 0.38))
                             ctx.closePath(); ctx.fill()
                         }
 
-                        // Expenses node → each expense sub-node (thin dashed, tracks drag)
+                        // Expenses node → each expense sub-node — colored dashed lines
                         var expC = mCenters[5]
                         var sCenters = flowChart.subNodeCenters
                         if (expC && (expC.x !== 0 || expC.y !== 0)) {
@@ -465,7 +528,8 @@ RibbonWindow {
                                 var sdist = Math.sqrt(sdx * sdx + sdy * sdy)
                                 if (sdist < 1) continue
                                 var snx = sdx / sdist, sny = sdy / sdist
-                                ctx.strokeStyle = lineCol; ctx.lineWidth = 1; ctx.setLineDash([4, 4])
+                                var subAccent = (expSubNodes && expSubNodes[j]) ? expSubNodes[j].accent : lineCol
+                                ctx.strokeStyle = subAccent; ctx.lineWidth = 1.5; ctx.setLineDash([6, 4])
                                 ctx.beginPath()
                                 ctx.moveTo(expC.x + snx * nodeR, expC.y + sny * nodeR)
                                 ctx.lineTo(sc.x - snx * 20,      sc.y - sny * 20)
@@ -474,27 +538,30 @@ RibbonWindow {
                             }
                         }
 
-                        // Loan Setup sub-node (subIdx=1) → each loan node
-                        var loanNodes = flowChart.loanNodes
-                        if (loanNodes.length > 0) {
-                            var lsC = flowChart.subNodeCenters[1]
-                            if (lsC && (lsC.x !== 0 || lsC.y !== 0)) {
-                                var lnCx = flowChart.lnNodeX + flowChart.lnW / 2
-                                for (var k = 0; k < loanNodes.length; k++) {
-                                    var lnCy = flowChart.lnNodeYBase + k * (flowChart.lnH + flowChart.lnGap) + flowChart.lnH / 2
-                                    var ldx = lnCx - lsC.x, ldy = lnCy - lsC.y
-                                    var ldist = Math.sqrt(ldx * ldx + ldy * ldy)
-                                    if (ldist < 1) continue
-                                    var lnx = ldx / ldist, lny = ldy / ldist
-                                    ctx.strokeStyle = "#9c6ef7"; ctx.lineWidth = 1; ctx.setLineDash([3, 4])
-                                    ctx.beginPath()
-                                    ctx.moveTo(lsC.x + lnx * 18, lsC.y + lny * 18)
-                                    ctx.lineTo(lnCx - lnx * 18,  lnCy - lny * 18)
-                                    ctx.stroke()
-                                    ctx.setLineDash([])
-                                }
+                        // Draw lines from sub-node center to each leaf node's ACTUAL center
+                        function drawLeafLines(subCenter, leafCenters, color) {
+                            if (!leafCenters || leafCenters.length === 0) return
+                            if (!subCenter || (subCenter.x === 0 && subCenter.y === 0)) return
+                            for (var ki = 0; ki < leafCenters.length; ki++) {
+                                var lc = leafCenters[ki]
+                                if (!lc || (lc.x === 0 && lc.y === 0)) continue
+                                var dx = lc.x - subCenter.x, dy = lc.y - subCenter.y
+                                var dlen = Math.sqrt(dx * dx + dy * dy)
+                                if (dlen < 2) continue
+                                var nx = dx / dlen, ny = dy / dlen
+                                ctx.strokeStyle = color; ctx.lineWidth = 1.5; ctx.setLineDash([5, 4])
+                                ctx.beginPath()
+                                ctx.moveTo(subCenter.x + nx * 20, subCenter.y + ny * 20)
+                                ctx.lineTo(lc.x - nx * 14,        lc.y - ny * 14)
+                                ctx.stroke()
+                                ctx.setLineDash([])
                             }
                         }
+                        drawLeafLines(flowChart.subNodeCenters[0], flowChart.billLeafCenters,     "#4e8ef7")
+                        drawLeafLines(flowChart.subNodeCenters[1], flowChart.loanLeafCenters,     "#9c6ef7")
+                        drawLeafLines(flowChart.subNodeCenters[2], flowChart.rentalLeafCenters,   "#f7a54e")
+                        drawLeafLines(flowChart.subNodeCenters[3], flowChart.employeeLeafCenters, "#4caf7d")
+                        drawLeafLines(flowChart.subNodeCenters[4], flowChart.modLeafCenters,      "#f0a030")
                     }
                 }
 
@@ -619,8 +686,9 @@ RibbonWindow {
                         property bool _ready: false
 
                         function _initPos() {
-                            x = flowChart.gridLeft + modelData.col * (flowChart.subCellW + flowChart.subColGap)
-                            y = flowChart.gridTop  + modelData.row * (flowChart.subCellH + flowChart.subRowGap)
+                            var a = modelData.angle * Math.PI / 180
+                            x = flowChart.expNodeX + flowChart.r2 * Math.cos(a) - width  / 2
+                            y = flowChart.expNodeY + flowChart.r2 * Math.sin(a) - height / 2
                         }
                         Component.onCompleted: {
                             _initPos()
@@ -628,8 +696,8 @@ RibbonWindow {
                         }
                         Connections {
                             target: flowChart
-                            function onGridLeftChanged() { if (!subNode._moved) subNode._initPos() }
-                            function onGridTopChanged()  { if (!subNode._moved) subNode._initPos() }
+                            function onExpNodeXChanged() { if (!subNode._moved) subNode._initPos() }
+                            function onExpNodeYChanged() { if (!subNode._moved) subNode._initPos() }
                         }
 
                         Behavior on x { enabled: subNode._ready && !subMA._dragging; NumberAnimation { duration: 160; easing.type: Easing.OutCubic } }
@@ -697,43 +765,154 @@ RibbonWindow {
                             onExited:  subRect.color = RibbonTheme.isDarkMode ? "#252535" : "#ffffff"
                             onClicked: {
                                 if (!_didDrag && modelData.action === "openBill") {
-                                    contentArea.createBillTabOpen = true
-                                    contentArea.activeTab = "createBill"
+                                    contentArea.billsTabOpen = true
+                                    contentArea.activeTab = "bills"
                                 }
                             }
                         }
                     }
                 }
 
-                // Loan nodes — fetched from API, displayed above Loan Setup (expense sub-node col=1)
+                // ── Data leaf node component ──────────────────────────────
+                component DataLeafNode: Item {
+                    id: leafRoot
+                    required property var    modelData
+                    required property int    index
+                    required property real   nodeX
+                    required property real   nodeY
+                    required property string accent
+                    required property var    iconSrc
+                    required property bool   isOverdue
+
+                    width: flowChart.lnW; height: flowChart.lnH
+                    z: leafMA._dragging ? 5 : 3
+
+                    property bool _moved: false
+                    property bool _ready: false
+
+                    // Follow computed position until user drags
+                    onNodeXChanged: if (!_moved) x = nodeX
+                    onNodeYChanged: if (!_moved) y = nodeY
+
+                    Component.onCompleted: {
+                        x = nodeX; y = nodeY
+                        Qt.callLater(function() { leafRoot._ready = true })
+                    }
+
+                    Behavior on x { enabled: leafRoot._ready && !leafMA._dragging; NumberAnimation { duration: 160; easing.type: Easing.OutCubic } }
+                    Behavior on y { enabled: leafRoot._ready && !leafMA._dragging; NumberAnimation { duration: 160; easing.type: Easing.OutCubic } }
+
+                    onXChanged: lineCanvas.requestPaint()
+                    onYChanged: lineCanvas.requestPaint()
+
+                    Rectangle {
+                        id: leafRect
+                        anchors.fill: parent; radius: 12
+                        color: leafRoot.isOverdue ? "#ef4444" : leafRoot.accent
+                        layer.enabled: true; layer.effect: RibbonShadow {}
+                        RowLayout {
+                            anchors { fill: parent; leftMargin: 6; rightMargin: 6; topMargin: 3; bottomMargin: 3 }
+                            spacing: 4
+                            RibbonIcon { iconSource: leafRoot.iconSrc; iconSize: 9; color: "white"; opacity: 0.9 }
+                            Text { text: leafRoot.modelData.name; font.pixelSize: 9; font.bold: true; color: "white"; elide: Text.ElideRight; Layout.fillWidth: true }
+                        }
+                    }
+
+                    MouseArea {
+                        id: leafMA
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        property bool _dragging: false
+                        property real _pgx: 0; property real _pgy: 0
+                        cursorShape: _dragging ? Qt.ClosedHandCursor : Qt.PointingHandCursor
+
+                        onPressed: function(mouse) {
+                            var g = mapToItem(flowChart, mouse.x, mouse.y)
+                            _pgx = g.x; _pgy = g.y
+                            _dragging = true
+                            leafRoot._moved = true
+                        }
+                        onPositionChanged: function(mouse) {
+                            if (!_dragging) return
+                            var g  = mapToItem(flowChart, mouse.x, mouse.y)
+                            var dx = g.x - _pgx, dy = g.y - _pgy
+                            _pgx = g.x; _pgy = g.y
+                            leafRoot.x += dx; leafRoot.y += dy
+                        }
+                        onReleased: function(mouse) { _dragging = false }
+                        onEntered:  leafRect.opacity = 0.85
+                        onExited:   leafRect.opacity = 1.0
+                    }
+                }
+
+                // Bill leaf nodes — radially outward at 130° from Expenses
+                Repeater {
+                    model: flowChart.billNodes
+                    delegate: DataLeafNode {
+                        property real _a: 130 * Math.PI / 180
+                        property real _d: flowChart.r2 + flowChart.lnLeafGap + index * flowChart.lnLeafStep
+                        nodeX: flowChart.expNodeX + _d * Math.cos(_a) - flowChart.lnW / 2
+                        nodeY: flowChart.expNodeY + _d * Math.sin(_a) - flowChart.lnH / 2
+                        accent: "#4e8ef7"; iconSrc: RibbonIcons.Document
+                        isOverdue: modelData.overdue === true
+                        onXChanged: { var c = flowChart.billLeafCenters.slice(); c[index] = Qt.point(x + width/2, y + height/2); flowChart.billLeafCenters = c }
+                        onYChanged: { var c = flowChart.billLeafCenters.slice(); c[index] = Qt.point(x + width/2, y + height/2); flowChart.billLeafCenters = c }
+                    }
+                }
+
+                // Loan leaf nodes — radially outward at 154° from Expenses
                 Repeater {
                     model: flowChart.loanNodes
-                    delegate: Item {
-                        id: lnNode
-                        required property var modelData
-                        required property int index
-                        width: flowChart.lnW; height: flowChart.lnH
-                        z: 3
-                        x: flowChart.lnNodeX
-                        y: flowChart.lnNodeYBase + index * (flowChart.lnH + flowChart.lnGap)
-                        onXChanged: lineCanvas.requestPaint()
-                        onYChanged: lineCanvas.requestPaint()
+                    delegate: DataLeafNode {
+                        property real _a: 154 * Math.PI / 180
+                        property real _d: flowChart.r2 + flowChart.lnLeafGap + index * flowChart.lnLeafStep
+                        nodeX: flowChart.expNodeX + _d * Math.cos(_a) - flowChart.lnW / 2
+                        nodeY: flowChart.expNodeY + _d * Math.sin(_a) - flowChart.lnH / 2
+                        accent: "#9c6ef7"; iconSrc: RibbonIcons.MoneyCalculator; isOverdue: false
+                        onXChanged: { var c = flowChart.loanLeafCenters.slice(); c[index] = Qt.point(x + width/2, y + height/2); flowChart.loanLeafCenters = c }
+                        onYChanged: { var c = flowChart.loanLeafCenters.slice(); c[index] = Qt.point(x + width/2, y + height/2); flowChart.loanLeafCenters = c }
+                    }
+                }
 
-                        Rectangle {
-                            anchors.fill: parent; radius: 7
-                            color: RibbonTheme.isDarkMode ? "#252535" : "#ffffff"
-                            border.width: 1.5; border.color: "#9c6ef7"
-                            layer.enabled: true; layer.effect: RibbonShadow {}
-                            RowLayout {
-                                anchors { fill: parent; leftMargin: 7; rightMargin: 5; topMargin: 3; bottomMargin: 3 }
-                                spacing: 6
-                                Rectangle {
-                                    width: 22; height: 22; radius: 5; color: "#9c6ef7"
-                                    RibbonIcon { anchors.centerIn: parent; iconSource: RibbonIcons.MoneyCalculator; iconSize: 11; color: "white" }
-                                }
-                                RibbonText { text: lnNode.modelData.name; font.pixelSize: 10; font.bold: true; wrapMode: Text.WordWrap; Layout.fillWidth: true }
-                            }
-                        }
+                // Rental leaf nodes — radially outward at 178° from Expenses
+                Repeater {
+                    model: flowChart.rentalNodes
+                    delegate: DataLeafNode {
+                        property real _a: 178 * Math.PI / 180
+                        property real _d: flowChart.r2 + flowChart.lnLeafGap + index * flowChart.lnLeafStep
+                        nodeX: flowChart.expNodeX + _d * Math.cos(_a) - flowChart.lnW / 2
+                        nodeY: flowChart.expNodeY + _d * Math.sin(_a) - flowChart.lnH / 2
+                        accent: "#f7a54e"; iconSrc: RibbonIcons.Home; isOverdue: false
+                        onXChanged: { var c = flowChart.rentalLeafCenters.slice(); c[index] = Qt.point(x + width/2, y + height/2); flowChart.rentalLeafCenters = c }
+                        onYChanged: { var c = flowChart.rentalLeafCenters.slice(); c[index] = Qt.point(x + width/2, y + height/2); flowChart.rentalLeafCenters = c }
+                    }
+                }
+
+                // Employee leaf nodes — radially outward at 202° from Expenses
+                Repeater {
+                    model: flowChart.employeeNodes
+                    delegate: DataLeafNode {
+                        property real _a: 202 * Math.PI / 180
+                        property real _d: flowChart.r2 + flowChart.lnLeafGap + index * flowChart.lnLeafStep
+                        nodeX: flowChart.expNodeX + _d * Math.cos(_a) - flowChart.lnW / 2
+                        nodeY: flowChart.expNodeY + _d * Math.sin(_a) - flowChart.lnH / 2
+                        accent: "#4caf7d"; iconSrc: RibbonIcons.People; isOverdue: false
+                        onXChanged: { var c = flowChart.employeeLeafCenters.slice(); c[index] = Qt.point(x + width/2, y + height/2); flowChart.employeeLeafCenters = c }
+                        onYChanged: { var c = flowChart.employeeLeafCenters.slice(); c[index] = Qt.point(x + width/2, y + height/2); flowChart.employeeLeafCenters = c }
+                    }
+                }
+
+                // Modification leaf nodes — radially outward at 226° from Expenses
+                Repeater {
+                    model: flowChart.modNodes
+                    delegate: DataLeafNode {
+                        property real _a: 226 * Math.PI / 180
+                        property real _d: flowChart.r2 + flowChart.lnLeafGap + index * flowChart.lnLeafStep
+                        nodeX: flowChart.expNodeX + _d * Math.cos(_a) - flowChart.lnW / 2
+                        nodeY: flowChart.expNodeY + _d * Math.sin(_a) - flowChart.lnH / 2
+                        accent: "#f0a030"; iconSrc: RibbonIcons.Wrench; isOverdue: false
+                        onXChanged: { var c = flowChart.modLeafCenters.slice(); c[index] = Qt.point(x + width/2, y + height/2); flowChart.modLeafCenters = c }
+                        onYChanged: { var c = flowChart.modLeafCenters.slice(); c[index] = Qt.point(x + width/2, y + height/2); flowChart.modLeafCenters = c }
                     }
                 }
             }
@@ -794,6 +973,740 @@ RibbonWindow {
                 visible: !zoomPanel.zoomPanelVisible && contentArea.flowchartTabOpen && contentArea.activeTab === "flowchart"
                 iconSource: RibbonIcons.ZoomIn; tipText: qsTr("Show View Controls")
                 onClicked: zoomPanel.zoomPanelVisible = true
+            }
+
+            // ════════════════════════════════════════════════════════════
+            // BILLS LIST TAB
+            // ════════════════════════════════════════════════════════════
+            Item {
+                id: billsPanel
+                anchors.fill: parent
+                visible: contentArea.billsTabOpen && contentArea.activeTab === "bills"
+
+                property var selectedBill: null
+
+                property int billOverdueCount: {
+                    var n = 0
+                    for (var i = 0; i < flowChart.billNodes.length; i++)
+                        if (flowChart.billNodes[i] && flowChart.billNodes[i].overdue) n++
+                    return n
+                }
+
+                function categoryColor(cat) {
+                    if (cat === "water")       return "#4ee0f7"
+                    if (cat === "electricity") return "#f7a54e"
+                    if (cat === "telephone")   return "#9c6ef7"
+                    if (cat === "internet")    return "#4caf7d"
+                    if (cat === "gas")         return "#f0a030"
+                    if (cat === "waste")       return "#60c060"
+                    return "#4e8ef7"
+                }
+
+                // ── LIST VIEW ──────────────────────────────────────────
+                Item {
+                    anchors.fill: parent
+                    visible: billsPanel.selectedBill === null
+
+                    ColumnLayout {
+                        anchors.fill: parent; spacing: 0
+
+                        Rectangle {
+                            Layout.fillWidth: true; height: 54; z: 1
+                            color: RibbonTheme.isDarkMode ? "#1c1c2e" : "#ffffff"
+                            layer.enabled: true; layer.effect: RibbonShadow {}
+                            RowLayout {
+                                anchors { fill: parent; leftMargin: 18; rightMargin: 12 }
+                                spacing: 10
+                                Rectangle {
+                                    width: 34; height: 34; radius: 9; color: "#4e8ef7"
+                                    RibbonIcon { anchors.centerIn: parent; iconSource: RibbonIcons.Document; iconSize: 16; color: "white" }
+                                }
+                                RibbonText { text: qsTr("Bills"); font.pixelSize: 16; font.bold: true; Layout.fillWidth: true }
+                                RibbonButton {
+                                    showBg: false; adaptHeight: true; iconSource: RibbonIcons.ArrowClockwise; tipText: qsTr("Refresh")
+                                    onClicked: appController.fetchBills()
+                                }
+                                RibbonButton {
+                                    iconSource: RibbonIcons.Add; text: qsTr("New Bill")
+                                    onClicked: { contentArea.createBillTabOpen = true; contentArea.activeTab = "createBill" }
+                                }
+                            }
+                        }
+
+                        Rectangle {
+                            Layout.fillWidth: true; height: 38
+                            color: RibbonTheme.isDarkMode ? "#16162a" : "#f4f5fb"
+                            RowLayout {
+                                anchors { fill: parent; leftMargin: 18; rightMargin: 18 }
+                                spacing: 20
+                                RibbonIcon { iconSource: RibbonIcons.Document; iconSize: 12; opacity: 0.55 }
+                                RibbonText { text: qsTr("Total: ") + flowChart.billNodes.length; font.pixelSize: 11; opacity: 0.7 }
+                                RibbonIcon {
+                                    iconSource: RibbonIcons.Warning; iconSize: 12
+                                    color: billsPanel.billOverdueCount > 0 ? "#ef4444" : (RibbonTheme.isDarkMode ? "white" : "black")
+                                    opacity: billsPanel.billOverdueCount > 0 ? 1.0 : 0.55
+                                }
+                                RibbonText {
+                                    text: qsTr("Overdue: ") + billsPanel.billOverdueCount
+                                    font.pixelSize: 11
+                                    color: billsPanel.billOverdueCount > 0 ? "#ef4444" : (RibbonTheme.isDarkMode ? "white" : "black")
+                                    opacity: billsPanel.billOverdueCount > 0 ? 1.0 : 0.7
+                                }
+                                Item { Layout.fillWidth: true }
+                            }
+                        }
+
+                        ListView {
+                            id: billListView
+                            Layout.fillWidth: true; Layout.fillHeight: true
+                            model: flowChart.billNodes; clip: true; spacing: 0
+
+                            Column {
+                                anchors.centerIn: parent; spacing: 12
+                                visible: billListView.count === 0
+                                RibbonIcon { anchors.horizontalCenter: parent.horizontalCenter; iconSource: RibbonIcons.Document; iconSize: 38; opacity: 0.15 }
+                                RibbonText { anchors.horizontalCenter: parent.horizontalCenter; text: qsTr("No bills yet"); font.pixelSize: 14; opacity: 0.35 }
+                                RibbonButton {
+                                    anchors.horizontalCenter: parent.horizontalCenter
+                                    text: qsTr("Create first bill"); iconSource: RibbonIcons.Add
+                                    onClicked: { contentArea.createBillTabOpen = true; contentArea.activeTab = "createBill" }
+                                }
+                            }
+
+                            delegate: Rectangle {
+                                required property var modelData
+                                required property int index
+                                width: billListView.width; height: 64
+                                color: bRowMA.containsMouse
+                                       ? (RibbonTheme.isDarkMode ? "#ffffff08" : "#f0f4ff")
+                                       : (RibbonTheme.isDarkMode ? "#1e1e2e" : "#ffffff")
+                                Rectangle {
+                                    anchors.bottom: parent.bottom; width: parent.width; height: 1
+                                    color: RibbonTheme.isDarkMode ? "#2a2a42" : "#eaecf4"
+                                }
+                                MouseArea {
+                                    id: bRowMA
+                                    anchors.fill: parent; hoverEnabled: true; cursorShape: Qt.PointingHandCursor
+                                    onClicked: billsPanel.selectedBill = modelData
+                                }
+                                RowLayout {
+                                    anchors { fill: parent; leftMargin: 18; rightMargin: 18 }
+                                    spacing: 14
+                                    Rectangle {
+                                        width: 4; height: 38; radius: 2
+                                        color: billsPanel.categoryColor(modelData.category)
+                                    }
+                                    Column {
+                                        Layout.fillWidth: true; spacing: 3
+                                        RibbonText { text: modelData.name; font.pixelSize: 13; font.bold: true }
+                                        RibbonText {
+                                            visible: modelData.description !== "" && modelData.description !== undefined
+                                            text: modelData.description || ""
+                                            font.pixelSize: 11; opacity: 0.5
+                                        }
+                                    }
+                                    Rectangle {
+                                        height: 20; radius: 10; width: 90
+                                        color: modelData.payment_mode === "recurring" ? "#4e8ef718" : "#9c6ef718"
+                                        RibbonText {
+                                            anchors.centerIn: parent
+                                            text: modelData.payment_mode === "recurring" ? qsTr("Recurring") : qsTr("One-time")
+                                            font.pixelSize: 10
+                                            color: modelData.payment_mode === "recurring" ? "#4e8ef7" : "#9c6ef7"
+                                        }
+                                    }
+                                    Column {
+                                        spacing: 2; visible: modelData.due_date !== "" && modelData.due_date !== undefined
+                                        RibbonText { text: qsTr("Due"); font.pixelSize: 10; opacity: 0.45 }
+                                        RibbonText {
+                                            text: modelData.due_date || ""
+                                            font.pixelSize: 11; font.bold: true
+                                            color: modelData.overdue ? "#ef4444" : (RibbonTheme.isDarkMode ? "white" : "#222")
+                                        }
+                                    }
+                                    Column {
+                                        spacing: 2
+                                        RibbonText { text: qsTr("Amount"); font.pixelSize: 10; opacity: 0.45 }
+                                        RibbonText {
+                                            text: "$ " + parseFloat(modelData.amount || 0).toFixed(2)
+                                            font.pixelSize: 13; font.bold: true; color: "#4e8ef7"
+                                        }
+                                    }
+                                    Rectangle {
+                                        visible: modelData.overdue === true
+                                        width: 68; height: 22; radius: 11; color: "#ef444420"
+                                        RibbonText {
+                                            anchors.centerIn: parent
+                                            text: qsTr("Overdue"); font.pixelSize: 10; color: "#ef4444"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // ── DETAIL VIEW ────────────────────────────────────────
+                Item {
+                    id: billDetailPane
+                    anchors.fill: parent
+                    visible: billsPanel.selectedBill !== null
+
+                    property var  bill: billsPanel.selectedBill
+
+                    // Days until due_date (negative = overdue)
+                    property int daysUntilDue: {
+                        var b = billDetailPane.bill
+                        if (!b || !b.due_date || b.due_date === "") return 0
+                        var parts = b.due_date.split("-")
+                        if (parts.length !== 3) return 0
+                        var today = new Date()
+                        today.setHours(0, 0, 0, 0)
+                        var due = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]))
+                        return Math.round((due.getTime() - today.getTime()) / 86400000)
+                    }
+
+                    // Elapsed % of billing cycle
+                    property real progressPct: {
+                        var b = billDetailPane.bill
+                        if (!b || !b.due_date || b.due_date === "") return 0.0
+                        var d = billDetailPane.daysUntilDue
+                        if (d <= 0) return 100.0
+                        var cycle = 30
+                        var rt = b.recurring_type || ""
+                        if      (rt === "per_day")     cycle = 1
+                        else if (rt === "per_week")    cycle = 7
+                        else if (rt === "per_month")   cycle = 30
+                        else if (rt === "per_quarter") cycle = 91
+                        else if (rt === "per_year")    cycle = 365
+                        var elapsed = cycle - d
+                        if (elapsed < 0) elapsed = 0
+                        return Math.min(100.0, elapsed / cycle * 100.0)
+                    }
+
+                    ColumnLayout {
+                        anchors.fill: parent; spacing: 0
+
+                        // ── Header bar ──────────────────────────────────
+                        Rectangle {
+                            Layout.fillWidth: true; height: 54; z: 1
+                            color: RibbonTheme.isDarkMode ? "#1c1c2e" : "#ffffff"
+                            layer.enabled: true; layer.effect: RibbonShadow {}
+                            RowLayout {
+                                anchors { fill: parent; leftMargin: 10; rightMargin: 12 }
+                                spacing: 8
+                                RibbonButton {
+                                    showBg: false; adaptHeight: true; iconSource: RibbonIcons.ArrowLeft; tipText: qsTr("Back to Bills")
+                                    onClicked: billsPanel.selectedBill = null
+                                }
+                                RibbonText {
+                                    text: billDetailPane.bill ? (billDetailPane.bill.name || "") : ""
+                                    font.pixelSize: 14; font.bold: true; Layout.fillWidth: true
+                                }
+                                Rectangle {
+                                    visible: billDetailPane.bill && billDetailPane.bill.overdue === true
+                                    width: 68; height: 22; radius: 11; color: "#ef444422"
+                                    RibbonText { anchors.centerIn: parent; text: qsTr("Overdue"); font.pixelSize: 10; color: "#ef4444" }
+                                }
+                                RibbonButton {
+                                    iconSource: RibbonIcons.Add; adaptHeight: true; text: qsTr("New Bill")
+                                    onClicked: { contentArea.createBillTabOpen = true; contentArea.activeTab = "createBill" }
+                                }
+                            }
+                        }
+
+                        // ── Scrollable body ──────────────────────────────
+                        ScrollView {
+                            id: billDetailScroll
+                            Layout.fillWidth: true; Layout.fillHeight: true; clip: true
+
+                            Column {
+                                width: billDetailScroll.width; spacing: 0
+
+                                // ── Hero card ────────────────────────────
+                                Rectangle {
+                                    width: parent.width
+                                    height: bdHeroCol.implicitHeight + 26
+                                    color: (billDetailPane.bill && billDetailPane.bill.overdue)
+                                           ? (RibbonTheme.isDarkMode ? "#2a1515" : "#fff5f5")
+                                           : (RibbonTheme.isDarkMode ? "#1e1e30" : "#fffef9")
+
+                                    // Overdue animated left stripe
+                                    Rectangle {
+                                        id: bdOverdueStripe
+                                        visible: billDetailPane.bill && billDetailPane.bill.overdue === true
+                                        x: 0; y: 0; width: 5; height: parent.height
+                                        gradient: Gradient {
+                                            GradientStop { id: bdSG1; position: 0.0; color: "#ef4444" }
+                                            GradientStop { id: bdSG2; position: 0.38; color: "#991b1b" }
+                                            GradientStop { id: bdSG3; position: 1.0; color: "#f87171" }
+                                        }
+                                        SequentialAnimation {
+                                            running: bdOverdueStripe.visible; loops: Animation.Infinite
+                                            NumberAnimation { target: bdSG2; property: "position"; from: 0.38; to: 0.62; duration: 920; easing.type: Easing.InOutSine }
+                                            NumberAnimation { target: bdSG2; property: "position"; from: 0.62; to: 0.38; duration: 920; easing.type: Easing.InOutSine }
+                                        }
+                                    }
+
+                                    // Bottom border
+                                    Rectangle { anchors.bottom: parent.bottom; width: parent.width; height: 1; color: RibbonTheme.isDarkMode ? "#2a2a42" : "#eaecf4" }
+
+                                    Column {
+                                        id: bdHeroCol
+                                        anchors { left: parent.left; right: parent.right
+                                                  leftMargin: billDetailPane.bill && billDetailPane.bill.overdue ? 20 : 16
+                                                  rightMargin: 12; top: parent.top; topMargin: 13 }
+                                        spacing: 9
+
+                                        // Bill name
+                                        Text {
+                                            width: parent.width
+                                            text: billDetailPane.bill ? (billDetailPane.bill.name || "") : ""
+                                            font.pixelSize: 20; font.bold: true
+                                            color: RibbonTheme.isDarkMode ? "#ffffff" : "#1a1a2e"
+                                        }
+
+                                        // Pill flow
+                                        Flow {
+                                            id: bdPillFlow
+                                            width: parent.width; spacing: 5
+
+                                            // Overdue
+                                            Rectangle {
+                                                visible: billDetailPane.bill && billDetailPane.bill.overdue === true
+                                                height: 20; radius: 999; color: "#ef444418"
+                                                border.color: "#ef444460"; border.width: 1
+                                                width: bdPillOv.implicitWidth + 20
+                                                Text { id: bdPillOv; anchors.centerIn: parent; text: qsTr("OVERDUE"); font.pixelSize: 9; font.bold: true; font.letterSpacing: 0.5; color: "#ef4444" }
+                                            }
+                                            // Category
+                                            Rectangle {
+                                                visible: billDetailPane.bill && billDetailPane.bill.category_label !== "" && billDetailPane.bill.category_label !== undefined
+                                                height: 20; radius: 999; color: RibbonTheme.isDarkMode ? "#ffffff14" : "#1a1a2e12"
+                                                border.color: RibbonTheme.isDarkMode ? "#ffffff28" : "#1a1a2e28"; border.width: 1
+                                                width: bdPillCat.implicitWidth + 20
+                                                Text { id: bdPillCat; anchors.centerIn: parent; text: billDetailPane.bill ? (billDetailPane.bill.category_label || "").toUpperCase() : ""; font.pixelSize: 9; font.bold: true; font.letterSpacing: 0.5; color: RibbonTheme.isDarkMode ? "#ccccdd" : "#555566" }
+                                            }
+                                            // Payment mode
+                                            Rectangle {
+                                                height: 20; radius: 999; color: RibbonTheme.isDarkMode ? "#ffffff14" : "#1a1a2e12"
+                                                border.color: RibbonTheme.isDarkMode ? "#ffffff28" : "#1a1a2e28"; border.width: 1
+                                                width: bdPillMode.implicitWidth + 20
+                                                Text { id: bdPillMode; anchors.centerIn: parent; text: (billDetailPane.bill && billDetailPane.bill.payment_mode === "recurring") ? qsTr("RECURRING") : qsTr("ONE-TIME"); font.pixelSize: 9; font.bold: true; font.letterSpacing: 0.5; color: RibbonTheme.isDarkMode ? "#ccccdd" : "#555566" }
+                                            }
+                                            // Recurring cadence
+                                            Rectangle {
+                                                visible: billDetailPane.bill && billDetailPane.bill.recurring_type !== ""
+                                                height: 20; radius: 999; color: RibbonTheme.isDarkMode ? "#ffffff14" : "#1a1a2e12"
+                                                border.color: RibbonTheme.isDarkMode ? "#ffffff28" : "#1a1a2e28"; border.width: 1
+                                                width: bdPillRec.implicitWidth + 20
+                                                Text { id: bdPillRec; anchors.centerIn: parent; text: billDetailPane.bill ? (billDetailPane.bill.recurring_type || "").replace("per_", "PER ").toUpperCase() : ""; font.pixelSize: 9; font.bold: true; font.letterSpacing: 0.5; color: RibbonTheme.isDarkMode ? "#ccccdd" : "#555566" }
+                                            }
+                                            // Through year
+                                            Rectangle {
+                                                visible: billDetailPane.bill && billDetailPane.bill.agreement_until !== "" && billDetailPane.bill.agreement_until !== "0"
+                                                height: 20; radius: 999; color: RibbonTheme.isDarkMode ? "#ffffff14" : "#1a1a2e12"
+                                                border.color: RibbonTheme.isDarkMode ? "#ffffff28" : "#1a1a2e28"; border.width: 1
+                                                width: bdPillThru.implicitWidth + 20
+                                                Text { id: bdPillThru; anchors.centerIn: parent; text: billDetailPane.bill ? qsTr("THROUGH ") + (billDetailPane.bill.agreement_until || "") : ""; font.pixelSize: 9; font.bold: true; font.letterSpacing: 0.5; color: RibbonTheme.isDarkMode ? "#ccccdd" : "#555566" }
+                                            }
+                                            // Employee
+                                            Rectangle {
+                                                visible: billDetailPane.bill && billDetailPane.bill.employee_name !== ""
+                                                height: 20; radius: 999; color: RibbonTheme.isDarkMode ? "#ffffff14" : "#1a1a2e12"
+                                                border.color: RibbonTheme.isDarkMode ? "#ffffff28" : "#1a1a2e28"; border.width: 1
+                                                width: bdPillEmp.implicitWidth + 20
+                                                Text { id: bdPillEmp; anchors.centerIn: parent; text: billDetailPane.bill ? (billDetailPane.bill.employee_name || "").toUpperCase() : ""; font.pixelSize: 9; font.bold: true; font.letterSpacing: 0.5; color: RibbonTheme.isDarkMode ? "#ccccdd" : "#555566" }
+                                            }
+                                            // Due date
+                                            Rectangle {
+                                                visible: billDetailPane.bill && billDetailPane.bill.actual_due_date_fmt !== "" && billDetailPane.bill.actual_due_date_fmt !== undefined
+                                                height: 20; radius: 999
+                                                color: (billDetailPane.bill && billDetailPane.bill.overdue) ? "#ef444418" : (RibbonTheme.isDarkMode ? "#ffffff14" : "#1a1a2e12")
+                                                border.color: (billDetailPane.bill && billDetailPane.bill.overdue) ? "#ef444460" : (RibbonTheme.isDarkMode ? "#ffffff28" : "#1a1a2e28"); border.width: 1
+                                                width: bdPillDue.implicitWidth + 20
+                                                Text { id: bdPillDue; anchors.centerIn: parent; text: billDetailPane.bill ? qsTr("DUE ") + (billDetailPane.bill.actual_due_date_fmt || "").toUpperCase() : ""; font.pixelSize: 9; font.bold: true; font.letterSpacing: 0.5; color: (billDetailPane.bill && billDetailPane.bill.overdue) ? "#ef4444" : (RibbonTheme.isDarkMode ? "#ccccdd" : "#555566") }
+                                            }
+                                            // First installment
+                                            Rectangle {
+                                                visible: billDetailPane.bill && billDetailPane.bill.first_install_date_fmt !== "" && billDetailPane.bill.first_install_date_fmt !== undefined
+                                                height: 20; radius: 999; color: RibbonTheme.isDarkMode ? "#ffffff14" : "#1a1a2e12"
+                                                border.color: RibbonTheme.isDarkMode ? "#ffffff28" : "#1a1a2e28"; border.width: 1
+                                                width: bdPillInst.implicitWidth + 20
+                                                Text { id: bdPillInst; anchors.centerIn: parent; text: billDetailPane.bill ? qsTr("FIRST INSTALLMENT ") + (billDetailPane.bill.first_install_date_fmt || "").toUpperCase() : ""; font.pixelSize: 9; font.bold: true; font.letterSpacing: 0.5; color: RibbonTheme.isDarkMode ? "#ccccdd" : "#555566" }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                // ════════════════════════════════════════
+                                // BILL DETAILS
+                                // ════════════════════════════════════════
+                                Column {
+                                    width: parent.width; spacing: 0
+
+                                    // Overdue alert
+                                    Rectangle {
+                                        width: parent.width
+                                        height: bdAlertRow.implicitHeight + 20
+                                        visible: billDetailPane.bill && billDetailPane.bill.overdue === true
+                                        color: RibbonTheme.isDarkMode ? "#2a1a1a" : "#fff5f5"
+                                        border.color: RibbonTheme.isDarkMode ? "#f8717155" : "#fca5a5"; border.width: 1
+                                        RowLayout {
+                                            id: bdAlertRow
+                                            anchors { left: parent.left; right: parent.right; top: parent.top; margins: 10 }
+                                            spacing: 10
+                                            RibbonIcon { iconSource: RibbonIcons.Warning; iconSize: 14; color: "#f87171"; Layout.alignment: Qt.AlignTop }
+                                            Column {
+                                                Layout.fillWidth: true; spacing: 3
+                                                Text { text: qsTr("Unpaid billing due"); font.pixelSize: 12; font.bold: true; color: RibbonTheme.isDarkMode ? "#fca5a5" : "#dc2626" }
+                                                Text {
+                                                    width: parent.width; wrapMode: Text.WordWrap
+                                                    text: qsTr("At least one scheduled bill date on or before today has no ledger payment recorded. Log the payment so your schedule stays accurate.")
+                                                    font.pixelSize: 11; lineHeight: 1.42
+                                                    color: RibbonTheme.isDarkMode ? "#fecaca" : "#7f1d1d"
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    // Spacer before countdown card
+                                    Item { width: parent.width; height: 12 }
+
+                                    // Next payment countdown card
+                                    Item {
+                                        width: parent.width; height: bdCountdownCard.height + 12
+                                        visible: billDetailPane.bill && billDetailPane.bill.due_date !== ""
+
+                                        Rectangle {
+                                            id: bdCountdownCard
+                                            anchors { left: parent.left; right: parent.right; leftMargin: 12; rightMargin: 12 }
+                                            height: bdCountdownInner.implicitHeight + 28; radius: 10
+                                            color: (billDetailPane.bill && billDetailPane.bill.overdue)
+                                                   ? (RibbonTheme.isDarkMode ? "#2a1010" : "#fff5f5")
+                                                   : (RibbonTheme.isDarkMode ? "#1e1e32" : "#ffffff")
+                                            border.color: (billDetailPane.bill && billDetailPane.bill.overdue) ? "#ef444455" : (RibbonTheme.isDarkMode ? "#2a2a42" : "#e0e4f0"); border.width: 1
+                                            layer.enabled: true; layer.effect: RibbonShadow {}
+
+                                            Column {
+                                                id: bdCountdownInner
+                                                anchors { left: parent.left; right: parent.right; top: parent.top; margins: 14 }
+                                                spacing: 12
+
+                                                RowLayout {
+                                                    width: parent.width
+
+                                                    Column {
+                                                        spacing: 0; Layout.fillWidth: true
+                                                        Text {
+                                                            text: qsTr("NEXT BILL PAYMENT")
+                                                            font.pixelSize: 9; font.bold: true; font.letterSpacing: 0.8
+                                                            color: (billDetailPane.bill && billDetailPane.bill.overdue) ? "#f87171" : (RibbonTheme.isDarkMode ? "#9999bb" : "#888899")
+                                                        }
+                                                        Text {
+                                                            text: {
+                                                                var d = billDetailPane.daysUntilDue
+                                                                if (d === 0) return qsTr("Today")
+                                                                return Math.abs(d).toString()
+                                                            }
+                                                            font.pixelSize: 40; font.bold: true; lineHeight: 1.0
+                                                            color: (billDetailPane.bill && billDetailPane.bill.overdue) ? "#f87171" : (RibbonTheme.isDarkMode ? "#4e8ef7" : "#1a1a2e")
+                                                        }
+                                                        Text {
+                                                            visible: billDetailPane.daysUntilDue !== 0
+                                                            text: {
+                                                                var d = billDetailPane.daysUntilDue
+                                                                if (d < 0) return qsTr("days overdue")
+                                                                return d === 1 ? qsTr("day left") : qsTr("days left")
+                                                            }
+                                                            font.pixelSize: 11
+                                                            color: (billDetailPane.bill && billDetailPane.bill.overdue) ? "#fca5a5" : (RibbonTheme.isDarkMode ? "#7777aa" : "#888899")
+                                                        }
+                                                    }
+
+                                                    Column {
+                                                        spacing: 3
+                                                        Text {
+                                                            text: billDetailPane.bill ? (billDetailPane.bill.due_date_fmt || billDetailPane.bill.due_date || "") : ""
+                                                            font.pixelSize: 14; font.bold: true
+                                                            color: RibbonTheme.isDarkMode ? "white" : "#1a1a2e"
+                                                            horizontalAlignment: Text.AlignRight
+                                                        }
+                                                        Text {
+                                                            visible: billDetailPane.bill && billDetailPane.bill.recurring_type !== ""
+                                                            text: billDetailPane.bill ? (billDetailPane.bill.recurring_type || "").replace("per_", "Per ") : ""
+                                                            font.pixelSize: 11
+                                                            color: RibbonTheme.isDarkMode ? "#9999bb" : "#888899"
+                                                            horizontalAlignment: Text.AlignRight
+                                                        }
+                                                    }
+                                                }
+
+                                                // Progress bar
+                                                Column {
+                                                    width: parent.width; spacing: 5
+                                                    RowLayout {
+                                                        width: parent.width
+                                                        Text { text: qsTr("APPROACHING DUE DATE"); font.pixelSize: 9; font.bold: true; font.letterSpacing: 0.6; color: RibbonTheme.isDarkMode ? "#9999bb" : "#888899"; Layout.fillWidth: true }
+                                                        Text { text: Math.round(billDetailPane.progressPct) + "%"; font.pixelSize: 9; font.bold: true; color: RibbonTheme.isDarkMode ? "#9999bb" : "#888899" }
+                                                    }
+                                                    Rectangle {
+                                                        width: parent.width; height: 7; radius: 999
+                                                        color: RibbonTheme.isDarkMode ? "#2a2a42" : "#e8eaf0"
+                                                        Rectangle {
+                                                            width: parent.width * (billDetailPane.progressPct / 100.0)
+                                                            height: parent.height; radius: 999
+                                                            color: (billDetailPane.bill && billDetailPane.bill.overdue) ? "#ef4444"
+                                                                   : (billDetailPane.progressPct >= 85 ? "#f59e0b" : "#4e8ef7")
+                                                            Behavior on width { NumberAnimation { duration: 450; easing.type: Easing.OutCubic } }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    // Cost + Reminder cards
+                                    Item {
+                                        width: parent.width
+                                        height: bdCostCard.height + 12
+
+                                        // Cost card (adjusts width when reminder present)
+                                        Rectangle {
+                                            id: bdCostCard
+                                            x: 12; y: 0
+                                            width: (billDetailPane.bill && billDetailPane.bill.remind_days > 0)
+                                                   ? (parent.width - 34) * 0.62
+                                                   : (parent.width - 24)
+                                            height: 88; radius: 10
+                                            color: RibbonTheme.isDarkMode ? "#1e1e32" : "#ffffff"
+                                            border.color: RibbonTheme.isDarkMode ? "#2a2a42" : "#e0e4f0"; border.width: 1
+                                            layer.enabled: true; layer.effect: RibbonShadow {}
+                                            Behavior on width { NumberAnimation { duration: 180; easing.type: Easing.OutCubic } }
+
+                                            // Left accent bar
+                                            Rectangle { x: 0; y: 0; width: 4; height: parent.height; radius: 3; color: "#4e8ef7" }
+
+                                            Column {
+                                                anchors { left: parent.left; right: parent.right; verticalCenter: parent.verticalCenter; leftMargin: 16; rightMargin: 12 }
+                                                spacing: 3
+                                                Text {
+                                                    text: (billDetailPane.bill && billDetailPane.bill.payment_mode !== "recurring") ? qsTr("PAYMENT AMOUNT") : qsTr("RECURRING COST")
+                                                    font.pixelSize: 8; font.bold: true; font.letterSpacing: 0.7
+                                                    color: RibbonTheme.isDarkMode ? "#9999bb" : "#888899"
+                                                }
+                                                Text {
+                                                    text: billDetailPane.bill ? parseFloat(billDetailPane.bill.amount || 0).toFixed(2) : "0.00"
+                                                    font.pixelSize: 26; font.bold: true
+                                                    color: RibbonTheme.isDarkMode ? "#4e8ef7" : "#1a1a2e"
+                                                }
+                                                Text {
+                                                    visible: billDetailPane.bill && billDetailPane.bill.recurring_type !== ""
+                                                    text: qsTr("PER BILLING PERIOD · ") + (billDetailPane.bill ? (billDetailPane.bill.recurring_type || "").replace("per_", "PER ").toUpperCase() : "")
+                                                    font.pixelSize: 8; font.bold: true; font.letterSpacing: 0.4
+                                                    color: RibbonTheme.isDarkMode ? "#9999bb" : "#888899"
+                                                }
+                                            }
+                                        }
+
+                                        // Reminder card
+                                        Rectangle {
+                                            visible: billDetailPane.bill && billDetailPane.bill.remind_days > 0
+                                            x: bdCostCard.x + bdCostCard.width + 10
+                                            y: 0
+                                            width: parent.width - x - 12
+                                            height: bdCostCard.height; radius: 10
+                                            color: RibbonTheme.isDarkMode ? "#1e1e32" : "#fffbeb"
+                                            border.color: RibbonTheme.isDarkMode ? "#3a3020" : "#fbbf2455"; border.width: 1
+                                            layer.enabled: true; layer.effect: RibbonShadow {}
+
+                                            Column {
+                                                anchors { left: parent.left; right: parent.right; verticalCenter: parent.verticalCenter; leftMargin: 12; rightMargin: 8 }
+                                                spacing: 4
+                                                Rectangle {
+                                                    width: 30; height: 30; radius: 8
+                                                    color: RibbonTheme.isDarkMode ? "#3a2a00" : "#fef3c7"
+                                                    border.color: "#fbbf2440"; border.width: 1
+                                                    RibbonIcon { anchors.centerIn: parent; iconSource: RibbonIcons.Bell; iconSize: 13; color: "#f59e0b" }
+                                                }
+                                                Text {
+                                                    text: billDetailPane.bill ? (billDetailPane.bill.remind_days + " " + qsTr("days ahead")) : ""
+                                                    font.pixelSize: 12; font.bold: true
+                                                    color: RibbonTheme.isDarkMode ? "#fcd34d" : "#92400e"
+                                                }
+                                                Text {
+                                                    text: qsTr("REMINDER BEFORE\nPERIOD END")
+                                                    font.pixelSize: 8; font.bold: true; font.letterSpacing: 0.5
+                                                    color: RibbonTheme.isDarkMode ? "#9999bb" : "#888899"
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    // ── Dates & billing ──────────────────────
+                                    Rectangle {
+                                        width: parent.width; height: 32; color: RibbonTheme.isDarkMode ? "#16162a" : "#f4f5fb"
+                                        RowLayout {
+                                            anchors { fill: parent; leftMargin: 18; rightMargin: 18 }
+                                            spacing: 8
+                                            RibbonIcon { iconSource: RibbonIcons.Calendar; iconSize: 12; opacity: 0.55 }
+                                            RibbonText { text: qsTr("Dates & Billing"); font.pixelSize: 11; font.bold: true; opacity: 0.75; Layout.fillWidth: true }
+                                        }
+                                    }
+                                    Rectangle {
+                                        width: parent.width; height: 44; visible: billDetailPane.bill && billDetailPane.bill.actual_due_date_fmt !== ""
+                                        color: RibbonTheme.isDarkMode ? "#1e1e2e" : "#ffffff"
+                                        Rectangle { anchors.bottom: parent.bottom; width: parent.width; height: 1; color: RibbonTheme.isDarkMode ? "#2a2a3a" : "#f0f0f8" }
+                                        RowLayout { anchors { fill: parent; leftMargin: 18; rightMargin: 18 }
+                                            RibbonText { text: qsTr("Due date"); font.pixelSize: 12; opacity: 0.55; Layout.preferredWidth: 140 }
+                                            RibbonText { text: billDetailPane.bill ? (billDetailPane.bill.actual_due_date_fmt || "") : ""; font.pixelSize: 12; font.bold: true; color: (billDetailPane.bill && billDetailPane.bill.overdue) ? "#ef4444" : (RibbonTheme.isDarkMode ? "white" : "#1a1a2e"); Layout.fillWidth: true }
+                                        }
+                                    }
+                                    Rectangle {
+                                        width: parent.width; height: 44; visible: billDetailPane.bill && billDetailPane.bill.first_install_date_fmt !== ""
+                                        color: RibbonTheme.isDarkMode ? "#1e1e2e" : "#ffffff"
+                                        Rectangle { anchors.bottom: parent.bottom; width: parent.width; height: 1; color: RibbonTheme.isDarkMode ? "#2a2a3a" : "#f0f0f8" }
+                                        RowLayout { anchors { fill: parent; leftMargin: 18; rightMargin: 18 }
+                                            RibbonText { text: qsTr("First installment"); font.pixelSize: 12; opacity: 0.55; Layout.preferredWidth: 140 }
+                                            RibbonText { text: billDetailPane.bill ? (billDetailPane.bill.first_install_date_fmt || "") : ""; font.pixelSize: 12; font.bold: true; Layout.fillWidth: true }
+                                        }
+                                    }
+                                    Rectangle {
+                                        width: parent.width; height: 44; visible: billDetailPane.bill && billDetailPane.bill.recurring_type !== ""
+                                        color: RibbonTheme.isDarkMode ? "#1e1e2e" : "#ffffff"
+                                        Rectangle { anchors.bottom: parent.bottom; width: parent.width; height: 1; color: RibbonTheme.isDarkMode ? "#2a2a3a" : "#f0f0f8" }
+                                        RowLayout { anchors { fill: parent; leftMargin: 18; rightMargin: 18 }
+                                            RibbonText { text: qsTr("Cadence"); font.pixelSize: 12; opacity: 0.55; Layout.preferredWidth: 140 }
+                                            RibbonText { text: billDetailPane.bill ? (billDetailPane.bill.recurring_type || "").replace("per_", "Per ") : ""; font.pixelSize: 12; font.bold: true; Layout.fillWidth: true }
+                                        }
+                                    }
+                                    Rectangle {
+                                        width: parent.width; height: 44; visible: billDetailPane.bill && billDetailPane.bill.agreement_until !== "" && billDetailPane.bill.agreement_until !== "0"
+                                        color: RibbonTheme.isDarkMode ? "#1e1e2e" : "#ffffff"
+                                        Rectangle { anchors.bottom: parent.bottom; width: parent.width; height: 1; color: RibbonTheme.isDarkMode ? "#2a2a3a" : "#f0f0f8" }
+                                        RowLayout { anchors { fill: parent; leftMargin: 18; rightMargin: 18 }
+                                            RibbonText { text: qsTr("Valid until"); font.pixelSize: 12; opacity: 0.55; Layout.preferredWidth: 140 }
+                                            RibbonText { text: billDetailPane.bill ? (billDetailPane.bill.agreement_until || "") : ""; font.pixelSize: 12; font.bold: true; Layout.fillWidth: true }
+                                        }
+                                    }
+                                    Rectangle {
+                                        width: parent.width; height: 44; visible: billDetailPane.bill && billDetailPane.bill.remind_days > 0
+                                        color: RibbonTheme.isDarkMode ? "#1e1e2e" : "#ffffff"
+                                        Rectangle { anchors.bottom: parent.bottom; width: parent.width; height: 1; color: RibbonTheme.isDarkMode ? "#2a2a3a" : "#f0f0f8" }
+                                        RowLayout { anchors { fill: parent; leftMargin: 18; rightMargin: 18 }
+                                            RibbonText { text: qsTr("Reminder"); font.pixelSize: 12; opacity: 0.55; Layout.preferredWidth: 140 }
+                                            RibbonText { text: billDetailPane.bill ? (billDetailPane.bill.remind_days + qsTr(" days before end")) : ""; font.pixelSize: 12; font.bold: true; Layout.fillWidth: true }
+                                        }
+                                    }
+
+                                    // ── Assigned to ───────────────────────
+                                    Rectangle {
+                                        width: parent.width; height: 32; color: RibbonTheme.isDarkMode ? "#16162a" : "#f4f5fb"
+                                        visible: billDetailPane.bill && (billDetailPane.bill.property_name !== "" || billDetailPane.bill.employee_name !== "" || billDetailPane.bill.modification_name !== "" || billDetailPane.bill.department_name !== "" || billDetailPane.bill.rental_type !== "" || billDetailPane.bill.branch_name !== "")
+                                        RowLayout {
+                                            anchors { fill: parent; leftMargin: 18; rightMargin: 18 }
+                                            spacing: 8
+                                            RibbonIcon { iconSource: RibbonIcons.Person; iconSize: 12; opacity: 0.55 }
+                                            RibbonText { text: qsTr("Assigned To"); font.pixelSize: 11; font.bold: true; opacity: 0.75; Layout.fillWidth: true }
+                                        }
+                                    }
+                                    Rectangle { width: parent.width; height: 44; visible: billDetailPane.bill && billDetailPane.bill.property_name !== ""; color: RibbonTheme.isDarkMode ? "#1e1e2e" : "#ffffff"
+                                        Rectangle { anchors.bottom: parent.bottom; width: parent.width; height: 1; color: RibbonTheme.isDarkMode ? "#2a2a3a" : "#f0f0f8" }
+                                        RowLayout { anchors { fill: parent; leftMargin: 18; rightMargin: 18 }
+                                            RibbonText { text: qsTr("Property"); font.pixelSize: 12; opacity: 0.55; Layout.preferredWidth: 140 }
+                                            RibbonText { text: billDetailPane.bill ? (billDetailPane.bill.property_name || "") : ""; font.pixelSize: 12; font.bold: true; Layout.fillWidth: true }
+                                        }
+                                    }
+                                    Rectangle { width: parent.width; height: 44; visible: billDetailPane.bill && billDetailPane.bill.employee_name !== ""; color: RibbonTheme.isDarkMode ? "#1e1e2e" : "#ffffff"
+                                        Rectangle { anchors.bottom: parent.bottom; width: parent.width; height: 1; color: RibbonTheme.isDarkMode ? "#2a2a3a" : "#f0f0f8" }
+                                        RowLayout { anchors { fill: parent; leftMargin: 18; rightMargin: 18 }
+                                            RibbonText { text: qsTr("Employee"); font.pixelSize: 12; opacity: 0.55; Layout.preferredWidth: 140 }
+                                            RibbonText { text: billDetailPane.bill ? (billDetailPane.bill.employee_name || "") : ""; font.pixelSize: 12; font.bold: true; Layout.fillWidth: true }
+                                        }
+                                    }
+                                    Rectangle { width: parent.width; height: 44; visible: billDetailPane.bill && billDetailPane.bill.modification_name !== ""; color: RibbonTheme.isDarkMode ? "#1e1e2e" : "#ffffff"
+                                        Rectangle { anchors.bottom: parent.bottom; width: parent.width; height: 1; color: RibbonTheme.isDarkMode ? "#2a2a3a" : "#f0f0f8" }
+                                        RowLayout { anchors { fill: parent; leftMargin: 18; rightMargin: 18 }
+                                            RibbonText { text: qsTr("Modification"); font.pixelSize: 12; opacity: 0.55; Layout.preferredWidth: 140 }
+                                            RibbonText { text: billDetailPane.bill ? (billDetailPane.bill.modification_name || "") : ""; font.pixelSize: 12; font.bold: true; Layout.fillWidth: true }
+                                        }
+                                    }
+                                    Rectangle { width: parent.width; height: 44; visible: billDetailPane.bill && billDetailPane.bill.department_name !== ""; color: RibbonTheme.isDarkMode ? "#1e1e2e" : "#ffffff"
+                                        Rectangle { anchors.bottom: parent.bottom; width: parent.width; height: 1; color: RibbonTheme.isDarkMode ? "#2a2a3a" : "#f0f0f8" }
+                                        RowLayout { anchors { fill: parent; leftMargin: 18; rightMargin: 18 }
+                                            RibbonText { text: qsTr("Department"); font.pixelSize: 12; opacity: 0.55; Layout.preferredWidth: 140 }
+                                            RibbonText { text: billDetailPane.bill ? (billDetailPane.bill.department_name || "") : ""; font.pixelSize: 12; font.bold: true; Layout.fillWidth: true }
+                                        }
+                                    }
+                                    Rectangle { width: parent.width; height: 44; visible: billDetailPane.bill && billDetailPane.bill.rental_type !== ""; color: RibbonTheme.isDarkMode ? "#1e1e2e" : "#ffffff"
+                                        Rectangle { anchors.bottom: parent.bottom; width: parent.width; height: 1; color: RibbonTheme.isDarkMode ? "#2a2a3a" : "#f0f0f8" }
+                                        RowLayout { anchors { fill: parent; leftMargin: 18; rightMargin: 18 }
+                                            RibbonText { text: qsTr("Rental"); font.pixelSize: 12; opacity: 0.55; Layout.preferredWidth: 140 }
+                                            RibbonText { text: billDetailPane.bill ? (billDetailPane.bill.rental_type || "") : ""; font.pixelSize: 12; font.bold: true; Layout.fillWidth: true }
+                                        }
+                                    }
+                                    Rectangle { width: parent.width; height: 44; visible: billDetailPane.bill && billDetailPane.bill.branch_name !== ""; color: RibbonTheme.isDarkMode ? "#1e1e2e" : "#ffffff"
+                                        Rectangle { anchors.bottom: parent.bottom; width: parent.width; height: 1; color: RibbonTheme.isDarkMode ? "#2a2a3a" : "#f0f0f8" }
+                                        RowLayout { anchors { fill: parent; leftMargin: 18; rightMargin: 18 }
+                                            RibbonText { text: qsTr("Branch"); font.pixelSize: 12; opacity: 0.55; Layout.preferredWidth: 140 }
+                                            RibbonText { text: billDetailPane.bill ? (billDetailPane.bill.branch_name || "") : ""; font.pixelSize: 12; font.bold: true; Layout.fillWidth: true }
+                                        }
+                                    }
+
+                                    // ── Description ───────────────────────
+                                    Rectangle {
+                                        width: parent.width
+                                        height: bdDescInner.implicitHeight + 28
+                                        visible: billDetailPane.bill && billDetailPane.bill.description !== "" && billDetailPane.bill.description !== undefined
+                                        color: RibbonTheme.isDarkMode ? "#1e1e2e" : "#ffffff"
+                                        Rectangle { anchors.bottom: parent.bottom; width: parent.width; height: 1; color: RibbonTheme.isDarkMode ? "#2a2a3a" : "#f0f0f8" }
+                                        Column {
+                                            id: bdDescInner
+                                            anchors { left: parent.left; right: parent.right; top: parent.top; leftMargin: 18; rightMargin: 18; topMargin: 12 }
+                                            spacing: 6
+                                            RibbonText { text: qsTr("Description"); font.pixelSize: 9; opacity: 0.45 }
+                                            Text {
+                                                width: parent.width; wrapMode: Text.WordWrap; lineHeight: 1.45
+                                                text: billDetailPane.bill ? (billDetailPane.bill.description || "") : ""
+                                                font.pixelSize: 12
+                                                color: RibbonTheme.isDarkMode ? "#ccccee" : "#333355"
+                                            }
+                                        }
+                                    }
+
+                                    // ── Notes ─────────────────────────────
+                                    Rectangle {
+                                        width: parent.width
+                                        height: bdNotesInner.implicitHeight + 28
+                                        visible: billDetailPane.bill && billDetailPane.bill.notes !== "" && billDetailPane.bill.notes !== undefined
+                                        color: RibbonTheme.isDarkMode ? "#1e1e2e" : "#ffffff"
+                                        Column {
+                                            id: bdNotesInner
+                                            anchors { left: parent.left; right: parent.right; top: parent.top; leftMargin: 18; rightMargin: 18; topMargin: 12 }
+                                            spacing: 6
+                                            RibbonText { text: qsTr("Notes"); font.pixelSize: 9; opacity: 0.45 }
+                                            Rectangle {
+                                                width: parent.width; radius: 8
+                                                height: bdNotesText.implicitHeight + 16
+                                                color: RibbonTheme.isDarkMode ? "#ffffff08" : "#f4f5fb"
+                                                border.color: RibbonTheme.isDarkMode ? "#2a2a42" : "#e8eaf0"; border.width: 1
+                                                Text {
+                                                    id: bdNotesText
+                                                    x: 12; y: 8; width: parent.width - 24
+                                                    text: billDetailPane.bill ? (billDetailPane.bill.notes || "") : ""
+                                                    color: RibbonTheme.isDarkMode ? "#ccccee" : "#333355"
+                                                    font.pixelSize: 12; wrapMode: Text.WordWrap; lineHeight: 1.45
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    Item { width: parent.width; height: 24 }
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
             // ════════════════════════════════════════════════════════════

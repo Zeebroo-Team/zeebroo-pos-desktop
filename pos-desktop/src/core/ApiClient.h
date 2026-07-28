@@ -37,6 +37,10 @@ public:
 
     void createBill(const QJsonObject &body, SuccessFn onOk, ErrorFn onErr);
     void fetchLoans(SuccessFn onOk, ErrorFn onErr);
+    void fetchBills(SuccessFn onOk, ErrorFn onErr);
+    void fetchRentals(SuccessFn onOk, ErrorFn onErr);
+    void fetchModifications(SuccessFn onOk, ErrorFn onErr);
+    void fetchEmployees(SuccessFn onOk, ErrorFn onErr);
     void fetchAccounts(SuccessFn onOk, ErrorFn onErr);
     void fetchBillAssignmentTargets(SuccessFn onOk, ErrorFn onErr);
 

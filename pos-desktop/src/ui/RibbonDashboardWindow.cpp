@@ -197,4 +197,107 @@ void RibbonDashboardWindow::fetchLoans()
     );
 }
 
+void RibbonDashboardWindow::fetchBills()
+{
+    m_api->fetchBills(
+        [this](const QJsonObject &resp) {
+            const QJsonArray arr = resp.value(QStringLiteral("data")).toArray();
+            QVariantList list;
+            list.reserve(arr.size());
+            for (const QJsonValue &v : arr) {
+                const QJsonObject o = v.toObject();
+                list.append(QVariantMap{
+                    {QStringLiteral("id"),                o.value(QStringLiteral("id")).toInt()},
+                    {QStringLiteral("name"),              o.value(QStringLiteral("name")).toString()},
+                    {QStringLiteral("amount"),            o.value(QStringLiteral("amount")).toDouble()},
+                    {QStringLiteral("overdue"),           o.value(QStringLiteral("overdue")).toBool()},
+                    {QStringLiteral("due_date"),             o.value(QStringLiteral("due_date")).toString()},
+                    {QStringLiteral("due_date_fmt"),         o.value(QStringLiteral("due_date_fmt")).toString()},
+                    {QStringLiteral("actual_due_date_fmt"),  o.value(QStringLiteral("actual_due_date_fmt")).toString()},
+                    {QStringLiteral("first_install_date_fmt"), o.value(QStringLiteral("first_install_date_fmt")).toString()},
+                    {QStringLiteral("payment_mode"),      o.value(QStringLiteral("payment_mode")).toString()},
+                    {QStringLiteral("category"),          o.value(QStringLiteral("category")).toString()},
+                    {QStringLiteral("category_label"),    o.value(QStringLiteral("category_label")).toString()},
+                    {QStringLiteral("description"),       o.value(QStringLiteral("description")).toString()},
+                    {QStringLiteral("recurring_type"),    o.value(QStringLiteral("recurring_type")).toString()},
+                    {QStringLiteral("agreement_until"),   o.value(QStringLiteral("agreement_until")).toString()},
+                    {QStringLiteral("remind_days"),       o.value(QStringLiteral("remind_days")).toInt()},
+                    {QStringLiteral("notes"),             o.value(QStringLiteral("notes")).toString()},
+                    {QStringLiteral("property_name"),     o.value(QStringLiteral("property_name")).toString()},
+                    {QStringLiteral("employee_name"),     o.value(QStringLiteral("employee_name")).toString()},
+                    {QStringLiteral("modification_name"), o.value(QStringLiteral("modification_name")).toString()},
+                    {QStringLiteral("department_name"),   o.value(QStringLiteral("department_name")).toString()},
+                    {QStringLiteral("rental_type"),       o.value(QStringLiteral("rental_type")).toString()},
+                    {QStringLiteral("branch_name"),       o.value(QStringLiteral("branch_name")).toString()},
+                });
+            }
+            emit billsLoaded(list);
+        },
+        [](const QString &, int) {}
+    );
+}
+
+void RibbonDashboardWindow::fetchRentals()
+{
+    m_api->fetchRentals(
+        [this](const QJsonObject &resp) {
+            const QJsonArray arr = resp.value(QStringLiteral("data")).toArray();
+            QVariantList list;
+            list.reserve(arr.size());
+            for (const QJsonValue &v : arr) {
+                const QJsonObject o = v.toObject();
+                list.append(QVariantMap{
+                    {QStringLiteral("id"),     o.value(QStringLiteral("id")).toInt()},
+                    {QStringLiteral("name"),   o.value(QStringLiteral("name")).toString()},
+                    {QStringLiteral("amount"), o.value(QStringLiteral("amount")).toDouble()},
+                });
+            }
+            emit rentalsLoaded(list);
+        },
+        [](const QString &, int) {}
+    );
+}
+
+void RibbonDashboardWindow::fetchModifications()
+{
+    m_api->fetchModifications(
+        [this](const QJsonObject &resp) {
+            const QJsonArray arr = resp.value(QStringLiteral("data")).toArray();
+            QVariantList list;
+            list.reserve(arr.size());
+            for (const QJsonValue &v : arr) {
+                const QJsonObject o = v.toObject();
+                list.append(QVariantMap{
+                    {QStringLiteral("id"),     o.value(QStringLiteral("id")).toInt()},
+                    {QStringLiteral("name"),   o.value(QStringLiteral("name")).toString()},
+                    {QStringLiteral("amount"), o.value(QStringLiteral("amount")).toDouble()},
+                });
+            }
+            emit modificationsLoaded(list);
+        },
+        [](const QString &, int) {}
+    );
+}
+
+void RibbonDashboardWindow::fetchEmployees()
+{
+    m_api->fetchEmployees(
+        [this](const QJsonObject &resp) {
+            const QJsonArray arr = resp.value(QStringLiteral("data")).toArray();
+            QVariantList list;
+            list.reserve(arr.size());
+            for (const QJsonValue &v : arr) {
+                const QJsonObject o = v.toObject();
+                list.append(QVariantMap{
+                    {QStringLiteral("id"),   o.value(QStringLiteral("id")).toInt()},
+                    {QStringLiteral("name"), o.value(QStringLiteral("name")).toString()},
+                    {QStringLiteral("type"), o.value(QStringLiteral("type")).toString()},
+                });
+            }
+            emit employeesLoaded(list);
+        },
+        [](const QString &, int) {}
+    );
+}
+
 } // namespace pos
