@@ -142,7 +142,7 @@ QScrollBar::sub-page:vertical {
    ═══════════════════════════════════════════════════════════════ */
 #topBar {
     background: #ffffff;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #c8d0e0;
     border-radius: 16px;
     min-height: 58px;
     max-height: 58px;
@@ -289,7 +289,7 @@ QScrollBar::sub-page:vertical {
    ═══════════════════════════════════════════════════════════════ */
 #panel {
     background: #ffffff;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #c8d0e0;
     border-radius: 18px;
 }
 
@@ -317,7 +317,7 @@ QLineEdit:hover, QTextEdit:hover, QDoubleSpinBox:hover {
     font-weight: 800;
     font-size: 13px;
     letter-spacing: -0.3px;
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid #c8d0e0;
     background: #ffffff;
     color: #0f172a;
     border-radius: 17px 17px 0 0;
@@ -411,7 +411,7 @@ QLineEdit:hover, QTextEdit:hover, QDoubleSpinBox:hover {
    ═══════════════════════════════════════════════════════════════ */
 #productCard {
     background: #ffffff;
-    border: 1.5px solid #e8ecf3;
+    border: 1.5px solid #c8d0e0;
     border-radius: 16px;
 }
 
@@ -479,7 +479,7 @@ QLineEdit:hover, QTextEdit:hover, QDoubleSpinBox:hover {
    ═══════════════════════════════════════════════════════════════ */
 #salePanel {
     background: #ffffff;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #c8d0e0;
     border-radius: 18px;
 }
 
@@ -554,12 +554,12 @@ QLineEdit:hover, QTextEdit:hover, QDoubleSpinBox:hover {
 
 #cartLine {
     background: #ffffff;
-    border: 1px solid #eef2f7;
+    border: 1px solid #c8d0e0;
     border-radius: 14px;
 }
 
 #cartLine:hover {
-    border-color: #dde3ef;
+    border-color: #a5b4c8;
 }
 
 #cartLineName {
@@ -929,7 +929,7 @@ QLineEdit:hover, QTextEdit:hover, QDoubleSpinBox:hover {
 
 #receiptPreview {
     background: #f8fafc;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #c8d0e0;
     border-radius: 12px;
     padding: 14px;
     color: #0f172a;
@@ -1294,7 +1294,7 @@ QLineEdit:hover, QTextEdit:hover, QDoubleSpinBox:hover {
 #returnSearchRow {
     background: #ffffff;
     border-radius: 10px;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #c8d0e0;
 }
 
 #returnSearchInput {
@@ -1358,7 +1358,7 @@ QLineEdit:hover, QTextEdit:hover, QDoubleSpinBox:hover {
 #returnPanel {
     background: #ffffff;
     border-radius: 12px;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #c8d0e0;
 }
 
 #returnPanelHeader {
@@ -1477,7 +1477,7 @@ QLineEdit:hover, QTextEdit:hover, QDoubleSpinBox:hover {
 
 #returnTotalFrame {
     background: #f8fafc;
-    border: 1.5px solid #e2e8f0;
+    border: 1.5px solid #c8d0e0;
     border-radius: 10px;
 }
 
@@ -1748,7 +1748,7 @@ QLineEdit:hover, QTextEdit:hover, QDoubleSpinBox:hover {
 /* Inner card */
 #poListCard {
     background: #ffffff;
-    border: 1px solid #e8ecf5;
+    border: 1px solid #c8d0e0;
     border-radius: 8px;
 }
 
@@ -1761,7 +1761,7 @@ QLineEdit:hover, QTextEdit:hover, QDoubleSpinBox:hover {
 /* Hover state on card (requires WA_Hover on outer widget) */
 #poListCard:hover {
     background: #f8fafc;
-    border-color: #c7d2fe;
+    border-color: #818cf8;
 }
 
 /* PO number */
@@ -1832,7 +1832,7 @@ QLineEdit:hover, QTextEdit:hover, QDoubleSpinBox:hover {
 /* White detail cards */
 #poDetailCard {
     background: #ffffff;
-    border: 1px solid #e8ecf5;
+    border: 1px solid #c8d0e0;
     border-radius: 12px;
 }
 
@@ -1918,7 +1918,7 @@ QLineEdit:hover, QTextEdit:hover, QDoubleSpinBox:hover {
 /* ── Action bar ──────────────────────────────────────────────────── */
 #poActionBar {
     background: #ffffff;
-    border: 1px solid #e8ecf5;
+    border: 1px solid #c8d0e0;
     border-radius: 12px;
 }
 
@@ -2020,14 +2020,14 @@ QLineEdit:hover, QTextEdit:hover, QDoubleSpinBox:hover {
 /* Standard form card */
 #poFormCard {
     background: #ffffff;
-    border: 1px solid #eaecf5;
+    border: 1px solid #c8d0e0;
     border-radius: 10px;
 }
 
 /* Add product card — subtle indigo tint */
 #poAddProductCard {
     background: #fafbff;
-    border: 1px solid #e0e4f7;
+    border: 1px solid #c0caf0;
     border-radius: 10px;
 }
 
